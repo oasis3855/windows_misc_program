@@ -1,0 +1,730 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 17, 1\r\n"
+    "#pragma code_page(932)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\InfoBar00.rc2""  // Microsoft Visual C++ 以外のツールで編集されたリソース\r\n"
+    "#include ""l.jpn\\afxres.rc""          // 標準のコンポーネント\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\InfoBar00.ico"
+IDI_ICO_INST            ICON    DISCARDABLE     "res\\ico_inst.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_INFOBAR00_DIALOG DIALOGEX 0, 0, 230, 25
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_APPWINDOW
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "",IDC_INFO_AREA,0,0,229,25,SS_SUNKEN
+END
+
+IDD_DLG_NETCONF DIALOG DISCARDABLE  0, 0, 279, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "ネットワーク Network"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    GROUPBOX        "一括設定  Conventional Settings",IDC_STATIC,5,5,265,30
+    COMBOBOX        IDC_COMBO_QLIST,10,15,255,75,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "アドレス Address",IDC_STATIC,5,40,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_ADDR,75,40,195,15,ES_AUTOHSCROLL
+    LTEXT           "ポート番号 Port No",IDC_STATIC,5,60,65,15,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_PORT,75,60,50,15,ES_AUTOHSCROLL
+    LTEXT           "プロキシ Proxy",IDC_STATIC,5,80,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_PROXY,75,80,195,15,ES_AUTOHSCROLL
+    LTEXT           "項目名 Title",IDC_STATIC,5,115,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_TITLE,75,115,195,15,ES_AUTOHSCROLL
+    LTEXT           "識別ヘッダ Header",IDC_STATIC,5,135,65,15,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_HEADER,75,135,195,15,ES_AUTOHSCROLL
+    LTEXT           "先頭スキップ Skip",IDC_STATIC,5,155,65,15,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_SKIP,75,155,55,15,ES_AUTOHSCROLL
+    LTEXT           "取得行数 Items",IDC_STATIC,5,175,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_GETNUM,75,175,55,15,ES_AUTOHSCROLL
+    LTEXT           "制限字数 Limit char",IDC_STATIC,5,195,65,15,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_LIMIT,75,195,55,15,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "↑ Proxy Server を経由しない場合は、何も入力しないように",
+                    IDC_STATIC,75,95,195,15,SS_CENTERIMAGE
+END
+
+IDD_DLG_SYSCONF DIALOG DISCARDABLE  0, 0, 279, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "システム System"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "リフレッシュ Refresh",IDC_STATIC,5,40,65,15,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_TIMER,75,40,50,15,ES_AUTOHSCROLL
+    LTEXT           "速度 Speed",IDC_STATIC,5,60,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_SPEED,75,60,50,15,ES_AUTOHSCROLL
+    LTEXT           "msec",IDC_STATIC,135,40,65,15,SS_CENTERIMAGE
+    LTEXT           "dot",IDC_STATIC,135,60,65,15,SS_CENTERIMAGE
+    LTEXT           "Background",IDC_STATIC,5,80,65,15,SS_CENTERIMAGE
+    LTEXT           "Foreground",IDC_STATIC,5,100,65,15,SS_CENTERIMAGE
+    CONTROL         "",IDC_AREA_BACK_COLOR,"Static",SS_ETCHEDFRAME,75,80,50,
+                    15
+    CONTROL         "",IDC_AREA_FORE_COLOR,"Static",SS_ETCHEDFRAME,75,100,50,
+                    15
+    PUSHBUTTON      "設定 pick",IDC_BTN_BACK_COLOR,130,80,55,15
+    PUSHBUTTON      "設定 pick",IDC_BTN_FORE_COLOR,130,100,55,15
+    LTEXT           "情報更新 Connect",IDC_STATIC,5,120,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_REFRESH,75,120,50,15,ES_AUTOHSCROLL
+    LTEXT           "sec  (０秒で自動再読み込み無し）",IDC_STATIC,135,120,
+                    135,15,SS_CENTERIMAGE
+    CONTROL         "最前面に表示する (display on topmost)",IDC_CHK_TOPMOST,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,5,140,260,15
+END
+
+IDD_DLG_ABOUT DIALOG DISCARDABLE  0, 0, 279, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    LTEXT           "InfoBar  Version  0.01 for Windows\n\n(C) 2002 INOUE. Hirokazu\n\nhttp://inoue-h.connect.to/\nhttp://www.ne.jp/asahi/oasis/inoue-h/\n\nThis program is free ware .  There's no warranty of this program  .",
+                    IDC_STATIC,40,10,210,80
+    ICON            IDR_MAINFRAME,IDC_STATIC,5,10,20,20
+    LTEXT           "このプログラムは、作者が個人利用を想定して作成したプログラムです。\n動作環境、および動作条件は作者の必要とする範囲内であり、それ以外のコンピュータでの動作は保障されていません。\n\nこのプログラムの利用は、ユーザの環境および利用目的に合致した場合のみ利用願います。\nこのプログラムの修正依頼は一切受け付けません。（ただし、重大な欠陥は除く）",
+                    IDC_STATIC,35,100,210,80,SS_SUNKEN
+END
+
+IDD_DLG_INST DIALOG DISCARDABLE  0, 0, 259, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "InfoBar のインストール / Install InfoBar"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    ICON            IDI_ICO_INST,IDC_STATIC,10,5,20,20
+    LTEXT           "InfoBar をインストールします   (Install InfoBar)",
+                    IDC_STATIC,35,5,215,20,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,30,250,1
+    GROUPBOX        "自動実行オプション  (Auto Run Option)",IDC_STATIC,5,35,
+                    250,75
+    CONTROL         "自動起動しない  (No Auto Run)",IDC_R_AUTOEXEC,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,10,45,240,15
+    CONTROL         "スタートメニューの「スタート」グループに登録  (Startup on Start Menu)",
+                    IDC_R_AUTOEXEC2,"Button",BS_AUTORADIOBUTTON,10,61,240,15
+    CONTROL         "レジストリに登録（ユーザーごと設定)  (Registry Run (Current User))",
+                    IDC_R_AUTOEXEC3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_DISABLED,10,75,240,15
+    CONTROL         "レジストリに登録（全ユーザ共通設定)  (Registry Run (All User))",
+                    IDC_R_AUTOEXEC4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_DISABLED,10,91,240,15
+    GROUPBOX        "アンインストール方法の設定  (Uninstall Shortcut on ... ?)",
+                    IDC_STATIC,5,115,250,45
+    CONTROL         "コントロールパネルの「アプリケーションの追加と削除」  (from &Control panel)",
+                    IDC_CHECK_UNINST_CPL,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,10,125,240,15
+    CONTROL         "スタートメニューに登録する  (推奨) (from Start Men&u)",
+                    IDC_CHECK_UNINST_START,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,140,240,15
+    PUSHBUTTON      "OK(&K)",IDOK,80,165,55,15
+    PUSHBUTTON      "キャンセル(&C)",IDCANCEL,140,165,55,15
+    PUSHBUTTON      "ヘルプ(&H)",IDC_BTN_HELP,200,165,55,15,WS_DISABLED
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,1,0,0
+ PRODUCTVERSION 0,1,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "InfoBar\0"
+            VALUE "FileVersion", "0, 1, 0, 0\0"
+            VALUE "InternalName", "InfoBar00\0"
+            VALUE "LegalCopyright", "Copyright (C) 2002 INOUE. Hirokazu\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "InfoBar00.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "InfoBar00 ｱﾌﾟﾘｹｰｼｮﾝ\0"
+            VALUE "ProductVersion", "0, 1, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_INFOBAR00_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 223
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 18
+    END
+
+    IDD_DLG_NETCONF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DLG_SYSCONF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DLG_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DLG_INST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_NETCONF DLGINIT
+BEGIN
+    IDC_COMBO_QLIST, 0x403, 25, 0
+0x6159, 0x6f68, 0x206f, 0xfa93, 0x7b96, 0x8320, 0x836a, 0x8185, 0x835b, 
+0x2058, 0xad90, 0xa18e, "\000" 
+    IDC_COMBO_QLIST, 0x403, 25, 0
+0x6159, 0x6f68, 0x206f, 0xfa93, 0x7b96, 0x8320, 0x836a, 0x8185, 0x835b, 
+0x2058, 0xd08e, 0xef89, "\000" 
+    IDC_COMBO_QLIST, 0x403, 25, 0
+0x6159, 0x6f68, 0x206f, 0xfa93, 0x7b96, 0x8320, 0x836a, 0x8185, 0x835b, 
+0x2058, 0x438a, 0x4f8a, "\000" 
+    IDC_COMBO_QLIST, 0x403, 29, 0
+0x6159, 0x6f68, 0x206f, 0xfa93, 0x7b96, 0x8320, 0x836a, 0x8185, 0x835b, 
+0x2058, 0x6f8c, 0xcf8d, 0x8d91, 0x878d, "\000" 
+    IDC_COMBO_QLIST, 0x403, 25, 0
+0x6159, 0x6f68, 0x206f, 0xfa93, 0x7b96, 0x8320, 0x836a, 0x8185, 0x835b, 
+0x2058, 0x598e, 0xc68b, "\000" 
+    IDC_COMBO_QLIST, 0x403, 33, 0
+0x6159, 0x6f68, 0x206f, 0xfa93, 0x7b96, 0x8320, 0x836a, 0x8185, 0x835b, 
+0x2058, 0x5283, 0x9383, 0x7383, 0x8583, 0x5b81, 0x5e83, "\000" 
+    IDC_COMBO_QLIST, 0x403, 28, 0
+0x5182, 0xbf82, 0xe182, 0xf182, 0xcb82, 0xe982, 0x8320, 0x836a, 0x8185, 
+0x835b, 0x9158, 0x95ac, 0x81f1, 0x007b, 
+    IDC_COMBO_QLIST, 0x403, 26, 0
+0x5182, 0xbf82, 0xe182, 0xf182, 0xcb82, 0xe982, 0x8320, 0x836a, 0x8185, 
+0x835b, 0x8e58, 0x8bc0, 0x00b5, 
+    IDC_COMBO_QLIST, 0x403, 26, 0
+0x5182, 0xbf82, 0xe182, 0xf182, 0xcb82, 0xe982, 0x8220, 0x826f, 0x8362, 
+0x836a, 0x8185, 0x835b, 0x0058, 
+    IDC_COMBO_QLIST, 0x403, 14, 0
+0xc793, 0x8494, 0x5690, 0xb795, 0x8e20, 0x89d0, 0x00ef, 
+    IDC_COMBO_QLIST, 0x403, 14, 0
+0xc793, 0x8494, 0x5690, 0xb795, 0x9020, 0x8ead, 0x00a1, 
+    IDC_COMBO_QLIST, 0x403, 14, 0
+0xc793, 0x8494, 0x5690, 0xb795, 0x8c20, 0x8d6f, 0x00cf, 
+    IDC_COMBO_QLIST, 0x403, 14, 0
+0xc793, 0x8494, 0x5690, 0xb795, 0x8d20, 0x8d91, 0x00db, 
+    IDC_COMBO_QLIST, 0x403, 21, 0
+0x6159, 0x6f68, 0x206f, 0x5355, 0x2041, 0x7420, 0x706f, 0x7320, 0x6f74, 
+0x7972, "\000" 
+    IDC_COMBO_QLIST, 0x403, 27, 0
+0x6159, 0x6f68, 0x206f, 0x5355, 0x2041, 0x7720, 0x726f, 0x646c, 0x7320, 
+0x6c65, 0x6365, 0x6974, 0x6e6f, "\000" 
+    IDC_COMBO_QLIST, 0x403, 30, 0
+0x6159, 0x6f68, 0x206f, 0x5355, 0x2041, 0x6220, 0x7375, 0x6e69, 0x7365, 
+0x2073, 0x6573, 0x656c, 0x7463, 0x6f69, 0x006e, 
+    IDC_COMBO_QLIST, 0x403, 32, 0
+0x6159, 0x6f68, 0x206f, 0x5355, 0x2041, 0x7420, 0x6365, 0x6e68, 0x6c6f, 
+0x676f, 0x2079, 0x6573, 0x656c, 0x7463, 0x6f69, 0x006e, 
+    IDC_COMBO_QLIST, 0x403, 30, 0
+0xa48b, 0xaf93, 0xca92, 0x4d90, 0xd08e, 0x8320, 0x836a, 0x8185, 0x835b, 
+0x8358, 0x836e, 0x8343, 0x8389, 0x8343, 0x0067, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_POPUP MENU DISCARDABLE 
+BEGIN
+    POPUP "InfoBar メニュー"
+    BEGIN
+        MENUITEM "設定",                        ID_MENU_CONFIG
+        MENUITEM "終了",                        ID_MENU_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "InfoBar00 のﾊﾞｰｼﾞｮﾝ情報(&A)..."
+    IDP_SOCKETS_INIT_FAILED "Windows ｿｹｯﾄの初期化に失敗しました。"
+    IDS_CONFDLG_TITLE       "InfoBar 設定  Configuration"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "InfoBar"
+    AFX_STR_UNINST_CPLNAME  "InfoBar"
+    AFX_STR_USERDAT_1       "Software\\hi soft\\infobar"
+    AFX_STR_USERDAT_2       "Software\\hi soft"
+    AFX_STR_LINK_UNINST     "\\InfoBarアンインストール.LNK"
+    AFX_STR_LINK_STARTUP    "\\InfoBar StartUp.LNK"
+    AFX_STR_LINK_PROG       "\\InfoBar.LNK"
+    STR_MES_UNIN            "InfoBar をアンインストールしますか"
+    IDS_ERR_WNDDC           "仮想デバイス・コンテキストの生成に失敗しました"
+    IDS_ERR_COMPBMP         "仮想ビットマップの生成に失敗しました"
+    IDS_ERR_BMPTODC         "仮想ビットマップをデバイス・コンテキストにリンクできません"
+    IDS_MES_INITIAL         "InfoBar  :   画面上を右クリックして設定してください\n"
+    IDS_ERR_TIMER           "システム・タイマーを利用できません"
+    IDS_ERR_GETDC           "デバイス・コンテキストを利用できません"
+    IDS_ERR_THREAD          "システム・エラー：スレッドが起動できません\n"
+    IDS_MES_NODATA          "InfoBar  :  データが取得されていません\n"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERR_SOCK_CREAT      "ネットワーク・エラー：Windowsソケットの作成失敗\n"
+    IDS_ERR_SOCK_GETHOST    "ネットワーク・エラー：Windowsソケットでホスト名の解決ができません\n"
+    IDS_ERR_SOCK_CONN       "ネットワーク・エラー：Windowsソケットの接続に失敗しました\n"
+    IDS_ERR_SOCK_SHUT       "ネットワーク・エラー：Windowsソケットのシャットダウンに失敗\n"
+    IDS_ERR_SOCK_CLOSE      "ネットワーク・エラー：Windowsソケットの解放に失敗\n"
+    IDS_STR_TITLEFMT        "%s     %2d月%2d日%02d時%02d分 現在\n"
+END
+
+#endif    // 日本語 resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 英語 (ｱﾒﾘｶ) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_INFOBAR00_DIALOG DIALOGEX 0, 0, 230, 18
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_APPWINDOW
+FONT 9, "Arial"
+BEGIN
+    LTEXT           "",IDC_INFO_AREA,0,0,229,18,SS_SUNKEN
+END
+
+IDD_DLG_SYSCONF DIALOG DISCARDABLE  0, 0, 279, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "System"
+FONT 9, "Arial"
+BEGIN
+    LTEXT           "Refresh",IDC_STATIC,5,40,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_TIMER,75,40,50,15,ES_AUTOHSCROLL
+    LTEXT           "Speed",IDC_STATIC,5,60,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_SPEED,75,60,50,15,ES_AUTOHSCROLL
+    LTEXT           "msec",IDC_STATIC,135,40,65,15,SS_CENTERIMAGE
+    LTEXT           "dot",IDC_STATIC,135,60,65,15,SS_CENTERIMAGE
+    LTEXT           "Background",IDC_STATIC,5,80,65,15,SS_CENTERIMAGE
+    LTEXT           "Foreground",IDC_STATIC,5,100,65,15,SS_CENTERIMAGE
+    CONTROL         "",IDC_AREA_BACK_COLOR,"Static",SS_ETCHEDFRAME,75,80,50,
+                    15
+    CONTROL         "",IDC_AREA_FORE_COLOR,"Static",SS_ETCHEDFRAME,75,100,50,
+                    15
+    PUSHBUTTON      "pick color",IDC_BTN_BACK_COLOR,130,80,55,15
+    PUSHBUTTON      "pick color",IDC_BTN_FORE_COLOR,130,100,55,15
+    LTEXT           "Connect to net",IDC_STATIC,5,120,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_REFRESH,75,120,50,15,ES_AUTOHSCROLL
+    LTEXT           "sec  (0 means no automatic connecton)",IDC_STATIC,135,
+                    120,135,15,SS_CENTERIMAGE
+    CONTROL         "display on topmost",IDC_CHK_TOPMOST,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,5,140,260,15
+END
+
+IDD_DLG_NETCONF DIALOG DISCARDABLE  0, 0, 279, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Network"
+FONT 9, "Arial"
+BEGIN
+    GROUPBOX        "Conventional Settings",IDC_STATIC,5,5,265,30
+    COMBOBOX        IDC_COMBO_QLIST,10,15,255,75,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Address",IDC_STATIC,5,40,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_ADDR,75,40,195,15,ES_AUTOHSCROLL
+    LTEXT           "Port No",IDC_STATIC,5,60,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_PORT,75,60,50,15,ES_AUTOHSCROLL
+    LTEXT           "Proxy",IDC_STATIC,5,80,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_PROXY,75,80,195,15,ES_AUTOHSCROLL
+    LTEXT           "Title",IDC_STATIC,5,115,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_TITLE,75,115,195,15,ES_AUTOHSCROLL
+    LTEXT           "Header",IDC_STATIC,5,135,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_HEADER,75,135,195,15,ES_AUTOHSCROLL
+    LTEXT           "Skip",IDC_STATIC,5,155,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_SKIP,75,155,55,15,ES_AUTOHSCROLL
+    LTEXT           "Items",IDC_STATIC,5,175,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_GETNUM,75,175,55,15,ES_AUTOHSCROLL
+    LTEXT           "Limit char",IDC_STATIC,5,195,65,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_LIMIT,75,195,55,15,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "If you don't use Proxy, Blank here",IDC_STATIC,75,95,
+                    195,15,SS_CENTERIMAGE
+END
+
+IDD_DLG_INST DIALOG DISCARDABLE  0, 0, 259, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "InfoBar installation"
+FONT 9, "Arial"
+BEGIN
+    ICON            IDI_ICO_INST,IDC_STATIC,10,5,20,20
+    LTEXT           "Do you want to install InfoBar ?",IDC_STATIC,35,5,215,
+                    20,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,30,250,1
+    GROUPBOX        "Auto Run Option",IDC_STATIC,5,35,250,75
+    CONTROL         "No Auto Run",IDC_R_AUTOEXEC,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,10,45,240,15
+    CONTROL         "Make shortcut on Start Menu",IDC_R_AUTOEXEC2,"Button",
+                    BS_AUTORADIOBUTTON,10,61,240,15
+    CONTROL         "Make shortcut at Registry Run (Current User)",
+                    IDC_R_AUTOEXEC3,"Button",BS_AUTORADIOBUTTON | 
+                    WS_DISABLED,10,75,240,15
+    CONTROL         "Make shortcut at Registry Run (All User)",
+                    IDC_R_AUTOEXEC4,"Button",BS_AUTORADIOBUTTON | 
+                    WS_DISABLED,10,91,240,15
+    GROUPBOX        "Uninstall Shortcut option",IDC_STATIC,5,115,250,45
+    CONTROL         "Make uninstall item on Control panel",
+                    IDC_CHECK_UNINST_CPL,"Button",BS_AUTOCHECKBOX | 
+                    WS_DISABLED | WS_TABSTOP,10,125,240,15
+    CONTROL         "Make uninstall shortcut on Start Menu",
+                    IDC_CHECK_UNINST_START,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,140,240,15
+    PUSHBUTTON      "OK(&K)",IDOK,80,165,55,15
+    PUSHBUTTON      "Cancel(&C)",IDCANCEL,140,165,55,15
+    PUSHBUTTON      "Help(&H)",IDC_BTN_HELP,200,165,55,15,WS_DISABLED
+END
+
+IDD_DLG_ABOUT DIALOG DISCARDABLE  0, 0, 279, 215
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About"
+FONT 9, "Arial"
+BEGIN
+    LTEXT           "InfoBar  Version  0.01 for Windows\n\n(C) 2002 INOUE. Hirokazu\n\nhttp://inoue-h.connect.to/\nhttp://www.ne.jp/asahi/oasis/inoue-h/\n\nThis program is free ware .  There's no warranty of this program  .",
+                    IDC_STATIC,40,10,210,80
+    ICON            IDR_MAINFRAME,IDC_STATIC,5,10,20,20
+    LTEXT           "This program is not fully functioning in English mode .",
+                    IDC_STATIC,35,100,210,80,SS_SUNKEN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_INFOBAR00_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 223
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 11
+    END
+
+    IDD_DLG_SYSCONF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DLG_NETCONF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+
+    IDD_DLG_INST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_DLG_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 272
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 208
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_DLG_NETCONF DLGINIT
+BEGIN
+    IDC_COMBO_QLIST, 0x403, 28, 0
+0x6159, 0x6f68, 0x206f, 0x614a, 0x6170, 0x206e, 0x654e, 0x7377, 0x2820, 
+0x6f50, 0x696c, 0x6974, 0x7363, 0x0029, 
+    IDC_COMBO_QLIST, 0x403, 27, 0
+0x6159, 0x6f68, 0x206f, 0x614a, 0x6170, 0x206e, 0x654e, 0x7377, 0x2820, 
+0x6f53, 0x6963, 0x7465, 0x2979, "\000" 
+    IDC_COMBO_QLIST, 0x403, 33, 0
+0x6159, 0x6f68, 0x206f, 0x614a, 0x6170, 0x206e, 0x654e, 0x7377, 0x2820, 
+0x6e49, 0x6574, 0x6e72, 0x7461, 0x6f69, 0x616e, 0x296c, "\000" 
+    IDC_COMBO_QLIST, 0x403, 36, 0
+0x6159, 0x6f68, 0x206f, 0x614a, 0x6170, 0x206e, 0x654e, 0x7377, 0x2820, 
+0x6345, 0x6e6f, 0x6d6f, 0x2079, 0x766f, 0x7265, 0x6976, 0x7765, 0x0029, 
+
+    IDC_COMBO_QLIST, 0x403, 28, 0
+0x6159, 0x6f68, 0x206f, 0x614a, 0x6170, 0x206e, 0x654e, 0x7377, 0x2820, 
+0x6e49, 0x7564, 0x7473, 0x7972, 0x0029, 
+    IDC_COMBO_QLIST, 0x403, 28, 0
+0x6159, 0x6f68, 0x206f, 0x614a, 0x6170, 0x206e, 0x654e, 0x7377, 0x2820, 
+0x6f43, 0x706d, 0x7475, 0x7265, 0x0029, 
+    IDC_COMBO_QLIST, 0x403, 14, 0
+0x6332, 0x2068, 0x654e, 0x7377, 0x7020, 0x756c, 0x0073, 
+    IDC_COMBO_QLIST, 0x403, 14, 0
+0x6332, 0x2068, 0x654e, 0x7377, 0x6c20, 0x7669, 0x0065, 
+    IDC_COMBO_QLIST, 0x403, 12, 0
+0x6332, 0x2068, 0x4350, 0x4e20, 0x7765, 0x0073, 
+    IDC_COMBO_QLIST, 0x403, 28, 0
+0x6f59, 0x696d, 0x7275, 0x2069, 0x654e, 0x7377, 0x6170, 0x6570, 0x2072, 
+0x5328, 0x636f, 0x6569, 0x7974, 0x0029, 
+    IDC_COMBO_QLIST, 0x403, 29, 0
+0x6f59, 0x696d, 0x7275, 0x2069, 0x654e, 0x7377, 0x6170, 0x6570, 0x2072, 
+0x5028, 0x6c6f, 0x7469, 0x6369, 0x2973, "\000" 
+    IDC_COMBO_QLIST, 0x403, 28, 0
+0x6f59, 0x696d, 0x7275, 0x2069, 0x654e, 0x7377, 0x6170, 0x6570, 0x2072, 
+0x4528, 0x6f63, 0x6f6e, 0x796d, 0x0029, 
+    IDC_COMBO_QLIST, 0x403, 34, 0
+0x6f59, 0x696d, 0x7275, 0x2069, 0x654e, 0x7377, 0x6170, 0x6570, 0x2072, 
+0x4928, 0x746e, 0x7265, 0x616e, 0x6974, 0x6e6f, 0x6c61, 0x0029, 
+    IDC_COMBO_QLIST, 0x403, 21, 0
+0x6159, 0x6f68, 0x206f, 0x5355, 0x2041, 0x7420, 0x706f, 0x7320, 0x6f74, 
+0x7972, "\000" 
+    IDC_COMBO_QLIST, 0x403, 27, 0
+0x6159, 0x6f68, 0x206f, 0x5355, 0x2041, 0x7720, 0x726f, 0x646c, 0x7320, 
+0x6c65, 0x6365, 0x6974, 0x6e6f, "\000" 
+    IDC_COMBO_QLIST, 0x403, 30, 0
+0x6159, 0x6f68, 0x206f, 0x5355, 0x2041, 0x6220, 0x7375, 0x6e69, 0x7365, 
+0x2073, 0x6573, 0x656c, 0x7463, 0x6f69, 0x006e, 
+    IDC_COMBO_QLIST, 0x403, 32, 0
+0x6159, 0x6f68, 0x206f, 0x5355, 0x2041, 0x7420, 0x6365, 0x6e68, 0x6c6f, 
+0x676f, 0x2079, 0x6573, 0x656c, 0x7463, 0x6f69, 0x006e, 
+    IDC_COMBO_QLIST, 0x403, 22, 0
+0x794b, 0x646f, 0x206f, 0x654e, 0x7377, 0x2820, 0x6568, 0x6461, 0x696c, 
+0x656e, 0x0029, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_POPUP MENU DISCARDABLE 
+BEGIN
+    POPUP "InfoBar Menu"
+    BEGIN
+        MENUITEM "Configure",                   ID_MENU_CONFIG
+        MENUITEM "Exit",                        ID_MENU_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "about InfoBar (&A)..."
+    IDP_SOCKETS_INIT_FAILED "Fail to initiate windows socket"
+    IDS_CONFDLG_TITLE       "InfoBar Configuration"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "InfoBar"
+    AFX_STR_UNINST_CPLNAME  "InfoBar"
+    AFX_STR_USERDAT_1       "Software\\hi soft\\infobar"
+    AFX_STR_USERDAT_2       "Software\\hi soft"
+    AFX_STR_LINK_UNINST     "\\InfoBar Uninstall.LNK"
+    AFX_STR_LINK_STARTUP    "\\InfoBar StartUp.LNK"
+    AFX_STR_LINK_PROG       "\\InfoBar.LNK"
+    STR_MES_UNIN            "Do you want to uninstall InfoBar ?"
+    IDS_ERR_WNDDC           "Fail to create virtual device context"
+    IDS_ERR_COMPBMP         "Fail to create virtual bitmap"
+    IDS_ERR_BMPTODC         "Fail to assign virtual bitmap to device context"
+    IDS_MES_INITIAL         "InfoBar  :   To configure, right click here !\n"
+    IDS_ERR_TIMER           "System timer error"
+    IDS_ERR_GETDC           "Fail to get system device context"
+    IDS_ERR_THREAD          "Thread error\n"
+    IDS_MES_NODATA          "InfoBar  :  No data\n"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ERR_SOCK_CREAT      "Fail to create windows socket\n"
+    IDS_ERR_SOCK_GETHOST    "Fail to pharse network address\n"
+    IDS_ERR_SOCK_CONN       "Fail to connect via windows socket\n"
+    IDS_ERR_SOCK_SHUT       "Fail to shutdown windows socket\n"
+    IDS_ERR_SOCK_CLOSE      "Fail to close windows socket\n"
+    IDS_STR_TITLEFMT        "%s     on %2d/%2d %02d:%02d\n"
+END
+
+#endif    // 英語 (ｱﾒﾘｶ) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE 17, 1
+#pragma code_page(932)
+#endif //_WIN32
+#include "res\InfoBar00.rc2"  // Microsoft Visual C++ 以外のツールで編集されたリソース
+#include "l.jpn\afxres.rc"          // 標準のコンポーネント
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

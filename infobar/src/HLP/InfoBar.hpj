@@ -1,0 +1,26 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+[OPTIONS]
+ERRORLOG=InfoBar.log
+DBCS=Yes
+REVISIONS=No
+LCID=0x409 0x0 0x0 ; ‰pŒê (U.S.)
+REPORT=Yes
+CHARSET=128
+CONTENTS=TOP_PAGE
+TITLE=InfoBar
+HLP=InfoBar.hlp
+
+[FILES]
+InfoBar.rtf
+
+[ALIAS]
+DLG_20066=TOP_PAGE
+DLG_20083=TOP_PAGE
+DLG_20085=TOP_PAGE
+DLG_20086=TOP_PAGE
+HELP_DEFAULT=TOP_PAGE
+
+[MAP]
+#include ..\..\..\..\..\..\vs\VC98\MFC\Include\AFXHELP.HM
+#include <InfoBar.hm>
