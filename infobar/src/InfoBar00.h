@@ -32,6 +32,20 @@ public:
 	void RegConfigRead(CInfoBar00Dlg *dlg);
 	CInfoBar00App();
 
+	int nMode;			// 動作モード（通常受信・証券受信…）
+	CString sTransBuf;	// スレッドとダイアログの通信用
+	CString sURL;		// スレッドに渡す URL
+	CString sProxy;		// スレッドに渡す PROXY
+	UINT nPort;			// スレッドに渡す ポート番号
+	CString sPhHeader;	// 切り分け用 ヘッダー文字列
+	CString sPhHeaderB;	// 切り分け用 ヘッダー文字列 B
+	CString sPhHeaderC;	// 切り分け用 ヘッダー文字列 C
+	int nPhSkip;		// 切り分け用 スキップ個数
+	int nPhGetcount;	// 切り分け用 取得数
+	CString sTitle;		// タイトル
+	CString sItems;		// 証券データの指定などに使うアイテム
+
+
 // オーバーライド
 	// ClassWizard は仮想関数のオーバーライドを生成します。
 	//{{AFX_VIRTUAL(CInfoBar00App)

@@ -23,6 +23,7 @@ CDlgSysConf::CDlgSysConf() : CPropertyPage(CDlgSysConf::IDD)
 	m_nTimer = 0;
 	m_tInterval = 0;
 	m_bTopmost = FALSE;
+	m_chk_debug = FALSE;
 	//}}AFX_DATA_INIT
 }
 
@@ -43,6 +44,7 @@ void CDlgSysConf::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_REFRESH, m_tInterval);
 	DDV_MinMaxUInt(pDX, m_tInterval, 0, 65536);
 	DDX_Check(pDX, IDC_CHK_TOPMOST, m_bTopmost);
+	DDX_Check(pDX, IDC_CHK_DEBUG, m_chk_debug);
 	//}}AFX_DATA_MAP
 }
 

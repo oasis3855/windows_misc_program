@@ -8,6 +8,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+//#include"NetAccessThread.h"
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CInfoBar00Dlg ダイアログ
 
@@ -15,6 +18,8 @@ class CInfoBar00Dlg : public CDialog
 {
 // 構築
 public:
+	void CopyGlobalParam();
+//	CThreadParam ThreadParam;
 	void DrawStringOnBmp(CString *sBuf);
 	CString sFontName;
 	int nFontPoint;
@@ -43,6 +48,9 @@ public:
 	CDC MemDC;
 	CDC *InfoWndDC;
 	CInfoBar00Dlg(CWnd* pParent = NULL);	// 標準のコンストラクタ
+
+//	CNetAccessThread* pThread;
+
 
 // ダイアログ データ
 	//{{AFX_DATA(CInfoBar00Dlg)
@@ -75,6 +83,7 @@ protected:
 	afx_msg void OnMenuExit();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnMenuHelp();
+	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

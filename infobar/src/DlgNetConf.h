@@ -16,12 +16,18 @@ class CDlgNetConf : public CPropertyPage
 
 // コンストラクション
 public:
+	int m_nMode;
 	CDlgNetConf();
 	~CDlgNetConf();
 
 // ダイアログ データ
 	//{{AFX_DATA(CDlgNetConf)
 	enum { IDD = IDD_DLG_NETCONF };
+	CEdit	m_sURL_ctrl;
+	CButton	m_btn_detail_ctrl;
+	CEdit	m_sPhHeader_ctrl;
+	CEdit	m_nPhGetcount_ctrl;
+	CEdit	m_nPhSkip_ctrl;
 	CComboBox	m_ctrl_cmb_qlist;
 	CString	m_sURL;
 	UINT	m_nPort;
@@ -46,6 +52,8 @@ protected:
 	// 生成されたメッセージ マップ関数
 	//{{AFX_MSG(CDlgNetConf)
 	afx_msg void OnSelchangeComboQlist();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnBtnDetail();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

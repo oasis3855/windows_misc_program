@@ -152,6 +152,9 @@ int CInfoBar00App::ExitInstance()
 // **********************************
 void CInfoBar00App::RegConfigRead(CInfoBar00Dlg *dlg)
 {
+	// モード
+	nMode = GetProfileInt("Settings","Mode",0);
+
 	// URL
 	sURL = GetProfileString("Settings","URL","headlines.yahoo.co.jp/hl?c=pol&t=l");
 	// ポート番号
@@ -160,6 +163,10 @@ void CInfoBar00App::RegConfigRead(CInfoBar00Dlg *dlg)
 	sProxy = GetProfileString("Settings","Proxy","");
 	// 切り分けヘッダ
 	sPhHeader = GetProfileString("Settings","Header","<li>");
+	// 切り分けヘッダ B
+	sPhHeaderB = GetProfileString("Settings","HeaderB","");
+	// 切り分けヘッダ C
+	sPhHeaderC = GetProfileString("Settings","HeaderC","");
 	// 先頭飛ばし個数 （標準は０個）
 	nPhSkip = GetProfileInt("Settings","skip",0);
 	// 項目取得数 （標準は１０個）
@@ -176,6 +183,8 @@ void CInfoBar00App::RegConfigRead(CInfoBar00Dlg *dlg)
 	dlg->tInterval = GetProfileInt("Settings","interval",300);
 	// タイトル文字列
 	sTitle = GetProfileString("Settings","title","");
+	// 証券データなどの指定に使うアイテム
+	sItems = GetProfileString("Settings","item","");
 
 	// ダイアログのＸ座標
 	dlg->nPosX = GetProfileInt("Settings","pos_x",100);
@@ -205,6 +214,10 @@ void CInfoBar00App::RegConfigRead(CInfoBar00Dlg *dlg)
 // **********************************
 void CInfoBar00App::RegConfigWrite(CInfoBar00Dlg *dlg)
 {
+	// モード
+	if(nMode != (int)GetProfileInt("Settings","Mode",0))
+		WriteProfileInt("Settings","Mode",nMode);
+
 	// URL
 	if(sURL != GetProfileString("Settings","URL","headlines.yahoo.co.jp/hl?c=pol&t=l"))
 		WriteProfileString("Settings","URL",sURL);
@@ -217,6 +230,12 @@ void CInfoBar00App::RegConfigWrite(CInfoBar00Dlg *dlg)
 	// 切り分けヘッダ
 	if(sPhHeader != GetProfileString("Settings","Header","<li>"))
 		WriteProfileString("Settings","Header",sPhHeader);
+	// 切り分けヘッダ B
+	if(sPhHeaderB != GetProfileString("Settings","HeaderB",""))
+		WriteProfileString("Settings","HeaderB",sPhHeaderB);
+	// 切り分けヘッダ C
+	if(sPhHeaderC != GetProfileString("Settings","HeaderC",""))
+		WriteProfileString("Settings","HeaderC",sPhHeaderC);
 	// 先頭飛ばし個数 （標準は０個）
 	if(nPhSkip != (int)GetProfileInt("Settings","skip",0))
 		WriteProfileInt("Settings","skip",nPhSkip);
@@ -241,6 +260,9 @@ void CInfoBar00App::RegConfigWrite(CInfoBar00Dlg *dlg)
 	// タイトル文字列
 	if(sTitle != GetProfileString("Settings","title",""))
 		WriteProfileString("Settings","title",sTitle);
+	// 証券データなどの指定に使うアイテム
+	if(sItems != GetProfileString("Settings","item",""))
+		WriteProfileString("Settings","item",sItems);
 
 	// ダイアログのＸ座標
 	if(dlg->nPosX != GetProfileInt("Settings","pos_x",100))

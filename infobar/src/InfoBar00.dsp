@@ -104,6 +104,10 @@ SOURCE=.\DlgNetConf.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\DlgNetStock.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\DlgSysConf.cpp
 # End Source File
 # Begin Source File
@@ -146,6 +150,10 @@ SOURCE=.\DlgAbout.h
 # Begin Source File
 
 SOURCE=.\DlgNetConf.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\DlgNetStock.h
 # End Source File
 # Begin Source File
 

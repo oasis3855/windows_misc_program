@@ -5,7 +5,7 @@
 
 .ce 2
 InfoBar
-version 0.03 for Windows
+version 0.04 for Windows
 
 .ri 1
 (C)opyright 2002 井上 博計
@@ -143,5 +143,5 @@ Windows ソケットは同期モードを使っています。（手抜き）
 
 
 .ri 1
-2002 / 09 / 04
+2002 / 09 / 20
 .hl 1

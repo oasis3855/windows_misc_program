@@ -31,6 +31,7 @@ public:
 	UINT	m_nTimer;
 	UINT	m_tInterval;
 	BOOL	m_bTopmost;
+	BOOL	m_chk_debug;
 	//}}AFX_DATA
 
 

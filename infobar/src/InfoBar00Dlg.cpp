@@ -68,6 +68,7 @@ BEGIN_MESSAGE_MAP(CInfoBar00Dlg, CDialog)
 	ON_COMMAND(ID_MENU_EXIT, OnMenuExit)
 	ON_WM_SIZE()
 	ON_COMMAND(ID_MENU_HELP, OnMenuHelp)
+	ON_WM_LBUTTONDBLCLK()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -85,6 +86,10 @@ BOOL CInfoBar00Dlg::OnInitDialog()
 	
 	// TODO: 特別な初期化を行う時はこの場所に追加してください。
 	CString _sTmpStr1, _sTmpStr2;
+
+	CInfoBar00App *theApp;
+
+	theApp = (CInfoBar00App *)AfxGetApp();
 
 	//**************************
 	// フォントの設定
@@ -187,7 +192,9 @@ BOOL CInfoBar00Dlg::OnInitDialog()
 
 	bUpdated = TRUE;		// 情報更新
 	bInThread = FALSE;		// スレッド動作中
-	sTransBuf.LoadString(IDS_MES_INITIAL);		// InfoBar  :   画面上を右クリックして設定してください\n
+	bDebugMode = FALSE;
+	theApp->sTransBuf.LoadString(IDS_MES_INITIAL);		// InfoBar  :   画面上を右クリックして設定してください\n
+	strcpy(_sTransBuf, theApp->sTransBuf);
 
 
 	//**************************
@@ -243,6 +250,7 @@ void CInfoBar00Dlg::OnPaint()
 	{
 		CDialog::OnPaint();
 	}
+
 }
 
 // システムは、ユーザーが最小化ウィンドウをドラッグしている間、
@@ -266,6 +274,12 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 	CString _sCurStr;
 	int i,j,k;
 	time_t tNow;
+	BOOL bStrNotSpace;
+
+//	CNetAccessThread* pThread;
+	CInfoBar00App *theApp;
+
+	theApp = (CInfoBar00App *)AfxGetApp();
 
 	if(bWndSizeChanged)
 	{	// ウインドウサイズが変更されたとき
@@ -293,16 +307,27 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 		time(&tNow);
 		if(tNow - tPrev > tInterval)
 		{	// インターバル時間を過ぎていれば、自動アップデート
-			bUpdated = FALSE;		// 情報更新
-			bInThread = FALSE;		// スレッド動作中
-			if(nTimerID != 0) KillTimer(nTimerID);		// タイマーの停止
-			if(_beginthread(thread_main,0,NULL)==-1)
+			if(!bInThread)
 			{
-				sTransBuf.LoadString(IDS_ERR_THREAD);	// システム・エラー：スレッドが起動できません
-			}
+				// スレッド内で使用するグローバル変数を設定
+				CopyGlobalParam();
+				
+				bUpdated = FALSE;		// 情報更新
+				bInThread = FALSE;		// スレッド動作中
+				if(nTimerID != 0) KillTimer(nTimerID);		// タイマーの停止
+				if(_beginthread(thread_main,0,NULL)==-1)
+				{
+					theApp->sTransBuf.LoadString(IDS_ERR_THREAD);	// システム・エラー：スレッドが起動できません
+				}
 
-			::Sleep(nTimer*3);								// スレッド起動のため、ウエイト
-			nTimerID = SetTimer(nTimerID, nTimer, NULL);	// 指定秒数後、ON_TIMER に制御が移る
+				::Sleep(nTimer*3);								// スレッド起動のため、ウエイト
+				nTimerID = SetTimer(nTimerID, nTimer, NULL);	// 指定秒数後、ON_TIMER に制御が移る
+			}
+			else
+			{
+				// スレッドの重複起動は出来ないので、アップデートはしない。
+				time(&tPrev);		// 現在時刻のアップデート
+			}
 
 			time(&tPrev);
 		}
@@ -328,12 +353,13 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 	//****************
 	// 描画
 	//****************
-	if(sTransBuf == "" || sTransBuf == "\n") sTransBuf.LoadString(IDS_MES_NODATA);	// データ無し\n
+	if(theApp->sTransBuf == "" || theApp->sTransBuf == "\n") theApp->sTransBuf.LoadString(IDS_MES_NODATA);	// データ無し\n
 	if(bUpdated)
 	{
+		theApp->sTransBuf = _sTransBuf;
 		ScrCurPos = 0;
 		_nTimCurArticle = 0;
-		_sCurStr = sTransBuf.Mid(0, sTransBuf.Find("\n", 0));
+		_sCurStr = theApp->sTransBuf.Mid(0, theApp->sTransBuf.Find("\n", 0));
 
 		DrawStringOnBmp(&_sCurStr);		// 仮想ビットマップに文字列描画
 
@@ -341,12 +367,11 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 	}
 	if(ScrCurPos > (int)MemStrLength)
 	{	// １行アップデート
-		ScrCurPos = 0;
 		_nTimCurArticle++;
 		for(i=0,k=0; k<_nTimCurArticle; k++)
 		{
-			i = sTransBuf.Find("\n", i) + 1;
-			j = sTransBuf.Find("\n", i);
+			i = theApp->sTransBuf.Find("\n", i) + 1;
+			j = theApp->sTransBuf.Find("\n", i);
 		}
 		if(j<=0 || i<=0)
 		{
@@ -354,12 +379,37 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 			_nTimCurArticle = 0;
 			i=0;
 		}
-		_sCurStr = sTransBuf.Mid(i, sTransBuf.Find("\n", i)-i);
+		_sCurStr = theApp->sTransBuf.Mid(i, theApp->sTransBuf.Find("\n", i)-i);
 
-		DrawStringOnBmp(&_sCurStr);		// 仮想ビットマップに文字列描画
+		// 取り出した文字列が、空白だけや、改行だけの場合の処理
+		bStrNotSpace = FALSE;
+		for(i=0;i<_sCurStr.GetLength();i++)
+		{
+			if(_sCurStr.GetAt(i) != (char)' ' && _sCurStr.GetAt(i) != (char)NULL)
+			{
+				bStrNotSpace = TRUE;
+				break;
+			}
+		}
+
+		// 空白で無い場合のみ、新規の文字列を描画する
+		if(bStrNotSpace)
+		{
+			DrawStringOnBmp(&_sCurStr);		// 仮想ビットマップに文字列描画
+			ScrCurPos = 0;		// 座標リセット
+		}
 	}
 
-	InfoWndDC->BitBlt(0, 0, nInfoWndWidth, nInfoWndHeight, &MemDC, ScrCurPos, 0, SRCCOPY);
+	InfoWndDC->BitBlt(0, 0, nInfoWndWidth, nInfoWndHeight-0, &MemDC, ScrCurPos, 0, SRCCOPY);
+
+	if(bInThread)
+	{	// スレッドが動作中
+		InfoWndDC->FillSolidRect(5,1,10,3, 0x0000a0);
+	}
+//	else
+//	{	// スレッドは動作していない
+//		InfoWndDC->FillSolidRect(1,1,20,3, cBackColor);
+//	}
 
 	ScrCurPos += nMoveSpeed;		// 移動するドット数
 	
@@ -512,13 +562,18 @@ void CInfoBar00Dlg::OnMenuConfig()
 	CDlgSysConf dlg_sysconf;
 	CDlgAbout dlg_about;
 
-	dlg_netconf.m_sURL = sURL;
-	dlg_netconf.m_nPort = nPort;
-	dlg_netconf.m_sPhHeader = sPhHeader;
-	dlg_netconf.m_nPhSkip = nPhSkip;
-	dlg_netconf.m_nPhGetcount = nPhGetcount;
-	dlg_netconf.m_sProxy = sProxy;
-	dlg_netconf.m_sTitle = sTitle;
+	CInfoBar00App *theApp;
+
+	theApp = (CInfoBar00App *)AfxGetApp();
+
+	dlg_netconf.m_sURL = theApp->sURL;
+	dlg_netconf.m_nPort = theApp->nPort;
+	dlg_netconf.m_sPhHeader = theApp->sPhHeader;
+	dlg_netconf.m_nPhSkip = theApp->nPhSkip;
+	dlg_netconf.m_nPhGetcount = theApp->nPhGetcount;
+	dlg_netconf.m_sProxy = theApp->sProxy;
+	dlg_netconf.m_sTitle = theApp->sTitle;
+	dlg_netconf.m_nMode = theApp->nMode;
 
 	dlg_sysconf.m_nTimer = nTimer;
 	dlg_sysconf.m_nSpeed = nMoveSpeed;
@@ -539,13 +594,14 @@ void CInfoBar00Dlg::OnMenuConfig()
 
 	if(DlgProp.DoModal() == IDOK)
 	{	// 設定ダイアログで OK ボタンが押されたとき
-		sURL = dlg_netconf.m_sURL;
-		nPort = dlg_netconf.m_nPort;
-		sPhHeader = dlg_netconf.m_sPhHeader;
-		nPhSkip = dlg_netconf.m_nPhSkip;
-		nPhGetcount = dlg_netconf.m_nPhGetcount;
-		sProxy = dlg_netconf.m_sProxy;
-		sTitle = dlg_netconf.m_sTitle;
+		theApp->sURL = dlg_netconf.m_sURL;
+		theApp->nPort = dlg_netconf.m_nPort;
+		theApp->sPhHeader = dlg_netconf.m_sPhHeader;
+		theApp->nPhSkip = dlg_netconf.m_nPhSkip;
+		theApp->nPhGetcount = dlg_netconf.m_nPhGetcount;
+		theApp->sProxy = dlg_netconf.m_sProxy;
+		theApp->sTitle = dlg_netconf.m_sTitle;
+		theApp->nMode = dlg_netconf.m_nMode;
 
 		nTimer = dlg_sysconf.m_nTimer;
 		nMoveSpeed = dlg_sysconf.m_nSpeed;
@@ -558,18 +614,38 @@ void CInfoBar00Dlg::OnMenuConfig()
 		nFontPoint = dlg_sysconf.nFontPoint;
 		sFontName = dlg_sysconf.sFontName;
 
-		bUpdated = FALSE;		// 情報更新
-		bInThread = FALSE;		// スレッド動作中
-		if(nTimerID != 0) KillTimer(nTimerID);		// タイマーの一時停止
-		if(_beginthread(thread_main,0,NULL)==-1)
+		if(dlg_sysconf.m_chk_debug == TRUE)
 		{
-			sTransBuf.LoadString(IDS_ERR_THREAD);	// システム・エラー：スレッドが起動できません
+			// この１行を入れないと、並行動作しているスレッド内で急にデバッグモードとなり、エラーとなる
+			if(bInThread)
+				bDebugMode = FALSE;
+			else
+				bDebugMode = TRUE;
 		}
+		else
+			bDebugMode = FALSE;
 
-		::Sleep(nTimer*3);							// スレッド起動のため、ウエイト
-		nTimerID = SetTimer(nTimerID, nTimer, NULL);	// 指定秒数後、ON_TIMER に制御が移る
+		if(!bInThread)
+		{
+			// スレッド内で使用するグローバル変数を設定
+			CopyGlobalParam();
+			bUpdated = FALSE;		// 情報更新
+			bInThread = FALSE;		// スレッド動作中
+			if(nTimerID != 0) KillTimer(nTimerID);		// タイマーの一時停止
+			if(_beginthread(thread_main,0,NULL)==-1)
+			{
+				theApp->sTransBuf.LoadString(IDS_ERR_THREAD);	// システム・エラー：スレッドが起動できません
+			}
+			::Sleep(nTimer*3);							// スレッド起動のため、ウエイト
+			nTimerID = SetTimer(nTimerID, nTimer, NULL);	// 指定秒数後、ON_TIMER に制御が移る
 
-		time(&tPrev);								// 更新時間をアップデート
+			time(&tPrev);								// 更新時間をアップデート
+		}
+		else
+		{
+			// スレッドの重複起動は出来ないので、メッセージを表示する
+			::MessageBox(NULL, "Winsock Thread still working", "warning", MB_OK);
+		}
 
 		// ウインドウの位置
 		RECT winRect;
@@ -729,6 +805,33 @@ void CInfoBar00Dlg::OnSize(UINT nType, int cx, int cy)
 }
 
 // **********************************
+// ダイアログをダブルクリックしたとき
+//
+// 現在表示しているニュースのＵＲＬをブラウザで開きます。
+// **********************************
+void CInfoBar00Dlg::OnLButtonDblClk(UINT nFlags, CPoint point) 
+{
+	// TODO: この位置にメッセージ ハンドラ用のコードを追加するかまたはデフォルトの処理を呼び出してください
+	CString sTmpURL;
+	CInfoBar00App *theApp;
+	theApp = (CInfoBar00App *)AfxGetApp();
+
+	if(theApp->nMode == 0)
+	{	// 通常モード以外では、ブラウザ表示は行わない
+
+		// 先頭に http:// を付ける処理
+		if(theApp->sURL.Find("http://", 0) != 0)
+			sTmpURL = "http://" + theApp->sURL;
+		else
+			sTmpURL = theApp->sURL;
+
+		HINSTANCE hInst = ::ShellExecute(NULL, "open", sTmpURL, NULL, NULL, SW_SHOWNORMAL);
+	}
+	CDialog::OnLButtonDblClk(nFlags, point);
+}
+
+
+// **********************************
 // 仮想ビットマップ上の画像を、ＬＣＤ風にする（テスト関数）
 //
 // 実際には使用していない。
@@ -777,4 +880,29 @@ void CInfoBar00Dlg::MakeLCD()
 
 }
 
+// **********************************
+// ＭＦＣで使われている初期値類をスレッド用のグローバル変数にコピーする
+//
+// **********************************
+void CInfoBar00Dlg::CopyGlobalParam()
+{
+	CInfoBar00App *theApp;
+
+	theApp = (CInfoBar00App *)AfxGetApp();
+
+	strcpy(_sTransBuf, theApp->sTransBuf);		// スレッドとダイアログの通信用
+	strcpy(_sURL, theApp->sURL);				// スレッドに渡す URL
+	strcpy(_sProxy, theApp->sProxy);			// スレッドに渡す PROXY
+	strcpy(_sPhHeader, theApp->sPhHeader);		// 切り分け用 ヘッダー文字列
+	strcpy(_sPhHeaderB, theApp->sPhHeaderB);	// 切り分け用 ヘッダー文字列 B
+	strcpy(_sPhHeaderC, theApp->sPhHeaderC);	// 切り分け用 ヘッダー文字列 C
+	strcpy(_sTitle, theApp->sTitle);			// タイトル
+	strcpy(_sItems, theApp->sItems);			// 証券データの指定などに使うアイテム
+
+	_nMode = theApp->nMode;						// 動作モード（通常受信・証券受信…）
+	_nPort = theApp->nPort;						// スレッドに渡す ポート番号
+	_nPhSkip = theApp->nPhSkip;					// 切り分け用 スキップ個数
+	_nPhGetcount = theApp->nPhGetcount;			// 切り分け用 取得数
+
+}
 

@@ -1,17 +1,28 @@
 
+#ifndef __GLOBAL_FUNC
+#define __GLOBAL_FUNC
 
 
-extern volatile BOOL bUpdated;			// スレッドで更新が完了した通知
-extern volatile BOOL bInThread;			// スレッド動作中のフラグ
-extern volatile int nThreadError;		// スレッドで起こったエラーの種類を返す
-extern CString sTransBuf;		// スレッドとダイアログの通信用
-extern CString sURL;			// スレッドに渡す URL
-extern CString sProxy;			// スレッドに渡す PROXY
-extern volatile UINT nPort;				// スレッドに渡す ポート番号
-extern CString sPhHeader;		// 切り分け用 ヘッダー文字列
-extern volatile int nPhSkip;	// 切り分け用 スキップ個数
-extern volatile int nPhGetcount;	// 切り分け用 取得数
-extern CString sTitle;				// タイトル
+extern char _sTransBuf[];		// スレッドとダイアログの通信用
+extern char _sURL[];			// スレッドに渡す URL
+extern char _sProxy[];			// スレッドに渡す PROXY
+extern char _sPhHeader[];		// 切り分け用 ヘッダー文字列
+extern char _sPhHeaderB[];			// 切り分け用 ヘッダー文字列 B
+extern char _sPhHeaderC[];			// 切り分け用 ヘッダー文字列 C
+extern char _sTitle[];				// タイトル
+extern char _sItems[];				// 証券データの指定などに使うアイテム
+
+extern BOOL bUpdated;		// スレッドで更新が完了した通知
+extern BOOL bInThread;		// スレッド動作中のフラグ
+extern int nThreadError;	// スレッドで起こったエラーの種類を返す
+extern int _nMode;			// 動作モード（通常受信・証券受信…）
+extern UINT _nPort;			// スレッドに渡す ポート番号
+extern int _nPhSkip;		// 切り分け用 スキップ個数
+extern int _nPhGetcount;	// 切り分け用 取得数
+
+extern BOOL bDebugMode;		// デバッグモード
 
 
 void thread_main(void *pVoid);	// スレッド関数
+
+#endif

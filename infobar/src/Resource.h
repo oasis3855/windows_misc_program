@@ -16,6 +16,7 @@
 #define IDR_MENU_POPUP                  135
 #define IDD_DLG_INST                    136
 #define IDI_ICO_INST                    137
+#define IDD_DLG_NET_STOCK               138
 #define IDC_EDIT_URL                    1000
 #define IDC_EDIT_TEXT                   1001
 #define IDC_BTN_GET                     1002
@@ -47,6 +48,13 @@
 #define IDC_BTN_FONT                    1029
 #define IDC_TXT_FONT                    1030
 #define IDC_BTN_MAKEUNIN                1032
+#define IDC_BTN_DETAIL                  1034
+#define IDC_CMB_PRESET                  1035
+#define IDC_EDIT_PH                     1037
+#define IDC_EDIT_PHB                    1038
+#define IDC_EDIT_PHC                    1039
+#define IDC_CHK_DEBUG                   1039
+#define IDC_EDIT_ITEMS                  1040
 #define ID_MENU_CONFIG                  32771
 #define ID_MENU_EXIT                    32772
 #define ID_MENU_HELP                    32773
@@ -76,9 +84,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        138
+#define _APS_NEXT_RESOURCE_VALUE        140
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1034
+#define _APS_NEXT_CONTROL_VALUE         1040
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
