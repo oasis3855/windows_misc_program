@@ -94,6 +94,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat;for;f90"
 # Begin Source File
 
+SOURCE=.\CheckWinVer.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Cursor32.cpp
 # End Source File
 # Begin Source File
@@ -155,30 +159,19 @@ SOURCE=.\Cursor32Dlg.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\DlgInst.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\global.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\InstDlg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\InstFunc.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\manual.fin
-
-!IF  "$(CFG)" == "Cursor32 - Win32 Release"
-
-# Begin Custom Build - fin Ã·½ÄÌ«°Ï¯À‚ÌŽÀs’† ...
-InputPath=.\manual.fin
-
-"manual.txt" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
-	fin.exe -Wtn manual.fin > manual.txt
-
-# End Custom Build
-
-!ELSEIF  "$(CFG)" == "Cursor32 - Win32 Debug"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -199,6 +192,10 @@ SOURCE=.\StdAfx.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl;fi;fd"
 # Begin Source File
 
+SOURCE=.\CheckWinVer.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Cursor32.h
 # End Source File
 # Begin Source File
@@ -207,11 +204,15 @@ SOURCE=.\Cursor32Dlg.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\DlgInst.h
+SOURCE=.\global.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\global.h
+SOURCE=.\InstDlg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\InstFunc.h
 # End Source File
 # Begin Source File
 
@@ -244,6 +245,10 @@ SOURCE=.\res\Cursor32.ico
 # Begin Source File
 
 SOURCE=.\res\Cursor32.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\ico_inst.ico
 # End Source File
 # Begin Source File
 

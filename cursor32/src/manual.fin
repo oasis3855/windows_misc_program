@@ -4,15 +4,11 @@
 .hl 1
 
 .ce 2
-Cursor32
-version 2.6 for Windows 95/98
-
-.ri 2
-inoue-h@iname.com
-GDH03306@nifty.ne.jp
+Cursor32 (マウス座標表示)
+version 2.9 for Windows
 
 .ri 1
-(C)opyright 1997,99 井上 博計
+(C)opyright 1997-2004 井上 博計
 
 .hl 1
 .sp 12
@@ -44,12 +40,10 @@ Cursor32を利用して頂きありがとうございます。
 
 １．動作環境
 .in 6
-Windows 95/98 日本語版
-複数モニターでないこと
+Windows 95/98/Me/NT/2000/XP
 
 .fi
-MFC42.DLL および MSVCRT.DLL がC:\WINDOWS\SYSTEMに存在すること
-これらのファイルはMicrosoft社から配布されている最新版リテール・バージョンを用意してください。
+MFC42.DLL および MSVCRT.DLL がシステムフォルダに存在すること
 .nf
 .in 0
 
@@ -68,17 +62,19 @@ MFC42.DLL および MSVCRT.DLL がC:\WINDOWS\SYSTEMに存在すること
 
 ３．アンインストール方法
 .in 6
-コントロールパネルの「プログラムの追加と削除」から行います。
+.fi
+スタートメニューのショートカットまたはコントロールパネルの「プログラムの追加と削除」から行います。
+.nf
 .in 0
 
 ４．使用許諾条件
 .in 6
 .fi
-Cursor32ヘルプファイルの「使用許諾条件」に沿います。「使用許諾条件」に同意できない場合は本製品を使用しないでください。
+Cursor32ヘルプファイルの「使用許諾条件」に沿います。
 .nf
 .in 0
 
 
 .ri 1
-1999 / 07 / 07
+2004 / 04 / 17
 .hl 1

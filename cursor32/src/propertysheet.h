@@ -10,7 +10,6 @@ class CPropAbout : public CPropertyPage
 
 // コンストラクション
 public:
-	BOOL m_uninstall;
 	CPropAbout();
 	~CPropAbout();
 
@@ -32,6 +31,7 @@ public:
 protected:
 	// 生成されたメッセージ マップ関数
 	//{{AFX_MSG(CPropAbout)
+	afx_msg void OnBtnMkUnin();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -54,6 +54,7 @@ public:
 // ダイアログ データ
 	//{{AFX_DATA(CPropConf)
 	enum { IDD = IDD_CNF_CONFIG };
+	CListBox	m_hotkey_rel;
 	CButton	m_pickdlgcol;
 	CButton	m_pickdlgbackcol;
 	CButton	m_pickcolor;
@@ -70,6 +71,8 @@ public:
 	BOOL	m_ddx_isNotTaskbar;
 	BOOL	m_ddx_isTopmost;
 	BOOL	m_ddx_nChangeDlgColor;
+	int		m_ddx_hotkey_rel;
+	BOOL	m_ddx_relmode;
 	//}}AFX_DATA
 
 
@@ -91,6 +94,7 @@ protected:
 	afx_msg void OnPickdlgbackcol();
 	afx_msg void OnPickdlgcol();
 	afx_msg void OnChangedlgcolor();
+	afx_msg void OnChkRelmode();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -3,14 +3,21 @@
 
 #include "stdafx.h"
 #include "Cursor32.h"
-#include "DlgInst.h"
+#include "InstDlg.h"
 #include "global.h"
+
+#include "InstFunc.h"
+#include "CheckWinVer.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+char  sMutexInstance[] = {"Cursor32_free"};    //  多重起動防止のため利用
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CCursor32App
@@ -60,50 +67,81 @@ BOOL CCursor32App::InitInstance()
 	// m_pszAppName = "compdel" としてはいけない！ ASSERTION エラーとなる
 	SetRegistryKey((LPCTSTR)"hi soft");
 
+
+	// **********************************
+	//  多重起動防止
+	// **********************************
+	m_hMutex = ::CreateMutex(NULL, TRUE, sMutexInstance);
+	if(::GetLastError() == ERROR_ALREADY_EXISTS)
+	{	// すでに起動している
+//		::CloseHandle(m_hMutex);
+		m_bMutexOwner = FALSE;
+		::MessageBox(NULL, "Cursor32 is already executed", "Cursor32", MB_OK|MB_ICONEXCLAMATION);
+		return FALSE;
+	}
+	m_bMutexOwner = TRUE;
+
+
 	CCursor32Dlg dlg;
 
-	// レジストリから初期値を読み込む
+	// **********************************
+	//  レジストリから全設定値を読み込む
+	// **********************************
 	RegConfigRead(&dlg);
 
-	// コマンドラインの解析
-	if(!strcmpi(m_lpCmdLine, "delete"))
+	// **********************************
+	//  コマンドライン引数による分岐
+	// **********************************
+	if(!strcmpi(m_lpCmdLine, ""))
+	{	// オプションなし
+		// **********************************
+		//  インストーラの起動。
+		//  すでに、インストール済みと時は、単に TRUE を返すだけ
+		// **********************************
+		if(!InstallSeq())
+			return FALSE;	// インストーラをユーザがキャンセルしたとき （プログラム終了）
+	}
+	else if(!strcmpi(m_lpCmdLine, "/delete"))
 	{	// アンインストール
 		UninstallSeq();
+		return FALSE;
 	}
-	else if(!strcmpi(m_lpCmdLine, "inst"))
-	{	// インストール
-		InstallSeq();
-	}
-	else if(m_lpCmdLine[0] != NULL)
-	{
-		::MessageBox(NULL, "無効なスイッチが指定されました\n有効なパラメーターは、start,deleteです", "スタートアップ タスクスケジューラ",
-			MB_OK|MB_ICONINFORMATION|MB_APPLMODAL);
-	}
-	else
-	{	// 通常の実行
-		if(!GetProfileInt("Global","inst",0))
-		{	// インストールダイアログの表示とインストール処理
-			InstallSeq();
-		}
-		else
-		{
-			m_pMainWnd = &dlg;
 
-			// ダイアログ自体の表示色を変更する
-			if(dlg.nChangeDlgColor) SetDialogBkColor(dlg.DlgBackColor, dlg.DlgColor);
+//	m_pMainWnd = &dlg;
 
-			dlg.DoModal(); // メインダイアログの表示
+	// ダイアログ自体の表示色を変更する
+	if(dlg.nChangeDlgColor) SetDialogBkColor(dlg.DlgBackColor, dlg.DlgColor);
 
-			RegConfigWrite(&dlg);
-		}
-	}
+	dlg.DoModal(); // メインダイアログの表示
+
+	RegConfigWrite(&dlg);
+
 	// ダイアログが閉じられてからアプリケーションのメッセージ ポンプを開始するよりは、
 	// アプリケーションを終了するために FALSE を返してください。
 	return FALSE;
 }
 
-///////////////////////////////////////// ドキュメントの終わり
 
+int CCursor32App::ExitInstance() 
+{
+	// TODO: この位置に固有の処理を追加するか、または基本クラスを呼び出してください
+
+	if(m_bMutexOwner)
+	{
+		// **********************************
+		//  多重起動防止の Mutex を閉じる
+		// **********************************
+		::ReleaseMutex(m_hMutex);
+		::CloseHandle(m_hMutex);
+	}
+	
+	return CWinApp::ExitInstance();
+}
+
+
+// **********************************
+//  レジストリから設定値を読み込む
+// **********************************
 void CCursor32App::RegConfigRead(CCursor32Dlg *dlg)
 {
 	// 常に手前に表示
@@ -117,9 +155,12 @@ void CCursor32App::RegConfigRead(CCursor32Dlg *dlg)
 
 	// カーソルアシスタンス
 	dlg->IsAssist = GetProfileInt("Settings","assist",0);
+	// 相対座標モード
+	dlg->IsRelmode = GetProfileInt("Settings","relmode",0);
 	// ホットキー
 	dlg->hotkey1 = GetProfileInt("Settings","hotkey1",VK_CONTROL);
 	dlg->hotkey2 = GetProfileInt("Settings","hotkey2",VK_SHIFT);
+	dlg->hotkey_rel = GetProfileInt("Settings","hotkey_rel",VK_F12);
 
 	// タイトル
 	dlg->title = GetProfileString("Settings","title","Cursor32");
@@ -128,22 +169,28 @@ void CCursor32App::RegConfigRead(CCursor32Dlg *dlg)
 	dlg->x_init = GetProfileInt("Settings","x",0);
 	dlg->y_init = GetProfileInt("Settings","y",0);
 
-	// XY表示色
+	// XY表示色を変えるかどうか
 	dlg->nChangeColor = GetProfileInt("Settings","color",1);
+	// XY表示色
 	dlg->TextColor = GetProfileInt("Settings","b",0)*0x10000L +
 					GetProfileInt("Settings","g",0)*0x100L +
 					GetProfileInt("Settings","r",128);
 
-	// ダイアログ背景色
+	// ダイアログの色を変えるかどうか
 	dlg->nChangeDlgColor = GetProfileInt("Settings","colordlg",0);
+	// ダイアログ前景色
 	dlg->DlgColor = GetProfileInt("Settings","db",0)*0x10000L +
 					GetProfileInt("Settings","dg",0)*0x100L +
 					GetProfileInt("Settings","dr",0);
+	// ダイアログ背景色
 	dlg->DlgBackColor = GetProfileInt("Settings","dbb",255)*0x10000L +
-					GetProfileInt("Settings","dbg",179)*0x100L +
-					GetProfileInt("Settings","dbr",179);
+					GetProfileInt("Settings","dbg",255)*0x100L +
+					GetProfileInt("Settings","dbr",255);
 }
 
+// **********************************
+//  レジストリに設定値を書き込む
+// **********************************
 void CCursor32App::RegConfigWrite(CCursor32Dlg *dlg)
 {
 	// 常に手前に表示
@@ -161,11 +208,16 @@ void CCursor32App::RegConfigWrite(CCursor32Dlg *dlg)
 	// カーソルアシスタンス
 	if(dlg->IsAssist != (BOOL)GetProfileInt("Settings","assist",0))
 		WriteProfileInt("Settings","assist",dlg->IsAssist);
+	// 相対座標モード
+	if(dlg->IsRelmode != (BOOL)GetProfileInt("Settings","relmode",0))
+		WriteProfileInt("Settings","relmode",dlg->IsRelmode);
 	// ホットキー
 	if(dlg->hotkey1 != GetProfileInt("Settings","hotkey1",VK_CONTROL))
 		WriteProfileInt("Settings","hotkey1",dlg->hotkey1);
 	if(dlg->hotkey2 != GetProfileInt("Settings","hotkey2",VK_SHIFT))
 		WriteProfileInt("Settings","hotkey2",dlg->hotkey2);
+	if(dlg->hotkey_rel != GetProfileInt("Settings","hotkey_rel",VK_F12))
+		WriteProfileInt("Settings","hotkey_rel",dlg->hotkey_rel);
 
 	// タイトル
 	if(dlg->title != GetProfileString("Settings","title","Cursor32"))
@@ -177,135 +229,154 @@ void CCursor32App::RegConfigWrite(CCursor32Dlg *dlg)
 	if(dlg->y_init != (int)GetProfileInt("Settings","y",0))
 		WriteProfileInt("Settings","y",dlg->y_init);
 
-	// XY表示色
+	// XY表示色を変えるかどうか
 	if(dlg->nChangeColor != (BOOL)GetProfileInt("Settings","color",1))
 		WriteProfileInt("Settings","color",dlg->nChangeColor);
+	// XY表示色
 	if(dlg->TextColor != GetProfileInt("Settings","b",0)*0x10000L +
 					GetProfileInt("Settings","g",0)*0x100L +
 					GetProfileInt("Settings","r",128))
+	{
 		WriteProfileInt("Settings","b",(dlg->TextColor/0x10000L)&0xff);
 		WriteProfileInt("Settings","g",(dlg->TextColor/0x100L)&0xff);
 		WriteProfileInt("Settings","r", dlg->TextColor&0xff);
+	}
 
-	// ダイアログ背景色
+	// ダイアログの色を変えるかどうか
 	if(dlg->nChangeDlgColor != (BOOL)GetProfileInt("Settings","colordlg",0))
 		WriteProfileInt("Settings","colordlg",dlg->nChangeDlgColor);
-	if(dlg->DlgColor != GetProfileInt("Settings","db",255)*0x10000L +
-					GetProfileInt("Settings","dg",179)*0x100L +
-					GetProfileInt("Settings","dr",179))
+	// ダイアログ前景色
+	if(dlg->DlgColor != GetProfileInt("Settings","db",0)*0x10000L +
+					GetProfileInt("Settings","dg",0)*0x100L +
+					GetProfileInt("Settings","dr",0))
+	{
 		WriteProfileInt("Settings","db",(dlg->DlgColor/0x10000L)&0xff);
 		WriteProfileInt("Settings","dg",(dlg->DlgColor/0x100L)&0xff);
 		WriteProfileInt("Settings","dr", dlg->DlgColor&0xff);
-	if(dlg->DlgBackColor != GetProfileInt("Settings","dbb",0)*0x10000L +
-					GetProfileInt("Settings","dbg",0)*0x100L +
-					GetProfileInt("Settings","dbr",0))
+	}
+	// ダイアログ背景色
+	if(dlg->DlgBackColor != GetProfileInt("Settings","dbb",255)*0x10000L +
+					GetProfileInt("Settings","dbg",255)*0x100L +
+					GetProfileInt("Settings","dbr",255))
+	{
 		WriteProfileInt("Settings","dbb",(dlg->DlgBackColor/0x10000L)&0xff);
 		WriteProfileInt("Settings","dbg",(dlg->DlgBackColor/0x100L)&0xff);
 		WriteProfileInt("Settings","dbr", dlg->DlgBackColor&0xff);
+	}
 
 }
 
-void CCursor32App::InstallSeq()
+// **********************************
+// ダイアログのカラーを変更する
+//
+// SetDialogBkColor が Protected 関数のため、外部から呼び出せないことに対する対策
+// ダイアログ自体から呼び出して使う
+// **********************************
+void CCursor32App::SetDialogBkColor_Extern(COLORREF cback, COLORREF cfore)
 {
-	HKEY hCU;
-	DWORD lpType, dw;
-	char szProg[MAX_PATH];
-	char szLink[MAX_PATH];
-	CString msg;
-
-	CDlgInst dlg;
-	dlg.m_logon = 0;
-	dlg.m_manual = 1;
-	dlg.m_uninst = 1;
-
-	if(dlg.DoModal() == TRUE)
-	{
-		if(dlg.m_uninst)
-		{	// アンインストール情報
-			if(!::GetModuleFileName(NULL, szProg, MAX_PATH)) return;
-			strcat(szProg, " delete");
-			if (RegCreateKeyEx(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Cursor32",
-				0, REG_NONE, REG_OPTION_NON_VOLATILE, KEY_WRITE|KEY_READ, NULL,
-				&hCU, &dw) == ERROR_SUCCESS)
-			{
-				RegSetValueEx( hCU, "UninstallString", 0, REG_SZ, (const unsigned char *)szProg, strlen(szProg));
-				strcpy(szProg, "Cursor32");
-				RegSetValueEx( hCU, "DisplayName", 0, REG_SZ, (const unsigned char *)szProg, strlen(szProg));
-				RegCloseKey(hCU);
-			}
-		}
-		if(dlg.m_logon)
-		{	// ログオン時に自動実行
-			// 自動実行アイコンの登録
-			::GetModuleFileName(NULL, szProg, MAX_PATH);
-			ULONG ulSize = MAX_PATH;
-				if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
-				0, KEY_QUERY_VALUE, &hCU) == ERROR_SUCCESS)
-			{
-				RegQueryValueEx( hCU, "Startup", NULL, &lpType, (unsigned char *)&szLink, &ulSize);
-				RegCloseKey(hCU);
-			}
-			strcat(szLink, "\\Cursor32.LNK");
-			::CreateShellLink(szProg, szLink, "Cursor32");
-		}
-		if(dlg.m_manual)
-		{	// 手動実行
-			::GetModuleFileName(NULL, szProg, MAX_PATH);
-			ULONG ulSize = MAX_PATH;
-			if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
-				0, KEY_QUERY_VALUE, &hCU) == ERROR_SUCCESS)
-			{
-				RegQueryValueEx( hCU, "Programs", NULL, &lpType, (unsigned char *)&szLink, &ulSize);
-				RegCloseKey(hCU);
-			}
-			strcat(szLink, "\\Cursor32.LNK");
-			::CreateShellLink(szProg, szLink, "Cursor32");
-		}
-		WriteProfileInt("Global","inst",1);
-	}
+	SetDialogBkColor(cback, cfore);
 }
 
-void CCursor32App::UninstallSeq()
+// **********************************
+//  インストール作業 一式
+//
+//  戻り値  TRUE:インストール完了または不要,  FALSE:ユーザキャンセル
+// **********************************
+BOOL CCursor32App::InstallSeq()
 {
-	if(::MessageBox(NULL, "Cursor32をアンインストールします\n\n\n実行アイコンと設定内容をすべて消去します",
-		"Cursor32 Uninstall", MB_YESNO|MB_ICONQUESTION|MB_APPLMODAL )
-		!= IDYES) return;
+	CInstDlg dlg;
+	dlg.m_r_autoexec = 0;	// 自動起動しない
+	dlg.m_chk_uninst_start = TRUE;	// スタートメニューにアンインストールアイコン
 
-	HKEY hCU;
-	char szLink[MAX_PATH];
-	DWORD lpType;
-	ULONG ulSize = MAX_PATH;
 
-	// レジストリの設定情報を消去
-	::RegDeleteKey(HKEY_USERS,".Default\\Software\\hi soft\\Cursor32");
-	// スタートメニューの設定アイコンを抹殺
-	if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
-			0, KEY_QUERY_VALUE, &hCU) == ERROR_SUCCESS)
+	// **********************************
+	//  インストールフラグのチェック (HKLM/HKCU)
+	// **********************************
+	if(ChkHkcuInstReg() || ChkHklmInstReg()) return TRUE;
+
+	if(dlg.DoModal() != IDOK) return FALSE;	// ユーザがインストールをキャンセル
+	::MkHkcuInstReg();
+
+	// **********************************
+	//  インストールダイアログでの選択項目により、インストール作業
+	// **********************************
+	//  自動実行オプション
+	//  選択されたオプション以外の「自動実行」を削除することも同時に行う
+	// **********************************
+	switch(dlg.m_r_autoexec)
 	{
-		RegQueryValueEx( hCU, "Programs", NULL, &lpType, (unsigned char *)&szLink, &ulSize);
-		RegCloseKey(hCU);
+	case 0 :	// 自動実行しない
+		::RmHklmLnk();
+		::RmHkcuLnk();
+		::RmStartMnu();
+		break;
+	case 1 :	// スタートメニュー
+		::RmHklmLnk();
+		::RmHkcuLnk();
+		::MkStartMnu();
+		break;
+	case 2 :	// HKCU に自動実行
+		::RmHklmLnk();
+		::MkHkcuLnk();
+		::RmStartMnu();
+		break;
+	case 3 :	// HKLM に自動実行
+		::MkHklmLnk();
+		::RmHkcuLnk();
+		::RmStartMnu();
+		break;
 	}
-	strcat(szLink, "\\Cursor32.LNK");
-	::remove(szLink);
-	// スタートメニューの自動実行アイコンを抹殺
-	ulSize = MAX_PATH;	// 文字数は元に戻して実行すること
-	if (RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders",
-			0, KEY_QUERY_VALUE, &hCU) == ERROR_SUCCESS)
-	{
-		RegQueryValueEx( hCU, "Startup", NULL, &lpType, (unsigned char *)&szLink, &ulSize);
-		RegCloseKey(hCU);
-	}
-	strcat(szLink, "\\Cursor32.LNK");
-	::remove(szLink);
-	// 削除データの削除
-	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall",
-			0, KEY_QUERY_VALUE, &hCU) == ERROR_SUCCESS)
-	{
-		RegDeleteKey( hCU, "Cursor32");
-		RegCloseKey(hCU);
-	}
-	::MessageBox(NULL, "Cursor32をアンインストールしました\n\n\nプログラムのあるフォルダの関連ファイルは手動で削除してください",
-		"Cursor32", MB_YESNO|MB_ICONINFORMATION|MB_APPLMODAL );
 
+	// **********************************
+	//  スタートメニューにアイコン登録
+	// **********************************
+	::MkProgramsMnu();
 
+	// **********************************
+	//  コンパネからアンインストールする設定
+	// **********************************
+	if(dlg.m_chk_uninst_cpl)
+	{
+		if(::IsWinNT()) ::MkHkcuUninstMnu();
+		else ::MkHklmUninstMnu();
+	}
+
+	// **********************************
+	//  スタートメニューからアンインストールする設定
+	// **********************************
+	if(dlg.m_chk_uninst_start)
+		::MkUninstMnu();
+
+	return TRUE;
 }
+
+
+// **********************************
+//  アンインストール作業 一式
+//
+//  戻り値  TRUE:完了または不要,  FALSE:失敗またはユーザキャンセル
+// **********************************
+BOOL CCursor32App::UninstallSeq()
+{
+	CString sTmpMsg;
+
+	sTmpMsg.LoadString(STR_MES_UNIN);
+	if(::MessageBox(NULL, (LPCSTR)sTmpMsg, "Cursor32 Uninstall", MB_YESNO|MB_ICONQUESTION) != IDYES)
+		return FALSE;	// ユーザがキャンセル
+
+	::RmHkcuInstReg();
+	::RmHklmLnk();
+	::RmHkcuLnk();
+	::RmStartMnu();
+	::RmUserReg();
+
+	::RmHkcuUninstMnu();
+	::RmHklmUninstMnu();
+	::RmUninstMnu();
+
+	::RmProgramsMnu();
+
+	return TRUE;
+}
+
+

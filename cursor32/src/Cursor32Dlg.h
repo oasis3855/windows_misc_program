@@ -22,8 +22,8 @@ public:
 	BOOL nChangeDlgColor;
 	COLORREF DlgColor;
 	COLORREF DlgBackColor;
-	int IsAssist;
-	UINT hotkey1,hotkey2;
+	int IsAssist, IsRelmode;
+	UINT hotkey1,hotkey2,hotkey_rel;
 	CCursor32Dlg(CWnd* pParent=NULL);
 
 // Dialog Data
@@ -45,6 +45,7 @@ protected:
 
 	int TimerOK;
 	unsigned long Counter;
+	long rel_x, rel_y;	// ëäëŒç¿ïWÇÃå¥ì_
 
 
 

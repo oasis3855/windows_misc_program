@@ -46,19 +46,27 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CCursor32Dlg メッセージ ハンドラ
 
+// **********************************
 // 初期化
+// **********************************
 BOOL CCursor32Dlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
 	// TODO: 特別な初期化を行う時はこの場所に追加してください。
 
+	// 相対座標の原点
+	rel_x = 0L;
+	rel_y = 0L;
+
+	// **********************************
 	// タイマーの設定
+	// **********************************
 	TimerOK = 1;
 	if(!SetTimer(USER_TIMER_ID, timertick, NULL))
 	{
 		TimerOK = 0;
-		AfxMessageBox("タイマーの使用ができないため、このソフトは使用できません。",
+		AfxMessageBox("System Timer Error !",
 						MB_OK|MB_ICONSTOP|MB_APPLMODAL);
 		CloseDialog();		// ダイアログの終了	
 	}
@@ -72,14 +80,18 @@ BOOL CCursor32Dlg::OnInitDialog()
 	return TRUE;  // TRUE を返すとコントロールに設定したフォーカスは失われません。
 }
 
+// **********************************
 // システムコマンド(ボタン)の処理
+// **********************************
 void CCursor32Dlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	if(nID == SC_CLOSE) CloseDialog();
 	else CDialog::OnSysCommand(nID, lParam);
 }
 
-// ダイアログを描画する
+// **********************************
+// ダイアログを描画する（ＸＹ座標）
+// **********************************
 void CCursor32Dlg::OnPaint() 
 {
 	// 表示メインルーチン
@@ -92,7 +104,9 @@ void CCursor32Dlg::OnPaint()
 	SetDlgItemInt(IDC_Y, ppt.y);
 }
 
+// **********************************
 // 終了時の現在座標を保存する
+// **********************************
 void CCursor32Dlg::CloseDialog() 
 {
 	// TODO: この位置にメッセージ ハンドラ用のコードを追加するかまたはデフォルトの処理を呼び出してください
@@ -105,6 +119,9 @@ void CCursor32Dlg::CloseDialog()
 	EndDialog(IDOK);
 }
 
+// **********************************
+// 標準関数のオーバーライド
+// **********************************
 void CCursor32Dlg::OnClose() 
 {
 	// このｱﾌﾟﾘｹｰｼｮﾝではOnClose() が呼ばれることは通常無いが、安全のため
@@ -112,8 +129,10 @@ void CCursor32Dlg::OnClose()
 	CloseDialog();
 }
 
+// **********************************
 // タイマーから呼ばれる
 // 座標のセットなど
+// **********************************
 void CCursor32Dlg::OnTimer(UINT nIDEvent) 
 {
 	// TODO: この位置にメッセージ ハンドラ用のコードを追加するかまたはデフォルトの処理を呼び出してください
@@ -124,8 +143,16 @@ void CCursor32Dlg::OnTimer(UINT nIDEvent)
 	if(ppt.x != lastX || ppt.y != lastY)
 	{	// 位置が変わっていた場合のみ、表示更新
 		::GetCursorPos((POINT far *)&ppt);
-		SetDlgItemInt(IDC_X, ppt.x);
-		SetDlgItemInt(IDC_Y, ppt.y);
+		if(IsRelmode)
+		{	// 相対座標モード
+			SetDlgItemInt(IDC_X, abs(rel_x - ppt.x));
+			SetDlgItemInt(IDC_Y, abs(rel_y - ppt.y));
+		}
+		else
+		{	// 通常の座標表示
+			SetDlgItemInt(IDC_X, ppt.x);
+			SetDlgItemInt(IDC_Y, ppt.y);
+		}
 		if(lastX>=0)
 		{	// 最初の1回は走行距離を計算しない
 			// 走行距離の積算
@@ -174,16 +201,35 @@ void CCursor32Dlg::OnTimer(UINT nIDEvent)
 		}
 		else newkey=1;
 	}
+
+	// 相対座標モード
+	if(IsRelmode)
+	{
+		// 原点設定のホットーキーが押されたとき
+		if(::GetAsyncKeyState(hotkey_rel) < 0)
+		{
+			::GetCursorPos((POINT far *)&ppt);	// マウスの現在位置
+			rel_x = ppt.x;
+			rel_y = ppt.y;
+			SetDlgItemInt(IDC_X, abs(rel_x - ppt.x));
+			SetDlgItemInt(IDC_Y, abs(rel_y - ppt.y));
+		}
+	}
+
+
 	CDialog::OnTimer(nIDEvent);
 }
 
+// **********************************
 // 機能設定 ダイアログの呼び出し。
+// **********************************
 void CCursor32Dlg::OnAppAbout() 
 {
 	// TODO: この位置にコントロール通知ハンドラ用のコードを追加してください
 	UINT keycode[] = {VK_SHIFT, VK_CONTROL, VK_MENU, VK_INSERT, VK_DELETE,
 			VK_BACK, VK_TAB, VK_F9, VK_F10, VK_F11, VK_F12};
 	HICON h_infoicon, h_conficon;
+	CString sTmpMsg;
 
 	// プロパティーダイアログ本体
 	CPropertySheet DlgProp(IDS_PROPTITLE);	// リソースからタイトル文字列を指定する
@@ -192,6 +238,7 @@ void CCursor32Dlg::OnAppAbout()
 	CPropConf ConfPage;
 	// プロパティシートの各値を設定
 	ConfPage.m_ddx_assist = IsAssist;
+	ConfPage.m_ddx_relmode = IsRelmode;
 	ConfPage.m_ddx_title = title;
 	ConfPage.m_ddx_timertick = timertick;
 	ConfPage.m_ddx_changecolor = nChangeColor;
@@ -209,6 +256,7 @@ void CCursor32Dlg::OnAppAbout()
 	{
 		if(keycode[i] == hotkey1) ConfPage.m_ddx_hotkey1 = i;
 		if(keycode[i] == hotkey2) ConfPage.m_ddx_hotkey2 = i;
+		if(keycode[i] == hotkey_rel) ConfPage.m_ddx_hotkey_rel = i;
 	}
 	// 現在座標の取得と設定
 	RECT winRect;
@@ -231,18 +279,23 @@ void CCursor32Dlg::OnAppAbout()
 	// プロパティーシートの属性変更
 	DlgProp.m_psh.dwFlags=DlgProp.m_psh.dwFlags|PSH_NOAPPLYNOW;
 	DlgProp.SetActivePage(1); // ２ページ目を表にする
+
+	// *********************************
 	// 機能設定ダイアログを表示する
-	if (DlgProp.DoModal() == IDOK && !AboutPage.m_uninstall)
+	// *********************************
+	if (DlgProp.DoModal() == IDOK)
 	{	// OK ボタンが押された時
 		timertick = ConfPage.m_ddx_timertick;
 		title = ConfPage.m_ddx_title;
 		IsAssist = ConfPage.m_ddx_assist;
+		IsRelmode = ConfPage.m_ddx_relmode;
 		hotkey1 = keycode[ConfPage.m_ddx_hotkey1];
 		hotkey2 = keycode[ConfPage.m_ddx_hotkey2];
+		hotkey_rel = keycode[ConfPage.m_ddx_hotkey_rel];
 		if(hotkey1 == hotkey2)
 		{
-			AfxMessageBox("２つのホットキーは異なるキーでなければいけません。\n標準設定にもどしました。",
-						MB_OK|MB_ICONINFORMATION|MB_APPLMODAL);
+			sTmpMsg.LoadString(STR_MES_WAR_KEY);
+			AfxMessageBox(sTmpMsg, MB_OK|MB_ICONINFORMATION|MB_APPLMODAL);
 			hotkey1 = VK_CONTROL;
 			hotkey2 = VK_SHIFT;
 		}
@@ -256,19 +309,15 @@ void CCursor32Dlg::OnAppAbout()
 
 		UpdateAppearance();
 	}
-	if(::DestroyIcon(h_infoicon)!=TRUE) MessageBox("csr32 内部エラー ico");
-	if(::DestroyIcon(h_conficon)!=TRUE) MessageBox("csr32 内部エラー ico");
-	// アンインストール処理がされた後の処理
-	if(AboutPage.m_uninstall)
-	{
-		if(TimerOK) KillTimer(USER_TIMER_ID);
-		AfxMessageBox("Cursor32（マウス座標表示）のレジストリ情報は削除されました。",
-						MB_OK|MB_ICONINFORMATION|MB_APPLMODAL);
-		EndDialog(IDOK);
-	}
+	if(::DestroyIcon(h_infoicon)!=TRUE) MessageBox("System Error (CSR32)\nDestroyIcon(infoicon)");
+	if(::DestroyIcon(h_conficon)!=TRUE) MessageBox("System Error (CSR32)\nDestroyIcon(infoicon)");
 }
 
+// **********************************
 // コマンドのインターセプト
+//
+// ESCキーとRETURN キーの横取り
+// **********************************
 BOOL CCursor32Dlg::OnCommand(WPARAM wParam, LPARAM lParam) 
 {
 	// TODO: この位置に固有の処理を追加するか、または基本クラスを呼び出してください
@@ -277,7 +326,11 @@ BOOL CCursor32Dlg::OnCommand(WPARAM wParam, LPARAM lParam)
 	return CDialog::OnCommand(wParam, lParam);
 }
 
+// **********************************
 // XY座標のカラー変更
+//
+// 標準関数のオーバーライト
+// **********************************
 HBRUSH CCursor32Dlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
 {
 	HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
@@ -296,7 +349,9 @@ HBRUSH CCursor32Dlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	return hbr;	// バックグラウンドカラーは標準のものを使用
 }
 
+// **********************************
 // ダイアログの見かけを変更する
+// **********************************
 void CCursor32Dlg::UpdateAppearance()
 {
 	// 変更をダイアログに反映させる
@@ -325,6 +380,12 @@ void CCursor32Dlg::UpdateAppearance()
 	if(isNotTaskbar) ex_style &= ~WS_EX_APPWINDOW;
 	else ex_style |= WS_EX_APPWINDOW;
 	::SetWindowLong(m_hWnd, GWL_EXSTYLE, ex_style);
+
 	ShowWindow(SW_HIDE);	// 非表示、表示を切り替える
+	// ダイアログの色の設定
+	CCursor32App *theApp;
+	theApp = (CCursor32App *)AfxGetApp();
+	if(nChangeDlgColor) theApp->SetDialogBkColor_Extern(DlgBackColor, DlgColor);
+
 	ShowWindow(SW_SHOW);
 }
