@@ -7,7 +7,16 @@
 </h3>
 <h3>ºÏİÄŞ ×²İ</h3>
 Creating command line "rc.exe /l 0x411 /fo"Release/DummyProg.res" /d "NDEBUG" /d "_AFXDLL" "G:\mnt\data-1\DATA\SRC\VC\DummyProg\DummyProg.rc"" 
-ºÏİÄŞ ×²İ "link.exe /nologo /subsystem:windows /incremental:no /pdb:"Release/DummyProg.pdb" /machine:I386 /out:"Release/DummyProg.exe"  ".\Release\DummyProg.obj" ".\Release\DummyProgDlg.obj" ".\Release\StdAfx.obj" ".\Release\DummyProg.res" " ‚Ìì¬’†
+ˆêÌ§²Ù "f:\temp\winnt\inoue-h\RSP7E.tmp" ‚ğì¬‚µAŸ‚Ì“à—e‚ğ‹L˜^‚µ‚Ü‚·
+[
+/nologo /subsystem:windows /incremental:no /pdb:"Release/DummyProg.pdb" /machine:I386 /out:"Release/DummyProg.exe" 
+".\Release\DummyProg.obj"
+".\Release\DummyProgDlg.obj"
+".\Release\PharseCmdline.obj"
+".\Release\StdAfx.obj"
+".\Release\DummyProg.res"
+]
+ºÏİÄŞ ×²İ "link.exe @"f:\temp\winnt\inoue-h\RSP7E.tmp"" ‚Ìì¬’†
 <h3>±³ÄÌß¯Ä ³¨İÄŞ³</h3>
 Ø¿°½‚ğºİÊß²Ù’†...
 Øİ¸’†...

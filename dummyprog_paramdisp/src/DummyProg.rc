@@ -76,20 +76,21 @@ IDR_MAINFRAME           ICON    DISCARDABLE     "res\\DummyProg.ico"
 IDD_DUMMYPROG_DIALOG DIALOGEX 0, 0, 320, 200
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "ダミー・プログラム （引数解析用）"
+CAPTION "引数解析 ダミー・プログラム"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
     PUSHBUTTON      "OK",IDOK,260,180,50,14
     LTEXT           "このプログラムの名前",IDC_STATIC,5,10,65,15
     LTEXT           "引数",IDC_STATIC,5,30,65,15
     EDITTEXT        IDC_EDIT_THISPROG,75,5,240,15,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_PARAM,75,25,240,35,ES_MULTILINE | 
+    EDITTEXT        IDC_EDIT_PARAM,75,25,240,90,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_WANTRETURN | 
                     WS_VSCROLL | WS_HSCROLL
-    LTEXT           "カレント・ディレクトリ",IDC_STATIC,5,70,65,15
-    EDITTEXT        IDC_EDIT_CURDIR,75,70,240,15,ES_AUTOHSCROLL
-    LTEXT           "Windows バージョン",IDC_STATIC,5,90,65,15
-    EDITTEXT        IDC_EDIT_WINVER,75,90,240,15,ES_AUTOHSCROLL
+    LTEXT           "カレント・ディレクトリ",IDC_STATIC,5,125,65,15
+    EDITTEXT        IDC_EDIT_CURDIR,75,125,240,15,ES_AUTOHSCROLL
+    LTEXT           "Windows バージョン",IDC_STATIC,5,145,65,15
+    EDITTEXT        IDC_EDIT_WINVER,75,145,240,15,ES_AUTOHSCROLL
+    LTEXT           "Version 1.1 (パス名分離版)",IDC_STATIC,10,180,240,10
 END
 
 
@@ -100,8 +101,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 1,1,0,0
+ PRODUCTVERSION 1,1,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -114,17 +115,20 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "041104B0"
+        BLOCK "041104b0"
         BEGIN
+            VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "DummyProg MFC ｱﾌﾟﾘｹｰｼｮﾝ\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "FileVersion", "1.1\0"
             VALUE "InternalName", "DummyProg\0"
-            VALUE "LegalCopyright", "Copyright (C) 2001\0"
+            VALUE "LegalCopyright", "Copyright (C) 2001 INOUE. Hirokazu\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "DummyProg.EXE\0"
-            VALUE "ProductName", "DummyProg ｱﾌﾟﾘｹｰｼｮﾝ\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "引数解析プログラム\0"
+            VALUE "ProductVersion", "1.1\0"
+            VALUE "SpecialBuild", "\0"
         END
     END
     BLOCK "VarFileInfo"

@@ -1,9 +1,11 @@
-// DummyProg.cpp : アプリケーション用クラスの定義を行います。
+// *******************************************************************
+// プログラムに渡される引数を表示するプログラム
 //
-
+// *******************************************************************
 #include "stdafx.h"
 #include "DummyProg.h"
 #include "DummyProgDlg.h"
+#include "PharseCmdline.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -66,7 +68,17 @@ BOOL CDummyProgApp::InitInstance()
 	dlg.m_edit_thisprog = szTmp;
 
 	// 引数
-	dlg.m_edit_param = m_lpCmdLine;
+//	dlg.m_edit_param = m_lpCmdLine;
+	CPharseCmdline PharseCmdline;
+	PharseCmdline.SetOrgStr(m_lpCmdLine);
+	int i = PharseCmdline.CountParam();
+	dlg.m_edit_param.Format("渡された引数は %d 個\r\n", i);
+	CString sTmp1;
+	do{
+		sTmp1 = PharseCmdline.GetNextParam();
+		if(sTmp1 == "") break;
+		dlg.m_edit_param = dlg.m_edit_param + sTmp1 + "\r\n";
+	}while(1);
 
 	// カレント･ディレクトリ
 	::_getcwd(szTmp, sizeof(szTmp));
