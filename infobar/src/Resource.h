@@ -55,6 +55,9 @@
 #define IDC_EDIT_PHC                    1039
 #define IDC_CHK_DEBUG                   1039
 #define IDC_EDIT_ITEMS                  1040
+#define IDC_CHK_DELSPACE                1043
+#define IDC_CHK_CR2SPC                  1044
+#define IDC_BTN_SMPL                    1046
 #define ID_MENU_CONFIG                  32771
 #define ID_MENU_EXIT                    32772
 #define ID_MENU_HELP                    32773
@@ -86,7 +89,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        140
 #define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1040
+#define _APS_NEXT_CONTROL_VALUE         1048
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

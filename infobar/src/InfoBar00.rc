@@ -74,10 +74,10 @@ IDI_ICO_INST            ICON    DISCARDABLE     "res\\ico_inst.ico"
 // Dialog
 //
 
-IDD_INFOBAR00_DIALOG DIALOGEX 0, 0, 231, 26
+IDD_INFOBAR00_DIALOG DIALOGEX 0, 0, 231, 27
 STYLE WS_POPUP | WS_VISIBLE | WS_THICKFRAME
-EXSTYLE WS_EX_TOOLWINDOW | WS_EX_APPWINDOW
-FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_STATICEDGE | WS_EX_APPWINDOW
+FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
 END
 
@@ -93,9 +93,12 @@ BEGIN
     EDITTEXT        IDC_EDIT_ADDR,75,40,195,15,ES_AUTOHSCROLL
     LTEXT           "ポート番号 Port No",IDC_STATIC,5,60,65,15,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_EDIT_PORT,75,60,50,15,ES_AUTOHSCROLL
+    COMBOBOX        IDC_EDIT_PORT,75,60,60,60,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "プロキシ Proxy",IDC_STATIC,5,80,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_PROXY,75,80,195,15,ES_AUTOHSCROLL
+    LTEXT           "↑ Proxy Server を経由しない場合は、何も入力しないように",
+                    IDC_STATIC,75,95,195,15,SS_CENTERIMAGE
     LTEXT           "項目名 Title",IDC_STATIC,5,115,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_TITLE,75,115,195,15,ES_AUTOHSCROLL
     LTEXT           "識別ヘッダ Header",IDC_STATIC,5,135,65,15,
@@ -104,13 +107,15 @@ BEGIN
     LTEXT           "先頭スキップ Skip",IDC_STATIC,5,155,65,15,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_SKIP,75,155,55,15,ES_AUTOHSCROLL
+    CONTROL         "空白文字の削除",IDC_CHK_DELSPACE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,135,155,65,15
+    CONTROL         "全データ１行化",IDC_CHK_CR2SPC,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,205,155,65,15
     LTEXT           "取得行数 Items",IDC_STATIC,5,175,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_GETNUM,75,175,55,15,ES_AUTOHSCROLL
     LTEXT           "制限字数 Limit char",IDC_STATIC,5,195,65,15,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_LIMIT,75,195,55,15,ES_AUTOHSCROLL | WS_DISABLED
-    LTEXT           "↑ Proxy Server を経由しない場合は、何も入力しないように",
-                    IDC_STATIC,75,95,195,15,SS_CENTERIMAGE
     PUSHBUTTON      "詳細設定",IDC_BTN_DETAIL,205,195,65,15
 END
 
@@ -154,7 +159,7 @@ CAPTION "About"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,5,10,20,20
-    LTEXT           "InfoBar （ニュース電光掲示板）  Version  0.04 for Windows\n\n(C) 2002 INOUE. Hirokazu\n\nhttp://inoue-h.connect.to/\nhttp://www.ne.jp/asahi/oasis/inoue-h/\n\nThis program is free ware .  There's no warranty of this program  .",
+    LTEXT           "InfoBar （ニュース電光掲示板）  Version  0.041 for Windows\n\n(C) 2002-2003 INOUE. Hirokazu\n\nhttp://inoue-h.connect.to/\nhttp://www.ne.jp/asahi/oasis/inoue-h/\n\nThis program is free software .  There's no warranty of this program  .",
                     IDC_STATIC,40,10,210,80
     PUSHBUTTON      "ｱﾝｲﾝｽﾄｰﾙ作成",IDC_BTN_MAKEUNIN,35,170,65,15
     LTEXT           "アンインストール用のショートカットをスタートメニューに作成します",
@@ -200,24 +205,25 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "証券・為替 詳細設定"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,145,180,50,14
-    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,200,180,50,14
     LTEXT           "証券・為替データ受信のための条件設定",IDC_STATIC,5,5,
                     245,15
     COMBOBOX        IDC_CMB_PRESET,5,25,245,70,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    EDITTEXT        IDC_EDIT_ADDR,65,45,185,15,ES_AUTOHSCROLL
     LTEXT           "アドレス",IDC_STATIC,5,45,55,15,SS_CENTERIMAGE
-    EDITTEXT        IDC_EDIT_PH,65,85,55,15,ES_AUTOHSCROLL
-    LTEXT           "識別ヘッダ",IDC_STATIC,5,85,55,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_ADDR,65,45,185,15,ES_AUTOHSCROLL
     LTEXT           "項目名",IDC_STATIC,65,65,55,15,SS_CENTERIMAGE
     LTEXT           "取引値",IDC_STATIC,125,65,55,15,SS_CENTERIMAGE
     LTEXT           "変化",IDC_STATIC,185,65,55,15,SS_CENTERIMAGE
+    LTEXT           "識別ヘッダ",IDC_STATIC,5,85,55,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_PH,65,85,55,15,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PHB,125,85,55,15,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PHC,185,85,55,15,ES_AUTOHSCROLL
     LTEXT           "コードリスト",IDC_STATIC,5,110,55,15,SS_CENTERIMAGE
-    EDITTEXT        IDC_EDIT_ITEMS,65,110,80,65,ES_MULTILINE | 
+    EDITTEXT        IDC_EDIT_ITEMS,65,110,75,65,ES_MULTILINE | 
                     ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
+    PUSHBUTTON      "クリア",IDC_BTN_SMPL,145,110,50,15
+    DEFPUSHBUTTON   "OK",IDOK,145,180,50,15
+    PUSHBUTTON      "ｷｬﾝｾﾙ",IDCANCEL,200,180,50,15
 END
 
 
@@ -228,8 +234,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,4,0,0
- PRODUCTVERSION 0,4,0,0
+ FILEVERSION 0,41,0,0
+ PRODUCTVERSION 0,41,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -247,14 +253,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "Copyright (C) INOUE. Hirokazu\0"
             VALUE "FileDescription", "InfoBar\0"
-            VALUE "FileVersion", "0, 4, 0, 0\0"
+            VALUE "FileVersion", "0, 41, 0, 0\0"
             VALUE "InternalName", "InfoBar\0"
-            VALUE "LegalCopyright", "Copyright (C) 2002 INOUE. Hirokazu\0"
+            VALUE "LegalCopyright", "Copyright (C) 2002-2003 INOUE. Hirokazu\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "InfoBar.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "InfoBar (News Scroll Board)\0"
-            VALUE "ProductVersion", "0, 4, 0, 0\0"
+            VALUE "ProductVersion", "0, 41, 0, 0\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -280,7 +286,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 224
         TOPMARGIN, 7
-        BOTTOMMARGIN, 19
+        BOTTOMMARGIN, 20
     END
 
     IDD_DLG_NETCONF, DIALOG
@@ -401,9 +407,15 @@ BEGIN
 0x598e, 0x6f8c, 0x5690, 0xb795, 0x9020, 0x8ead, 0x00a1, 
     IDC_COMBO_QLIST, 0x403, 14, 0
 0x598e, 0x6f8c, 0x5690, 0xb795, 0x8d20, 0x8d91, 0x00db, 
+    IDC_COMBO_QLIST, 0x403, 22, 0
+0x598e, 0x6f8c, 0x5690, 0xb795, 0x8320, 0x836a, 0x8185, 0x835b, 0x9158, 
+0x95ac, 0x00f1, 
     IDC_COMBO_QLIST, 0x403, 30, 0
 0xa48b, 0xaf93, 0xca92, 0x4d90, 0xd08e, 0x8320, 0x836a, 0x8185, 0x835b, 
 0x8358, 0x836e, 0x8343, 0x8389, 0x8343, 0x0067, 
+    IDC_COMBO_QLIST, 0x403, 22, 0
+0x8c93, 0x9e8b, 0x5690, 0xb795, 0x8320, 0x836a, 0x8185, 0x835b, 0x9158, 
+0x95ac, 0x00f1, 
     IDC_COMBO_QLIST, 0x403, 16, 0
 0x9e8e, 0x968e, 0xca92, 0x4d90, 0xd08e, 0x9020, 0x8ead, 0x00a1, 
     IDC_COMBO_QLIST, 0x403, 16, 0
@@ -418,21 +430,25 @@ BEGIN
     IDC_COMBO_QLIST, 0x403, 29, 0
 0x6c42, 0x6f6f, 0x626d, 0x7265, 0x2067, 0x438a, 0x4f8a, 0x6783, 0x6283, 
 0x7683, 0x6a83, 0x8583, 0x5b81, 0x5883, "\000" 
+    IDC_COMBO_QLIST, 0x403, 19, 0
+0x6c42, 0x6f6f, 0x626d, 0x7265, 0x2067, 0xad90, 0xa18e, 0x6f8c, 0xcf8d, 
+"\000" 
+    IDC_COMBO_QLIST, 0x403, 19, 0
+0x6c42, 0x6f6f, 0x626d, 0x7265, 0x2067, 0x6f8c, 0xcf8d, 0x778e, 0x5795, 
+"\000" 
     IDC_COMBO_QLIST, 0x403, 24, 0
 0x6282, 0x6d82, 0x6482, 0x7382, 0x4a20, 0x7061, 0x6e61, 0x8320, 0x836a, 
 0x8185, 0x835b, 0x0058, 
     IDC_COMBO_QLIST, 0x403, 26, 0
 0x7982, 0x6382, 0x8e82, 0x8582, 0x9482, 0x4a20, 0x7061, 0x6e61, 0x8320, 
 0x836a, 0x8185, 0x835b, 0x0058, 
-    IDC_COMBO_QLIST, 0x403, 27, 0
-0xf18e, 0x7393, 0x978c, 0x8b20, 0x8bdf, 0x9797, 0x20a3, 0x6982, 0x7182, 
-0x5e89, 0x738d, 0xf38f, 0xb58b, "\000" 
-    IDC_COMBO_QLIST, 0x403, 27, 0
-0xf18e, 0x7393, 0x978c, 0x9220, 0x8bb7, 0x9797, 0x20a3, 0x6982, 0x7182, 
-0x5e89, 0x738d, 0xf38f, 0xb58b, "\000" 
-    IDC_COMBO_QLIST, 0x403, 23, 0
-0xf18e, 0x7393, 0x978c, 0x9020, 0x8a56, 0x90b2, 0x20fc, 0x5e89, 0x738d, 
-0xf38f, 0xb58b, "\000" 
+    IDC_COMBO_QLIST, 0x403, 28, 0
+0x6982, 0x7182, 0x9720, 0x8ef1, 0x89d4, 0x8d5e, 0x8f73, 0x95ee, 0x20f1, 
+0x8a20, 0x93d6, 0x928c, 0x956e, 0x00fb, 
+    IDC_EDIT_PORT, 0x403, 3, 0
+0x3038, "\000" 
+    IDC_EDIT_PORT, 0x403, 5, 0
+0x3038, 0x3038, "\000" 
     0
 END
 
@@ -530,10 +546,10 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_INFOBAR00_DIALOG DIALOGEX 0, 0, 230, 18
+IDD_INFOBAR00_DIALOG DIALOGEX 0, 0, 231, 18
 STYLE WS_POPUP | WS_VISIBLE | WS_THICKFRAME
-EXSTYLE WS_EX_TOOLWINDOW | WS_EX_APPWINDOW
-FONT 9, "Arial", 0, 0, 0x1
+EXSTYLE WS_EX_TOOLWINDOW | WS_EX_STATICEDGE | WS_EX_APPWINDOW
+FONT 9, "Arial"
 BEGIN
 END
 
@@ -580,21 +596,26 @@ BEGIN
     LTEXT           "Address",IDC_STATIC,5,40,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_ADDR,75,40,195,15,ES_AUTOHSCROLL
     LTEXT           "Port No",IDC_STATIC,5,60,65,15,SS_CENTERIMAGE
-    EDITTEXT        IDC_EDIT_PORT,75,60,50,15,ES_AUTOHSCROLL
+    COMBOBOX        IDC_EDIT_PORT,75,60,60,50,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Proxy",IDC_STATIC,5,80,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_PROXY,75,80,195,15,ES_AUTOHSCROLL
+    LTEXT           "If you don't use Proxy, Blank here",IDC_STATIC,75,95,
+                    195,15,SS_CENTERIMAGE
     LTEXT           "Title",IDC_STATIC,5,115,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_TITLE,75,115,195,15,ES_AUTOHSCROLL
     LTEXT           "Header",IDC_STATIC,5,135,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_HEADER,75,135,195,15,ES_AUTOHSCROLL
     LTEXT           "Skip",IDC_STATIC,5,155,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_SKIP,75,155,55,15,ES_AUTOHSCROLL
+    CONTROL         "Delete space",IDC_CHK_DELSPACE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,140,155,60,15
+    CONTROL         "Force one line",IDC_CHK_CR2SPC,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,210,155,60,15
     LTEXT           "Items",IDC_STATIC,5,175,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_GETNUM,75,175,55,15,ES_AUTOHSCROLL
     LTEXT           "Limit char",IDC_STATIC,5,195,65,15,SS_CENTERIMAGE
     EDITTEXT        IDC_EDIT_LIMIT,75,195,55,15,ES_AUTOHSCROLL | WS_DISABLED
-    LTEXT           "If you don't use Proxy, Blank here",IDC_STATIC,75,95,
-                    195,15,SS_CENTERIMAGE
     PUSHBUTTON      "Detail",IDC_BTN_DETAIL,200,195,70,15
 END
 
@@ -635,7 +656,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 9, "Arial"
 BEGIN
-    LTEXT           "InfoBar  Version  0.04 for Windows\n\n(C) 2002 INOUE. Hirokazu\n\nhttp://inoue-h.connect.to/\nhttp://www.ne.jp/asahi/oasis/inoue-h/\n\nThis program is free ware .  There's no warranty of this program  .",
+    LTEXT           "InfoBar  Version  0.041 for Windows\n\n(C) 2002-2003 INOUE. Hirokazu\n\nhttp://inoue-h.connect.to/\nhttp://www.ne.jp/asahi/oasis/inoue-h/\n\nThis program is free software .  There's no warranty of this program  .",
                     IDC_STATIC,40,10,210,80
     ICON            IDR_MAINFRAME,IDC_STATIC,5,10,20,20
     PUSHBUTTON      "Make Uninst",IDC_BTN_MAKEUNIN,40,180,65,15
@@ -648,23 +669,24 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Stock Exchange / FOREX settings"
 FONT 9, "Arial"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,145,180,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,200,180,50,14
     LTEXT           "Network config",IDC_STATIC,5,5,245,15
     COMBOBOX        IDC_CMB_PRESET,5,25,245,70,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    EDITTEXT        IDC_EDIT_ADDR,65,45,185,15,ES_AUTOHSCROLL
     LTEXT           "URL",IDC_STATIC,5,45,55,15,SS_CENTERIMAGE
-    EDITTEXT        IDC_EDIT_PH,65,85,55,15,ES_AUTOHSCROLL
-    LTEXT           "Header",IDC_STATIC,5,85,55,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_ADDR,65,45,185,15,ES_AUTOHSCROLL
     LTEXT           "title",IDC_STATIC,65,65,55,15,SS_CENTERIMAGE
     LTEXT           "index 1",IDC_STATIC,125,65,55,15,SS_CENTERIMAGE
     LTEXT           "index 2",IDC_STATIC,185,65,55,15,SS_CENTERIMAGE
+    LTEXT           "Header",IDC_STATIC,5,85,55,15,SS_CENTERIMAGE
+    EDITTEXT        IDC_EDIT_PH,65,85,55,15,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PHB,125,85,55,15,ES_AUTOHSCROLL
     EDITTEXT        IDC_EDIT_PHC,185,85,55,15,ES_AUTOHSCROLL
     LTEXT           "Item List",IDC_STATIC,5,110,55,15,SS_CENTERIMAGE
-    EDITTEXT        IDC_EDIT_ITEMS,65,110,80,65,ES_MULTILINE | 
+    EDITTEXT        IDC_EDIT_ITEMS,65,110,75,65,ES_MULTILINE | 
                     ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
+    PUSHBUTTON      "Clear",IDC_BTN_SMPL,145,110,50,15
+    DEFPUSHBUTTON   "OK",IDOK,145,180,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,200,180,50,14
 END
 
 
@@ -679,7 +701,7 @@ BEGIN
     IDD_INFOBAR00_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 223
+        RIGHTMARGIN, 224
         TOPMARGIN, 7
         BOTTOMMARGIN, 11
     END
@@ -775,6 +797,10 @@ BEGIN
 0x6332, 0x2068, 0x654e, 0x7377, 0x6c20, 0x7669, 0x0065, 
     IDC_COMBO_QLIST, 0x403, 12, 0
 0x6332, 0x2068, 0x4350, 0x4e20, 0x7765, 0x0073, 
+    IDC_EDIT_PORT, 0x403, 3, 0
+0x3038, "\000" 
+    IDC_EDIT_PORT, 0x403, 5, 0
+0x3038, 0x3038, "\000" 
     0
 END
 

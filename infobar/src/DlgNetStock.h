@@ -41,6 +41,7 @@ protected:
 	// 生成されたメッセージ マップ関数
 	//{{AFX_MSG(CDlgNetStock)
 	afx_msg void OnSelchangeCmbPreset();
+	afx_msg void OnBtnSmpl();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

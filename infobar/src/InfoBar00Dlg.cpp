@@ -18,7 +18,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // 仮想ビットマップのサイズ
-#define BITMAP_CX	5000
+//#define BITMAP_CX	5000
+#define BITMAP_CX	8000		// 2003/06/01
 #define BITMAP_CY	50
 
 // タイマー ID
@@ -438,11 +439,23 @@ void CInfoBar00Dlg::DrawStringOnBmp(CString *sBuf)
 
 	CalcMemStrLength(sBuf);		// 文字列のビットマップ長の計算
 
+	// 文字列が仮想ビットマップの右端まで描画されているとき
+	// ウインドウ幅だけ文字終端位置を手前にずらす
+	if(BITMAP_CX - (int)MemStrLength < (int)nInfoWndWidth)
+		MemStrLength = BITMAP_CX - nInfoWndWidth;
+
 	MemDC.SelectObject(BrushInfoBack);
 	MemDC.FillSolidRect(0,0,BITMAP_CX-1,BITMAP_CY-1, cBackColor);
 	MemDC.SetBkColor(cBackColor);
 	MemDC.SetTextColor(cForeColor);
 	MemDC.TextOut(nInfoWndWidth,5,*sBuf);
+
+	// 仮想ビットマップ右端ボーダーから100ドット目までに赤のストライプを入れる 2003/06/06
+	// ビットマップ不足の警告用
+	for(int i=0; i<10; i++)
+	{
+		MemDC.FillSolidRect(BITMAP_CX-100+i*10,0,1,BITMAP_CY-1, 0x0000ff);
+	}
 
 	if(nFontPoint != 0)
 	{
@@ -574,6 +587,8 @@ void CInfoBar00Dlg::OnMenuConfig()
 	dlg_netconf.m_sProxy = theApp->sProxy;
 	dlg_netconf.m_sTitle = theApp->sTitle;
 	dlg_netconf.m_nMode = theApp->nMode;
+	dlg_netconf.m_chkDelSpace = theApp->nDelSpace;		// 2003/06/01
+	dlg_netconf.m_chkCr2Spc = theApp->nCr2Spc;			// 2003/06/02
 
 	dlg_sysconf.m_nTimer = nTimer;
 	dlg_sysconf.m_nSpeed = nMoveSpeed;
@@ -602,6 +617,8 @@ void CInfoBar00Dlg::OnMenuConfig()
 		theApp->sProxy = dlg_netconf.m_sProxy;
 		theApp->sTitle = dlg_netconf.m_sTitle;
 		theApp->nMode = dlg_netconf.m_nMode;
+		theApp->nDelSpace = dlg_netconf.m_chkDelSpace;
+		theApp->nCr2Spc = dlg_netconf.m_chkCr2Spc;
 
 		nTimer = dlg_sysconf.m_nTimer;
 		nMoveSpeed = dlg_sysconf.m_nSpeed;
@@ -884,25 +901,41 @@ void CInfoBar00Dlg::MakeLCD()
 // ＭＦＣで使われている初期値類をスレッド用のグローバル変数にコピーする
 //
 // **********************************
+#define		RECVSIZE	5000		// 一度に受信できる最大サイズ
+#define		URLSIZE		2048		// URL のサイズ
+#define		TITLESIZE	1024		// タイトル文字列のサイズ
+#define		ITEMSIZE	2048		// 証券データのコードリストのサイズ
+//#define		BUFSIZE		100*1024	// ＨＴＭＬ受信バッファのサイズ (100kbytes)
+#define		BUFSIZE		150*1024	// ＨＴＭＬ受信バッファのサイズ (150kbytes)	2003/06/01
+//#define		TMPSIZE		2048		// 文字列取り出し用の一時バッファサイズ
+#define		TMPSIZE		4096		// 文字列取り出し用の一時バッファサイズ		2003/06/01
+
+#define		PADSIZE		128			// バッファがオーバーフローしないためのパディングサイズ
+
+
 void CInfoBar00Dlg::CopyGlobalParam()
 {
 	CInfoBar00App *theApp;
 
 	theApp = (CInfoBar00App *)AfxGetApp();
 
-	strcpy(_sTransBuf, theApp->sTransBuf);		// スレッドとダイアログの通信用
-	strcpy(_sURL, theApp->sURL);				// スレッドに渡す URL
-	strcpy(_sProxy, theApp->sProxy);			// スレッドに渡す PROXY
-	strcpy(_sPhHeader, theApp->sPhHeader);		// 切り分け用 ヘッダー文字列
-	strcpy(_sPhHeaderB, theApp->sPhHeaderB);	// 切り分け用 ヘッダー文字列 B
-	strcpy(_sPhHeaderC, theApp->sPhHeaderC);	// 切り分け用 ヘッダー文字列 C
-	strcpy(_sTitle, theApp->sTitle);			// タイトル
-	strcpy(_sItems, theApp->sItems);			// 証券データの指定などに使うアイテム
+	//  str「n」cpy (Buffer Overflow対策 2003/06/07)
+
+	strncpy(_sTransBuf, theApp->sTransBuf, BUFSIZE-1);	// スレッドとダイアログの通信用
+	strncpy(_sURL, theApp->sURL, URLSIZE-1);			// スレッドに渡す URL
+	strncpy(_sProxy, theApp->sProxy, URLSIZE-1);		// スレッドに渡す PROXY
+	strncpy(_sPhHeader, theApp->sPhHeader, URLSIZE);	// 切り分け用 ヘッダー文字列
+	strncpy(_sPhHeaderB, theApp->sPhHeaderB, URLSIZE);	// 切り分け用 ヘッダー文字列 B
+	strncpy(_sPhHeaderC, theApp->sPhHeaderC, URLSIZE);	// 切り分け用 ヘッダー文字列 C
+	strncpy(_sTitle, theApp->sTitle, TITLESIZE-1);		// タイトル
+	strncpy(_sItems, theApp->sItems, ITEMSIZE-1);		// 証券データの指定などに使うアイテム
 
 	_nMode = theApp->nMode;						// 動作モード（通常受信・証券受信…）
 	_nPort = theApp->nPort;						// スレッドに渡す ポート番号
 	_nPhSkip = theApp->nPhSkip;					// 切り分け用 スキップ個数
 	_nPhGetcount = theApp->nPhGetcount;			// 切り分け用 取得数
+	_nDelSpace = theApp->nDelSpace;				// 重複空白文字の削除モード		2003/06/01
+	_nCr2Spc = theApp->nCr2Spc;					// 全データ１行化（改行→空白）モード		2003/06/02
 
 }
 

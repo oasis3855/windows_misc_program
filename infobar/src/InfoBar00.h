@@ -44,6 +44,8 @@ public:
 	int nPhGetcount;	// 切り分け用 取得数
 	CString sTitle;		// タイトル
 	CString sItems;		// 証券データの指定などに使うアイテム
+	int nDelSpace;		// 重複空白文字の削除モード		2003/06/01
+	int nCr2Spc;		// 全データ１行化（改行→空白）モード		2003/06/02
 
 
 // オーバーライド

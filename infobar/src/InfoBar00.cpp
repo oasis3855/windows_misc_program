@@ -185,6 +185,10 @@ void CInfoBar00App::RegConfigRead(CInfoBar00Dlg *dlg)
 	sTitle = GetProfileString("Settings","title","");
 	// 証券データなどの指定に使うアイテム
 	sItems = GetProfileString("Settings","item","");
+	// 切り出し後の文字列から重複する空白文字を削除するモード
+	nDelSpace = GetProfileInt("Settings","del_space",0);
+	// 全データ１行化（改行→空白）モード
+	nCr2Spc = GetProfileInt("Settings","cr2spc",0);
 
 	// ダイアログのＸ座標
 	dlg->nPosX = GetProfileInt("Settings","pos_x",100);
@@ -263,6 +267,12 @@ void CInfoBar00App::RegConfigWrite(CInfoBar00Dlg *dlg)
 	// 証券データなどの指定に使うアイテム
 	if(sItems != GetProfileString("Settings","item",""))
 		WriteProfileString("Settings","item",sItems);
+	// 切り出し後の文字列から重複する空白文字を削除するモード
+	if(nDelSpace != (int)GetProfileInt("Settings","del_space",0))
+		WriteProfileInt("Settings","del_space",nDelSpace);
+	// 全データ１行化（改行→空白）モード
+	if(nCr2Spc != (int)GetProfileInt("Settings","cr2spc",0))
+		WriteProfileInt("Settings","cr2spc",nCr2Spc);
 
 	// ダイアログのＸ座標
 	if(dlg->nPosX != GetProfileInt("Settings","pos_x",100))

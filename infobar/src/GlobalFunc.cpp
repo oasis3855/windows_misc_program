@@ -19,8 +19,10 @@
 #define		URLSIZE		2048		// URL のサイズ
 #define		TITLESIZE	1024		// タイトル文字列のサイズ
 #define		ITEMSIZE	2048		// 証券データのコードリストのサイズ
-#define		BUFSIZE		100*1024	// ＨＴＭＬ受信バッファのサイズ (100kbytes)
-#define		TMPSIZE		2048		// 文字列取り出し用の一時バッファサイズ
+//#define		BUFSIZE		100*1024	// ＨＴＭＬ受信バッファのサイズ (100kbytes)
+#define		BUFSIZE		150*1024	// ＨＴＭＬ受信バッファのサイズ (150kbytes)	2003/06/01
+//#define		TMPSIZE		2048		// 文字列取り出し用の一時バッファサイズ
+#define		TMPSIZE		4096		// 文字列取り出し用の一時バッファサイズ		2003/06/01
 
 #define		PADSIZE		128			// バッファがオーバーフローしないためのパディングサイズ
 
@@ -52,6 +54,8 @@ int _nMode;			// 動作モード（通常受信・証券受信…）
 UINT _nPort;		// スレッドに渡す ポート番号
 int _nPhSkip;		// 切り分け用 スキップ個数
 int _nPhGetcount;	// 切り分け用 取得数
+int _nDelSpace;		// 重複空白文字の削除モード		2003/06/01
+int _nCr2Spc;		// 全データ１行化（改行→空白）モード		2003/06/02
 
 BOOL bDebugMode;		// デバッグモード
 
@@ -84,6 +88,8 @@ void thread_main(void *pVoid)
 	char		sCompose[BUFSIZE + PADSIZE];		// 解析後の文字列（一時保管）
 	char		szTemp[TMPSIZE + PADSIZE];			// 一時バッファ
 	FILE		*fo;
+	int			i, j;
+	int			nOrgStrSiz;							// 空白削除時の元の文字列長
 
 	// スレッドの重複起動は避ける
 	if(bInThread == TRUE)
@@ -149,6 +155,46 @@ void thread_main(void *pVoid)
 	{	// 通常受信
 		_inet_norm_process(sCompose, sHTML, szTemp, &fo);
 	}
+
+	//**************************************
+	// スペースの削除  2003/06/01
+	//**************************************
+	if(_nDelSpace)
+	{
+		nOrgStrSiz = strlen(sCompose);
+		for(i=0; i<nOrgStrSiz; i++)
+		{
+			if(sCompose[i] == (char)' ')
+			{
+				for(j=i+1; j<= nOrgStrSiz; j++)
+					sCompose[j-1] = (char)sCompose[j];
+				nOrgStrSiz--;
+				i--;	// ポインタを一つ前に戻す
+			}
+		}
+	}
+
+	//**************************************
+	// 全データ１行化（改行→空白） 2003/06/01
+	//**************************************
+	// 文字列最終の改行は無視する
+	if(_nCr2Spc)
+	{
+		nOrgStrSiz = strlen(sCompose);
+		for(i=0; i<nOrgStrSiz-1; i++)
+		{
+			if(sCompose[i] == (char)0x0a || sCompose[i] == (char)0x0d)
+				sCompose[i] = (char)' ';
+		}
+	}
+
+
+	//**************************************
+	// タイトル付け
+	//**************************************
+	_add_title(_sTransBuf, sCompose, _sTitle, szTemp);
+
+
 
 	if(bDebugMode)
 	{
@@ -279,11 +325,6 @@ int _inet_norm_process(char *sCompose, char *sHTML, char *szTemp, FILE **fo)
 			if(j >= (int)strlen(sHTML)) break;
 		}
 	}
-
-	//**************************************
-	// タイトル付け
-	//**************************************
-	_add_title(_sTransBuf, sCompose, _sTitle, szTemp);
 
 	return 0;
 }
@@ -429,11 +470,6 @@ int _inet_stock_process(char *sCompose, char *sHTML, char *szTemp, FILE **fo)
 		_i = _j+1;							// 改行の次の文字
 		if(_j >= (int)strlen(_sItems)) break;	// 最終行を越えた
 	}
-
-	//**************************************
-	// タイトル付け
-	//**************************************
-	_add_title(_sTransBuf, sCompose, _sTitle, szTemp);
 
 	return 0;
 

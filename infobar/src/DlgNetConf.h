@@ -36,6 +36,8 @@ public:
 	UINT	m_nPhGetcount;
 	CString	m_sProxy;
 	CString	m_sTitle;
+	BOOL	m_chkDelSpace;
+	BOOL	m_chkCr2Spc;
 	//}}AFX_DATA
 
 

@@ -19,6 +19,8 @@ extern int _nMode;			// 動作モード（通常受信・証券受信…）
 extern UINT _nPort;			// スレッドに渡す ポート番号
 extern int _nPhSkip;		// 切り分け用 スキップ個数
 extern int _nPhGetcount;	// 切り分け用 取得数
+extern int _nDelSpace;		// 重複空白文字の削除モード		2003/06/01
+extern int _nCr2Spc;		// 全データ１行化（改行→空白）モード		2003/06/02
 
 extern BOOL bDebugMode;		// デバッグモード
 
