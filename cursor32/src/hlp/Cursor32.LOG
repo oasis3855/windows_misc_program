@@ -1,0 +1,18 @@
+Microsoft (R) Help Compiler
+HCRTF 4.03.0002
+Copyright (c) Microsoft Corp 1990 - 1995. All rights reserved.
+Cursor32.hpj
+    HC4008: Warning: 
+	Cannot find or load FTSRCH.DLL. Hall compression turned off.
+
+10	Topics
+12	Jumps
+0	Keywords
+8	Bitmaps
+
+
+Created E:\DATA\SRC\VC\Cursor32\hlp\Cursor32.HLP, 28,501 bytes
+Bitmaps: 11,886 bytes
+Zeck compression decreased help file by 5,698 bytes.
+Compile time: 0 minutes, 1 second
+1 note, 1 warning

@@ -1,0 +1,18 @@
+ 
+// Commands (ID_* and IDM_*) 
+HIDM_ABOUTBOX                           0x10010
+ 
+// Prompts (IDP_*) 
+ 
+// Resources (IDR_*) 
+HIDR_MAINFRAME                          0x20080
+ 
+// Dialogs (IDD_*) 
+HIDD_ABOUTBOX                           0x20064
+HIDD_CURSOR32_DIALOG                    0x20066
+HIDD_ABOUT                              0x20085
+HIDD_CONFIG                             0x20086
+HIDD_CNF_ABOUT                          0x20088
+HIDD_CNF_CONFIG                         0x20089
+ 
+// Frame Controls (IDW_*) 
