@@ -40,7 +40,7 @@ void CDlgNetConf::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_COMBO_QLIST, m_ctrl_cmb_qlist);
 	DDX_Text(pDX, IDC_EDIT_ADDR, m_sURL);
 	DDX_Text(pDX, IDC_EDIT_PORT, m_nPort);
-	DDV_MinMaxUInt(pDX, m_nPort, 0, 622565);
+	DDV_MinMaxUInt(pDX, m_nPort, 0, 65535);
 	DDX_Text(pDX, IDC_EDIT_HEADER, m_sPhHeader);
 	DDX_Text(pDX, IDC_EDIT_SKIP, m_nPhSkip);
 	DDV_MinMaxUInt(pDX, m_nPhSkip, 0, 100);
@@ -93,53 +93,129 @@ void CDlgNetConf::OnSelchangeComboQlist()
 		SetDlgItemText(IDC_EDIT_ADDR, "headlines.yahoo.co.jp/hl?c=sci&t=l");
 		SetDlgItemText(IDC_EDIT_HEADER, "<li>");
 		break;
-	case 6:	// ２ちゃんねる ニュース速報＋
-		SetDlgItemText(IDC_EDIT_ADDR, "news2.2ch.net/newsplus/");
-		SetDlgItemText(IDC_EDIT_HEADER, "<a href=\"#");
-		break;
-	case 7:	// ２ちゃんねる ニュース実況
-		SetDlgItemText(IDC_EDIT_ADDR, "news2.2ch.net/liveplus/");
-		SetDlgItemText(IDC_EDIT_HEADER, "<a href=\"#");
-		break;
-	case 8:	// ２ちゃんねる ＰＣニュース
-		SetDlgItemText(IDC_EDIT_ADDR, "pc.2ch.net/pcnews/");
-		SetDlgItemText(IDC_EDIT_HEADER, "<a href=\"#");
-		break;
-	case 9:	// 読売新聞 社会
-		SetDlgItemText(IDC_EDIT_ADDR, "www.yomiuri.co.jp/04/index.htm");
-		SetDlgItemText(IDC_EDIT_HEADER, "◆<a href");
-		break;
-	case 10:	// 読売新聞 政治
-		SetDlgItemText(IDC_EDIT_ADDR, "www.yomiuri.co.jp/01/");
-		SetDlgItemText(IDC_EDIT_HEADER, "◆<a href");
-		break;
-	case 11:	// 読売新聞 経済
-		SetDlgItemText(IDC_EDIT_ADDR, "www.yomiuri.co.jp/02/");
-		SetDlgItemText(IDC_EDIT_HEADER, "◆<a href");
-		break;
-	case 12:	// 読売新聞 国際
-		SetDlgItemText(IDC_EDIT_ADDR, "www.yomiuri.co.jp/05/");
-		SetDlgItemText(IDC_EDIT_HEADER, "◆<a href");
-		break;
-	case 13:	// Yahoo USA top story
+	case 6:	// Yahoo USA top story
 		SetDlgItemText(IDC_EDIT_ADDR, "news.yahoo.com/news?tmpl=index2&cid=716");
 		SetDlgItemText(IDC_EDIT_HEADER, "class=topstory");
 		break;
-	case 14:	// Yahoo USA world selection
+	case 7:	// Yahoo USA world selection
 		SetDlgItemText(IDC_EDIT_ADDR, "news.yahoo.com/news?tmpl=index2&cid=721");
 		SetDlgItemText(IDC_EDIT_HEADER, "class=topstory");
 		break;
-	case 15:	// Yahoo USA business selection
+	case 8:	// Yahoo USA business selection
 		SetDlgItemText(IDC_EDIT_ADDR, "news.yahoo.com/news?tmpl=index2&cid=749");
 		SetDlgItemText(IDC_EDIT_HEADER, "class=topstory");
 		break;
-	case 16:	// Yahoo USA technology selection
+	case 9:	// Yahoo USA technology selection
 		SetDlgItemText(IDC_EDIT_ADDR, "news.yahoo.com/news?tmpl=index2&cid=738");
 		SetDlgItemText(IDC_EDIT_HEADER, "class=topstory");
 		break;
-	case 17:	// 共同通信社 ニュースハイライト
+	case 10:	// ２ちゃんねる ニュース速報＋
+		SetDlgItemText(IDC_EDIT_ADDR, "news2.2ch.net/newsplus/");
+		SetDlgItemText(IDC_EDIT_HEADER, "<a href=\"#");
+		break;
+	case 11:	// ２ちゃんねる ニュース実況
+		SetDlgItemText(IDC_EDIT_ADDR, "news2.2ch.net/liveplus/");
+		SetDlgItemText(IDC_EDIT_HEADER, "<a href=\"#");
+		break;
+	case 12:	// ２ちゃんねる ＰＣニュース
+		SetDlgItemText(IDC_EDIT_ADDR, "pc.2ch.net/pcnews/");
+		SetDlgItemText(IDC_EDIT_HEADER, "<a href=\"#");
+		break;
+	case 13:	// 読売新聞 社会
+		SetDlgItemText(IDC_EDIT_ADDR, "www.yomiuri.co.jp/04/index.htm");
+		SetDlgItemText(IDC_EDIT_HEADER, "◆<a href");
+		break;
+	case 14:	// 読売新聞 政治
+		SetDlgItemText(IDC_EDIT_ADDR, "www.yomiuri.co.jp/01/");
+		SetDlgItemText(IDC_EDIT_HEADER, "◆<a href");
+		break;
+	case 15:	// 読売新聞 経済
+		SetDlgItemText(IDC_EDIT_ADDR, "www.yomiuri.co.jp/02/");
+		SetDlgItemText(IDC_EDIT_HEADER, "◆<a href");
+		break;
+	case 16:	// 読売新聞 国際
+		SetDlgItemText(IDC_EDIT_ADDR, "www.yomiuri.co.jp/05/");
+		SetDlgItemText(IDC_EDIT_HEADER, "◆<a href");
+		break;
+	case 17:	// 朝日新聞 社会
+		SetDlgItemText(IDC_EDIT_ADDR, "www.asahi.com/national/index.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "/national/update/");
+		break;
+	case 18:	// 朝日新聞 経済
+		SetDlgItemText(IDC_EDIT_ADDR, "www.asahi.com/business/index.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "/business/update/");
+		break;
+	case 19:	// 朝日新聞 政治
+		SetDlgItemText(IDC_EDIT_ADDR, "www.asahi.com/politics/index.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "/politics/update/");
+		break;
+	case 20:	// 朝日新聞 国際
+		SetDlgItemText(IDC_EDIT_ADDR, "www.asahi.com/international/index.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "/international/update/");
+		break;
+	case 21:	// 産経新聞 社会
+		SetDlgItemText(IDC_EDIT_ADDR, "www.sankei.co.jp/news/shakai.htm");
+		SetDlgItemText(IDC_EDIT_HEADER, "cut/dot_blue.gif");
+		break;
+	case 22:	// 産経新聞 経済
+		SetDlgItemText(IDC_EDIT_ADDR, "www.sankei.co.jp/news/keizai.htm");
+		SetDlgItemText(IDC_EDIT_HEADER, "cut/dot_blue.gif");
+		break;
+	case 23:	// 産経新聞 政治
+		SetDlgItemText(IDC_EDIT_ADDR, "www.sankei.co.jp/news/seiji.htm");
+		SetDlgItemText(IDC_EDIT_HEADER, "cut/dot_blue.gif");
+		break;
+	case 24:	// 産経新聞 国際
+		SetDlgItemText(IDC_EDIT_ADDR, "www.sankei.co.jp/news/kokusai.htm");
+		SetDlgItemText(IDC_EDIT_HEADER, "cut/dot_blue.gif");
+		break;
+	case 25:	// 共同通信社 ニュースハイライト
 		SetDlgItemText(IDC_EDIT_ADDR, "www.kyodo.co.jp/k2highlight.shtml");
 		SetDlgItemText(IDC_EDIT_HEADER, "<strong>■");
+		break;
+	case 26:	// 時事通信社 政治
+		SetDlgItemText(IDC_EDIT_ADDR, "www.jiji.com/cgi-bin/content.cgi?genre=pol");
+		SetDlgItemText(IDC_EDIT_HEADER, "class=headline");
+		break;
+	case 27:	// 時事通信社 経済
+		SetDlgItemText(IDC_EDIT_ADDR, "www.jiji.com/cgi-bin/content.cgi?genre=eco");
+		SetDlgItemText(IDC_EDIT_HEADER, "class=headline");
+		break;
+	case 28:	// 時事通信社 国際
+		SetDlgItemText(IDC_EDIT_ADDR, "www.jiji.com/cgi-bin/content.cgi?genre=int");
+		SetDlgItemText(IDC_EDIT_HEADER, "class=headline");
+		break;
+	case 29:	// 時事通信社 社会
+		SetDlgItemText(IDC_EDIT_ADDR, "www.jiji.com/cgi-bin/content.cgi?genre=soc");
+		SetDlgItemText(IDC_EDIT_HEADER, "class=headline");
+		break;
+	case 30:	// Bloomberg 国内トップニュース
+		SetDlgItemText(IDC_EDIT_ADDR, "quote.bloomberg.com/fgcgi2.cgi?T=japan_news.ht&nicat=TOPJ&adtag=topj1.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "T=japan_news_story");
+		break;
+	case 31:	// Bloomberg 海外トップニュース
+		SetDlgItemText(IDC_EDIT_ADDR, "quote.bloomberg.com/fgcgi2.cgi?T=japan_news_topka.ht&nicat=TOPKAIGAI&adtag=topj2.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "T=japan_news_story");
+		break;
+	case 32:	// ＣＮＥＴ Japan ニュース
+		SetDlgItemText(IDC_EDIT_ADDR, "japan.cnet.com/News/news.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "見出し*****-->");
+		break;
+	case 33:	// ＺＤｎｅｔ Japan ニュース
+		SetDlgItemText(IDC_EDIT_ADDR, "www.zdnet.co.jp/news/");
+		SetDlgItemText(IDC_EDIT_HEADER, "FONT SIZE=\"4\"");
+		break;
+	case 34:	// 首都圏 近距離ＪＲ運行状況
+		SetDlgItemText(IDC_EDIT_ADDR, "ekimae3.toshiba.co.jp/jr-info/detail.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "     <p>");
+		break;
+	case 35:	// 首都圏 長距離ＪＲ運行状況
+		SetDlgItemText(IDC_EDIT_ADDR, "ekimae3.toshiba.co.jp/jr-info/detail_cho.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "     <p>");
+		break;
+	case 36:	// 首都圏 新幹線運行状況
+		SetDlgItemText(IDC_EDIT_ADDR, "ekimae3.toshiba.co.jp/jr-info/detail_sin.html");
+		SetDlgItemText(IDC_EDIT_HEADER, "     <p>");
 		break;
 	default:	//
 		SetDlgItemText(IDC_EDIT_ADDR, "headlines.yahoo.co.jp/hl");

@@ -37,7 +37,7 @@ protected:
 
 	// 生成されたメッセージ マップ関数
 	//{{AFX_MSG(CInstDlg)
-		// メモ: ClassWizard はこの位置にメンバ関数を追加します。
+	afx_msg void OnBtnHelp();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

@@ -23,6 +23,8 @@
 class CInfoBar00App : public CWinApp
 {
 public:
+	BOOL m_bMutexOwner;
+	HANDLE m_hMutex;
 	BOOL bInstalled;
 	BOOL UninstallSeq(void);
 	BOOL InstallSeq(void);
@@ -35,6 +37,7 @@ public:
 	//{{AFX_VIRTUAL(CInfoBar00App)
 	public:
 	virtual BOOL InitInstance();
+	virtual int ExitInstance();
 	//}}AFX_VIRTUAL
 
 // インプリメンテーション

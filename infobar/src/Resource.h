@@ -44,8 +44,12 @@
 #define IDC_CHECK_UNINST_START          1026
 #define IDC_BTN_HELP                    1027
 #define IDC_CHK_TOPMOST                 1028
+#define IDC_BTN_FONT                    1029
+#define IDC_TXT_FONT                    1030
+#define IDC_BTN_MAKEUNIN                1032
 #define ID_MENU_CONFIG                  32771
 #define ID_MENU_EXIT                    32772
+#define ID_MENU_HELP                    32773
 #define AFX_STR_UNINST_CPLNAME          57345
 #define AFX_STR_USERDAT_1               57346
 #define AFX_STR_USERDAT_2               57347
@@ -73,8 +77,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        138
-#define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1029
+#define _APS_NEXT_COMMAND_VALUE         32775
+#define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

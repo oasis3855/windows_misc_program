@@ -16,6 +16,8 @@ class CDlgSysConf : public CPropertyPage
 
 // コンストラクション
 public:
+	CString sFontName;
+	int nFontPoint;
 	COLORREF m_cForeColor, m_cBackColor;
 	CDlgSysConf();
 	~CDlgSysConf();
@@ -47,6 +49,8 @@ protected:
 	afx_msg void OnBtnBackColor();
 	afx_msg void OnBtnForeColor();
 	afx_msg void OnPaint();
+	afx_msg void OnBtnFont();
+	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

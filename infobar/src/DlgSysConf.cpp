@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CDlgSysConf, CPropertyPage)
 	ON_BN_CLICKED(IDC_BTN_BACK_COLOR, OnBtnBackColor)
 	ON_BN_CLICKED(IDC_BTN_FORE_COLOR, OnBtnForeColor)
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_BTN_FONT, OnBtnFont)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -123,4 +124,71 @@ void CDlgSysConf::OnPaint()
 	ReleaseDC(pDC);
 	
 	// 描画用メッセージとして CPropertyPage::OnPaint() を呼び出してはいけません
+}
+
+
+void CDlgSysConf::OnBtnFont() 
+{
+	// TODO: この位置にコントロール通知ハンドラ用のコードを追加してください
+	CDC *pDC;
+	CFont fnt;		// 暫定フォント作成用
+	CFont *pfnt;	// DCに割り当てられている現在のフォントを得るときに使う
+	LOGFONT lf, lf2;
+	CString sTmp;
+
+	if(nFontPoint <= 0)
+	{	// フォント名がまだ指定されていないとき
+		//*******************
+		// とりあえず適当なフォントを現在のデバイスコンテキストの割り付け
+		// そのとき返ってくる、現在のフォント情報を得る
+		//*******************
+		pDC = this->GetDC();				// デバイスコンテキストを得る
+		this->GetFont()->GetLogFont(&lf);	// このダイアログの現在のフォント
+		fnt.CreateFontIndirect(&lf);		// 暫定フォント作成
+		pfnt = pDC->SelectObject(&fnt);		// 暫定フォントの割付と、現在フォントの取得
+		pfnt->GetLogFont(&lf2);				// 現在フォントを LOGFONT 構造体へ
+											// １回の使用で、pfnt は破壊される
+
+		pDC->SelectStockObject(DEVICE_DEFAULT_FONT);	// システムフォントを割り付け
+		fnt.DeleteObject();					// 暫定フォントの解放
+		ReleaseDC(pDC);						// DCの解放
+	}
+	else
+	{
+		fnt.CreatePointFont(nFontPoint, sFontName);
+		fnt.GetLogFont(&lf2);
+		fnt.DeleteObject();
+	}
+
+	
+	CFontDialog dlg(&lf2);
+
+//	dlg.m_cf.iPointSize = 120;		// 12pt
+	dlg.m_cf.rgbColors  = m_cForeColor;
+
+
+	if(dlg.DoModal() == IDOK)
+	{
+		nFontPoint = dlg.m_cf.iPointSize;
+		sFontName = dlg.m_lf.lfFaceName;
+
+	sTmp.Format("%s %.1f point", sFontName, nFontPoint/10.0);
+
+		SetDlgItemText(IDC_TXT_FONT,sTmp);
+	}
+}
+
+BOOL CDlgSysConf::OnInitDialog() 
+{
+	CPropertyPage::OnInitDialog();
+	
+	// TODO: この位置に初期化の補足処理を追加してください
+	CString sTmp;
+
+	sTmp.Format("%s %.1f point", sFontName, nFontPoint/10.0);
+
+	SetDlgItemText(IDC_TXT_FONT,sTmp);
+	
+	return TRUE;  // コントロールにフォーカスを設定しないとき、戻り値は TRUE となります
+	              // 例外: OCX プロパティ ページの戻り値は FALSE となります
 }

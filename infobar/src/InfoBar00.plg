@@ -7,11 +7,10 @@
 </h3>
 <h3>ｺﾏﾝﾄﾞ ﾗｲﾝ</h3>
 Creating command line "rc.exe /l 0x411 /fo"Release/InfoBar00.res" /d "NDEBUG" /d "_AFXDLL" "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\InfoBar00.rc"" 
-一時ﾌｧｲﾙ "f:\temp\winnt\inoue-h\RSP2A.tmp" を作成し、次の内容を記録します
+一時ﾌｧｲﾙ "f:\temp\winnt\inoue-h\RSP32.tmp" を作成し、次の内容を記録します
 [
 /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Release/InfoBar00.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\CheckWinVer.cpp"
-"G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\DlgAbout.cpp"
 "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\DlgNetConf.cpp"
 "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\DlgSysConf.cpp"
 "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\GlobalFunc.cpp"
@@ -19,19 +18,19 @@ Creating command line "rc.exe /l 0x411 /fo"Release/InfoBar00.res" /d "NDEBUG" /d
 "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\InfoBar00Dlg.cpp"
 "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\InstDlg.cpp"
 "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\InstFunc.cpp"
+"G:\mnt\data-1\DATA\SRC\VC\InfoBar00\DlgAbout.cpp"
 ]
-Creating command line "cl.exe @"f:\temp\winnt\inoue-h\RSP2A.tmp"" 
-一時ﾌｧｲﾙ "f:\temp\winnt\inoue-h\RSP2B.tmp" を作成し、次の内容を記録します
+Creating command line "cl.exe @"f:\temp\winnt\inoue-h\RSP32.tmp"" 
+一時ﾌｧｲﾙ "f:\temp\winnt\inoue-h\RSP33.tmp" を作成し、次の内容を記録します
 [
 /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp"Release/InfoBar00.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "G:\MNT\DATA-1\DATA\SRC\VC\InfoBar00\StdAfx.cpp"
 ]
-Creating command line "cl.exe @"f:\temp\winnt\inoue-h\RSP2B.tmp"" 
-一時ﾌｧｲﾙ "f:\temp\winnt\inoue-h\RSP2C.tmp" を作成し、次の内容を記録します
+Creating command line "cl.exe @"f:\temp\winnt\inoue-h\RSP33.tmp"" 
+一時ﾌｧｲﾙ "f:\temp\winnt\inoue-h\RSP36.tmp" を作成し、次の内容を記録します
 [
 /nologo /subsystem:windows /incremental:no /pdb:"Release/InfoBar.pdb" /machine:I386 /out:"Release/InfoBar.exe" 
 ".\Release\CheckWinVer.obj"
-".\Release\DlgAbout.obj"
 ".\Release\DlgNetConf.obj"
 ".\Release\DlgSysConf.obj"
 ".\Release\GlobalFunc.obj"
@@ -41,15 +40,15 @@ Creating command line "cl.exe @"f:\temp\winnt\inoue-h\RSP2B.tmp""
 ".\Release\InstFunc.obj"
 ".\Release\StdAfx.obj"
 ".\Release\InfoBar00.res"
+".\Release\DlgAbout.obj"
 ]
-ｺﾏﾝﾄﾞ ﾗｲﾝ "link.exe @"f:\temp\winnt\inoue-h\RSP2C.tmp"" の作成中
+ｺﾏﾝﾄﾞ ﾗｲﾝ "link.exe @"f:\temp\winnt\inoue-h\RSP36.tmp"" の作成中
 <h3>ｱｳﾄﾌﾟｯﾄ ｳｨﾝﾄﾞｳ</h3>
 ﾘｿｰｽをｺﾝﾊﾟｲﾙ中...
 ｺﾝﾊﾟｲﾙ中...
 StdAfx.cpp
 ｺﾝﾊﾟｲﾙ中...
 CheckWinVer.cpp
-DlgAbout.cpp
 DlgNetConf.cpp
 DlgSysConf.cpp
 GlobalFunc.cpp
@@ -57,6 +56,7 @@ InfoBar00.cpp
 InfoBar00Dlg.cpp
 InstDlg.cpp
 InstFunc.cpp
+DlgAbout.cpp
 ｺｰﾄﾞを生成中...
 ﾘﾝｸ中...
 

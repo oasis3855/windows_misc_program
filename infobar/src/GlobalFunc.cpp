@@ -286,14 +286,30 @@ void thread_main(void *pVoid)
 		i=_sTmp_trd.Find("<META", j);
 		if(i<0)
 		{
-			i=_sTmp_trd.Find("<meta", j);
-			if(i<0) break;
+			break;
 		}
 		j=_sTmp_trd.Find(">", i+1);
 		if(j<0) break;
 		_sTmp2_trd = _sTmp_trd.Mid(i+1, j-i);
-		if(_sTmp2_trd.Find("SHIFT",0) || _sTmp2_trd.Find("shift",0) || _sTmp2_trd.Find("Shift",0) ||
-					_sTmp2_trd.Find("sjis",0) || _sTmp2_trd.Find("Sjis",0) || _sTmp2_trd.Find("SJIS",0))
+		if(_sTmp2_trd.Find("SHIFT",0)!=-1 || _sTmp2_trd.Find("shift",0)!=-1 || _sTmp2_trd.Find("Shift",0)!=-1 ||
+					_sTmp2_trd.Find("sjis",0)!=-1 || _sTmp2_trd.Find("Sjis",0)!=-1 || _sTmp2_trd.Find("SJIS",0)!=-1)
+		{
+			isSJIS = TRUE;
+			break;
+		}
+	}		
+	for(i=0,j=0;;)
+	{
+		i=_sTmp_trd.Find("<meta", j);
+		if(i<0)
+		{
+			break;
+		}
+		j=_sTmp_trd.Find(">", i+1);
+		if(j<0) break;
+		_sTmp2_trd = _sTmp_trd.Mid(i+1, j-i);
+		if(_sTmp2_trd.Find("SHIFT",0)!=-1 || _sTmp2_trd.Find("shift",0)!=-1 || _sTmp2_trd.Find("Shift",0)!=-1 ||
+					_sTmp2_trd.Find("sjis",0)!=-1 || _sTmp2_trd.Find("Sjis",0)!=-1 || _sTmp2_trd.Find("SJIS",0)!=-1)
 		{
 			isSJIS = TRUE;
 			break;
@@ -347,7 +363,10 @@ void thread_main(void *pVoid)
 			i += sPhHeader.GetLength();		// 区切文字列文だけインデックスを進める
 			for(;;)
 			{
-				if(_sTmp_trd[i+1] == '<') i = _sTmp_trd.Find(">", i+1);		// 直後に <...> が続いている場合
+				if(_sTmp_trd[i+1] == '<')
+				{	// 直後に <...> が続いている場合
+					i = _sTmp_trd.Find(">", i+1);
+				}
 				else if(_sTmp_trd.Find("<", i+1) > _sTmp_trd.Find(">", i+1))
 				{	// 区切文字列が <...>の内部にあるとき
 					i = _sTmp_trd.Find(">", i+1);
@@ -358,12 +377,16 @@ void thread_main(void *pVoid)
 			j = _sTmp_trd.Find("<", i+1);	// 次の <...>の始まりを見つける
 			if(j<0) break;
 			if(nPhSkip > _nSkip) continue;
-			sTransBuf += _sTmp_trd.Mid(i+1, j-i-1);
-			sTransBuf += "\n";
+
+			_sTmp2_trd = _sTmp_trd.Mid(i+1, j-i-1);		// １行抽出
+
+			if(_sTmp2_trd == "" || _sTmp2_trd == "\n") continue;	// 空文字列スキップ
+			sTransBuf += _sTmp2_trd;		// バッファに追加
+			if(sTransBuf[sTransBuf.GetLength()-1] != '\n')
+				sTransBuf += "\n";		// 最終文字が 改行 でない時は、改行をつける
 			_nGetCt++;
 		}
 
-		bUpdated = TRUE;		// 情報更新
 	}
 
 	//**************************************
@@ -376,6 +399,8 @@ void thread_main(void *pVoid)
 		_sTmp2_trd.Format(_sTmp_trd, sTitle, _tm_trd.GetMonth(), _tm_trd.GetDay(), _tm_trd.GetHour(), _tm_trd.GetMinute());
 		sTransBuf = _sTmp2_trd + sTransBuf;
 	}
+	if(sTransBuf != "")
+		bUpdated = TRUE;		// 情報更新
 
 	bInThread = FALSE;		// スレッド動作中
 

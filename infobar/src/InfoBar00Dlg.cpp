@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 // 仮想ビットマップのサイズ
-#define BITMAP_CX	3000
+#define BITMAP_CX	5000
 #define BITMAP_CY	50
 
 // タイマー ID
@@ -36,7 +36,6 @@ CInfoBar00Dlg::CInfoBar00Dlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CInfoBar00Dlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CInfoBar00Dlg)
-		// メモ: この位置に ClassWizard によってメンバの初期化が追加されます。
 	//}}AFX_DATA_INIT
 	// メモ: LoadIcon は Win32 の DestroyIcon のサブシーケンスを要求しません。
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -44,13 +43,15 @@ CInfoBar00Dlg::CInfoBar00Dlg(CWnd* pParent /*=NULL*/)
 	IsInfoWndDC_active = FALSE;
 	IsMemDC_active = FALSE;
 
+	// ウインドウサイズが変更された場合に TRUE
+	bWndSizeChanged = FALSE;
+
 }
 
 void CInfoBar00Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CInfoBar00Dlg)
-	DDX_Control(pDX, IDC_INFO_AREA, m_ctrl_info_area);
 	//}}AFX_DATA_MAP
 }
 
@@ -65,6 +66,8 @@ BEGIN_MESSAGE_MAP(CInfoBar00Dlg, CDialog)
 	ON_WM_LBUTTONDOWN()
 	ON_COMMAND(ID_MENU_CONFIG, OnMenuConfig)
 	ON_COMMAND(ID_MENU_EXIT, OnMenuExit)
+	ON_WM_SIZE()
+	ON_COMMAND(ID_MENU_HELP, OnMenuHelp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -84,12 +87,45 @@ BOOL CInfoBar00Dlg::OnInitDialog()
 	CString _sTmpStr1, _sTmpStr2;
 
 	//**************************
+	// フォントの設定
+	//**************************
+	LOGFONT lf;
+	this->GetFont()->GetLogFont(&lf);
+	m_Font.CreateFontIndirect(&lf);
+
+	m_Font.DeleteObject();
+	//**************************
+	// ウインドウ状態の設定
+	//**************************
+
+	// タスクバーに表示するかどうかの設定
+	LONG ex_style = ::GetWindowLong(m_hWnd, GWL_EXSTYLE);
+	ex_style &= ~WS_EX_APPWINDOW;
+	::SetWindowLong(m_hWnd, GWL_EXSTYLE, ex_style);
+
+	// ウインドウ位置の設定
+	if(nInfoWndWidth != 0 && nInfoWndHeight != 0)
+	{	// ウインドウサイズ指定が有効な時
+		if(bDispTopmost)
+			SetWindowPos(&wndTopMost, nPosX, nPosY,nInfoWndWidth,nInfoWndHeight, SWP_SHOWWINDOW);
+		else
+			SetWindowPos(&wndNoTopMost, nPosX, nPosY,nInfoWndWidth,nInfoWndHeight, SWP_SHOWWINDOW);
+	}
+	else
+	{
+		if(bDispTopmost)
+			SetWindowPos(&wndTopMost, nPosX, nPosY,0,0, SWP_NOSIZE|SWP_SHOWWINDOW);
+		else
+			SetWindowPos(&wndNoTopMost, nPosX, nPosY,0,0, SWP_NOSIZE|SWP_SHOWWINDOW);
+	}
+
+	//**************************
 	// デバイスコンテキストの生成と初期化
 	//**************************
 
 	//**** 描画エリアの DC
-//	InfoWndDC = this->GetDC();
-	InfoWndDC = m_ctrl_info_area.GetDC();
+	InfoWndDC = this->GetDC();		// ウインドウ自身のＤＣ（全面描画）
+//	InfoWndDC = m_ctrl_info_area.GetDC();
 	if(InfoWndDC == NULL)
 	{
 		_sTmpStr1.LoadString(AFX_IDS_APP_TITLE);	// アプリケーション名（InfoBar）
@@ -102,8 +138,10 @@ BOOL CInfoBar00Dlg::OnInitDialog()
 	IsInfoWndDC_active = TRUE;	// このフラグで、終了時に DC を解放する
 
 	//**** 描画エリアの RECT サイズ
-	m_ctrl_info_area.GetWindowRect(&InfoWndRect);
+//	m_ctrl_info_area.GetWindowRect(&InfoWndRect);
+	this->GetWindowRect(&InfoWndRect);
 	nInfoWndWidth = InfoWndRect.right - InfoWndRect.left;
+	nInfoWndHeight = InfoWndRect.bottom - InfoWndRect.top;
 	//**** バックグラウンドのブラシ（塗りつぶし色）
 	BrushInfoBack.CreateSolidBrush(cBackColor);
 	//**** ワークエリア用 DC
@@ -151,28 +189,12 @@ BOOL CInfoBar00Dlg::OnInitDialog()
 	bInThread = FALSE;		// スレッド動作中
 	sTransBuf.LoadString(IDS_MES_INITIAL);		// InfoBar  :   画面上を右クリックして設定してください\n
 
+
 	//**************************
-	// ウインドウ状態の設定
-	//**************************
-
-	// タスクバーに表示するかどうかの設定
-	LONG ex_style = ::GetWindowLong(m_hWnd, GWL_EXSTYLE);
-	ex_style &= ~WS_EX_APPWINDOW;
-	::SetWindowLong(m_hWnd, GWL_EXSTYLE, ex_style);
-
-	// ウインドウ位置の設定
-	if(bDispTopmost)
-		SetWindowPos(&wndTopMost, nPosX, nPosY,0,0, SWP_NOSIZE|SWP_SHOWWINDOW);
-	else
-		SetWindowPos(&wndNoTopMost, nPosX, nPosY,0,0, SWP_NOSIZE|SWP_SHOWWINDOW);
-
 	// 初期ビットマップの描画
-	MemDC.SelectObject(BrushInfoBack);
-	MemDC.FillSolidRect(0,0,BITMAP_CX-1,BITMAP_CY-1, cBackColor);
-	MemDC.SetBkColor(cBackColor);
-	MemDC.SetTextColor(cForeColor);
-	MemDC.TextOut(nInfoWndWidth,5,"initialize ...");
-	CalcMemStrLength();
+	//**************************
+	_sTmpStr1 = "initialize ...";
+	DrawStringOnBmp(&_sTmpStr1);		// 仮想ビットマップに文字列描画
 
 
 	//**************************
@@ -190,9 +212,6 @@ BOOL CInfoBar00Dlg::OnInitDialog()
 		PostMessage(WM_CLOSE, 0, 0);
 		return TRUE;
 	}
-
-	// ESCで終了処理しないためのフラグ
-	bExitSeq = FALSE;
 
 	return TRUE;  // TRUE を返すとコントロールに設定したフォーカスは失われません。
 }
@@ -248,6 +267,24 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 	int i,j,k;
 	time_t tNow;
 
+	if(bWndSizeChanged)
+	{	// ウインドウサイズが変更されたとき
+		this->GetWindowRect(&InfoWndRect);
+		nInfoWndWidth = InfoWndRect.right - InfoWndRect.left;
+		nInfoWndHeight = InfoWndRect.bottom - InfoWndRect.top;
+		nPosX = InfoWndRect.left;
+		nPosY = InfoWndRect.top;
+		if(InfoWndRect.bottom - InfoWndRect.top > BITMAP_CY)
+		{
+			// ウインドウ位置の設定
+			if(bDispTopmost)
+				SetWindowPos(&wndTopMost, nPosX, nPosY,nInfoWndWidth,BITMAP_CY, SWP_SHOWWINDOW);
+			else
+				SetWindowPos(&wndNoTopMost, nPosX, nPosY,nInfoWndWidth,BITMAP_CY, SWP_SHOWWINDOW);
+		}
+		bWndSizeChanged = FALSE;
+	}
+
 	//****************
 	// 自動アップデート
 	//****************
@@ -258,17 +295,34 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 		{	// インターバル時間を過ぎていれば、自動アップデート
 			bUpdated = FALSE;		// 情報更新
 			bInThread = FALSE;		// スレッド動作中
-			KillTimer(nTimerID);
+			if(nTimerID != 0) KillTimer(nTimerID);		// タイマーの停止
 			if(_beginthread(thread_main,0,NULL)==-1)
 			{
 				sTransBuf.LoadString(IDS_ERR_THREAD);	// システム・エラー：スレッドが起動できません
 			}
 
-			::Sleep(nTimer*3);
+			::Sleep(nTimer*3);								// スレッド起動のため、ウエイト
 			nTimerID = SetTimer(nTimerID, nTimer, NULL);	// 指定秒数後、ON_TIMER に制御が移る
 
 			time(&tPrev);
 		}
+
+		//****************
+		// レジストリ自動アップデート
+		//****************
+		// 表示座標が変わっていたら、レジストリに保存
+		RECT winRect;
+		GetWindowRect(&winRect);
+		if((int)nPosX != winRect.left || (int)nPosY != winRect.top)
+		{
+			nPosX = winRect.left;
+			nPosY = winRect.top;
+			// レジストリに保存
+			CInfoBar00App *theApp;
+			theApp = (CInfoBar00App *)AfxGetApp();
+			theApp->RegConfigWrite(this);
+		}
+
 	}
 
 	//****************
@@ -280,12 +334,9 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 		ScrCurPos = 0;
 		_nTimCurArticle = 0;
 		_sCurStr = sTransBuf.Mid(0, sTransBuf.Find("\n", 0));
-		MemDC.SelectObject(BrushInfoBack);
-		MemDC.FillSolidRect(0,0,BITMAP_CX-1,BITMAP_CY-1, cBackColor);
-		MemDC.SetBkColor(cBackColor);
-		MemDC.SetTextColor(cForeColor);
-		MemDC.TextOut(nInfoWndWidth,5,_sCurStr);
-		CalcMemStrLength();
+
+		DrawStringOnBmp(&_sCurStr);		// 仮想ビットマップに文字列描画
+
 		bUpdated = FALSE;
 	}
 	if(ScrCurPos > (int)MemStrLength)
@@ -304,24 +355,53 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 			i=0;
 		}
 		_sCurStr = sTransBuf.Mid(i, sTransBuf.Find("\n", i)-i);
-		MemDC.SelectObject(BrushInfoBack);
-		MemDC.FillSolidRect(0,0,BITMAP_CX-1,BITMAP_CY-1, cBackColor);
-		MemDC.SetBkColor(cBackColor);
-		MemDC.SetTextColor(cForeColor);
-		MemDC.TextOut(InfoWndRect.right,5,_sCurStr);
-		CalcMemStrLength();
 
+		DrawStringOnBmp(&_sCurStr);		// 仮想ビットマップに文字列描画
 	}
 
-	InfoWndDC->BitBlt(0,0,nInfoWndWidth,InfoWndRect.bottom-InfoWndRect.top,
-						&MemDC,ScrCurPos,0,SRCCOPY);
+	InfoWndDC->BitBlt(0, 0, nInfoWndWidth, nInfoWndHeight, &MemDC, ScrCurPos, 0, SRCCOPY);
 
 	ScrCurPos += nMoveSpeed;		// 移動するドット数
 	
 	CDialog::OnTimer(nIDEvent);
 }
 
+// **********************************
+// 仮想ビットマップに、文字列を描画する
+// また、スクロール範囲決定のための、文字列の横方向のサイズを算出
+//
+// **********************************
+void CInfoBar00Dlg::DrawStringOnBmp(CString *sBuf)
+{
+	CFont fnt;		// 暫定フォント作成用
 
+
+	if(nFontPoint == 0)
+	{	// フォントが定義されていないときは、システムフォントを使用
+		MemDC.SelectStockObject(DEVICE_DEFAULT_FONT);	// システムフォントを割り付け
+	}
+	else
+	{
+		fnt.CreatePointFont(nFontPoint, sFontName);
+		MemDC.SelectObject(&fnt);
+	}
+
+	CalcMemStrLength(sBuf);		// 文字列のビットマップ長の計算
+
+	MemDC.SelectObject(BrushInfoBack);
+	MemDC.FillSolidRect(0,0,BITMAP_CX-1,BITMAP_CY-1, cBackColor);
+	MemDC.SetBkColor(cBackColor);
+	MemDC.SetTextColor(cForeColor);
+	MemDC.TextOut(nInfoWndWidth,5,*sBuf);
+
+	if(nFontPoint != 0)
+	{
+		MemDC.SelectStockObject(DEVICE_DEFAULT_FONT);	// システムフォントを割り付け
+		fnt.DeleteObject();
+	}
+
+	return ;
+}
 
 //*********************
 // MemDC に書き込まれている文字（画像）の長さ（ピクセル）を返す
@@ -333,21 +413,49 @@ void CInfoBar00Dlg::OnTimer(UINT nIDEvent)
 //                  この座標を返す
 // 
 //*********************
-void CInfoBar00Dlg::CalcMemStrLength()
+void CInfoBar00Dlg::CalcMemStrLength(CString *sBuf)
 {
-	int i,j;
+	int i,j,k, n_max, n_min;
+
+	// 検査用に文字列を描画（バックグラウンドは黒。文字描画領域は白）
+	MemDC.FillSolidRect(0,0,BITMAP_CX-1,BITMAP_CY-1, 0x000000);
+	MemDC.SetBkColor(0xffffff);
+	MemDC.SetTextColor(0xffffff);
+	MemDC.TextOut(nInfoWndWidth,5,*sBuf);
+
+	n_max = BITMAP_CX-2;		// 最大
+	n_min = nInfoWndWidth;		// 最小
+	for(i = (n_max+n_min)/2, j=n_min, k=n_max; ; )
+	{
+		if(MemDC.GetPixel(i,5) == 0)
+		{	// 文字でない （左へスキャン）
+			k = i;			// k は i の位置まで移動
+			i = (i+j)/2;	// i と j の中間へ
+		}
+		else
+		{	// 文字である （右へスキャン）
+			j = i;			// j は i の位置まで移動
+			i = (i+k)/2;	// i と k の中間へ
+		}
+		if(i <= j || i >= k) break;
+	}
+
+	MemStrLength = i;
+
+/**	
 	// 右端より、左に向かって検査
 	// FillRect が 右と下の境界線を塗りつぶしていないため補正
 	for(i=BITMAP_CX-2; i>=0; i--)
 	{
 		for(j=0; j<BITMAP_CY-2; j++)
 		{
-			if(MemDC.GetPixel(i,j) == cForeColor) break;
+			if(MemDC.GetPixel(i,j) == 0xffffff) break;
 		}
-		if(MemDC.GetPixel(i,j) == cForeColor) break;
+		if(MemDC.GetPixel(i,j) == 0xffffff) break;
 	}
 
 	MemStrLength = i;
+	**/
 }
 
 //*********************
@@ -420,6 +528,9 @@ void CInfoBar00Dlg::OnMenuConfig()
 
 	dlg_sysconf.m_bTopmost = bDispTopmost;
 
+	dlg_sysconf.nFontPoint = nFontPoint;
+	dlg_sysconf.sFontName = sFontName;
+
 	// プロパティーページの連結
 	DlgProp.AddPage(&dlg_netconf);
 	DlgProp.AddPage(&dlg_sysconf);
@@ -427,7 +538,7 @@ void CInfoBar00Dlg::OnMenuConfig()
 	DlgProp.SetActivePage(0); // ２ページ目を表にする
 
 	if(DlgProp.DoModal() == IDOK)
-	{
+	{	// 設定ダイアログで OK ボタンが押されたとき
 		sURL = dlg_netconf.m_sURL;
 		nPort = dlg_netconf.m_nPort;
 		sPhHeader = dlg_netconf.m_sPhHeader;
@@ -444,61 +555,54 @@ void CInfoBar00Dlg::OnMenuConfig()
 
 		bDispTopmost = dlg_sysconf.m_bTopmost;
 
+		nFontPoint = dlg_sysconf.nFontPoint;
+		sFontName = dlg_sysconf.sFontName;
 
 		bUpdated = FALSE;		// 情報更新
 		bInThread = FALSE;		// スレッド動作中
-		KillTimer(nTimerID);
+		if(nTimerID != 0) KillTimer(nTimerID);		// タイマーの一時停止
 		if(_beginthread(thread_main,0,NULL)==-1)
 		{
 			sTransBuf.LoadString(IDS_ERR_THREAD);	// システム・エラー：スレッドが起動できません
 		}
 
-		::Sleep(nTimer*3);
+		::Sleep(nTimer*3);							// スレッド起動のため、ウエイト
 		nTimerID = SetTimer(nTimerID, nTimer, NULL);	// 指定秒数後、ON_TIMER に制御が移る
 
-		time(&tPrev);
+		time(&tPrev);								// 更新時間をアップデート
 
 		// ウインドウの位置
 		RECT winRect;
 		GetWindowRect(&winRect);
 		nPosX = winRect.left;
 		nPosY = winRect.top;
+		nInfoWndWidth = winRect.right - winRect.left;
+		nInfoWndHeight = winRect.bottom - winRect.top;
 
 		if(bDispTopmost)
 			SetWindowPos(&wndTopMost, nPosX, nPosY,0,0, SWP_NOSIZE|SWP_SHOWWINDOW);
 		else
 			SetWindowPos(&wndNoTopMost, nPosX, nPosY,0,0, SWP_NOSIZE|SWP_SHOWWINDOW);
 
+		//****************
+		// レジストリ自動アップデート
+		//****************
+		// レジストリに保存
+		CInfoBar00App *theApp;
+		theApp = (CInfoBar00App *)AfxGetApp();
+		theApp->RegConfigWrite(this);
 	}
 
 }
 
-//*********************
-// 一連の終了時の処理
+// **********************************
+// メニューの「ヘルプ」を選んだときの処理
 //
-//*********************
-void CInfoBar00Dlg::EndDialogSeq()
+// **********************************
+void CInfoBar00Dlg::OnMenuHelp() 
 {
-	if(IsMemDC_active)
-	{
-		MemBmp.DeleteObject();
-		MemDC.DeleteDC();
-	}
-	if(IsInfoWndDC_active)
-		ReleaseDC(InfoWndDC);	// GetDC の解放
-
-	// WM_DESTROY で 重複消去を防止するための措置
-	IsInfoWndDC_active = FALSE;
-	IsMemDC_active = FALSE;
-
-	KillTimer(nTimerID);
-
-	// ウインドウの位置を保存
-	RECT winRect;
-	GetWindowRect(&winRect);
-	nPosX = winRect.left;
-	nPosY = winRect.top;
-
+	// TODO: この位置にコマンド ハンドラ用のコードを追加してください
+	OnHelp();
 }
 
 
@@ -510,8 +614,6 @@ void CInfoBar00Dlg::EndDialogSeq()
 void CInfoBar00Dlg::OnMenuExit() 
 {
 	// TODO: この位置にコマンド ハンドラ用のコードを追加してください
-
-	bExitSeq = TRUE;
 
 	// ウインドウに WM_CLOSE メッセージを送り、終了させる
 	PostMessage(WM_CLOSE, 0, 0);
@@ -547,8 +649,91 @@ void CInfoBar00Dlg::OnDestroy()
 	EndDialogSeq();		// 終了時の一連の処理
 }
 
-#define DOT_PITCH 3
+//*********************
+// 一連の終了時の処理
+//
+//*********************
+void CInfoBar00Dlg::EndDialogSeq()
+{
+	if(IsMemDC_active)
+	{
+		MemBmp.DeleteObject();
+		MemDC.DeleteDC();
+	}
+	if(IsInfoWndDC_active)
+		ReleaseDC(InfoWndDC);	// GetDC の解放
 
+	// WM_DESTROY で 重複消去を防止するための措置
+	IsInfoWndDC_active = FALSE;
+	IsMemDC_active = FALSE;
+
+	// タイマーの削除
+	if(nTimerID != 0) KillTimer(nTimerID);
+	nTimerID = 0;
+
+	// ウインドウの位置を保存
+	RECT winRect;
+	GetWindowRect(&winRect);
+	nPosX = winRect.left;
+	nPosY = winRect.top;
+	nInfoWndWidth = winRect.right - winRect.left;
+	nInfoWndHeight = winRect.bottom - winRect.top;
+
+}
+
+
+// **********************************
+// コマンドのインターセプト
+//
+// ESCキーとRETURN キーの横取り
+//
+// OnCommand(WPARAM wParam, LPARAM lParam) を利用すると、強制終了時にうまく働かない
+//
+// **********************************
+BOOL CInfoBar00Dlg::PreTranslateMessage(MSG* pMsg) 
+{
+	// TODO: この位置に固有の処理を追加するか、または基本クラスを呼び出してください
+	if( pMsg->message == WM_KEYDOWN )
+	{
+		switch( pMsg->wParam )
+		{
+		case VK_RETURN:  //  Enterキー押下
+			//  独自の処理
+
+			//  デフォルトの動作をさせたくない時はTRUEを返す
+			return TRUE;
+
+		case VK_ESCAPE:  //  Escキー押下
+			//  独自の処理
+
+			//  デフォルトの動作をさせたくない時はTRUEを返す
+			return TRUE;
+		default:
+			break;
+		}
+	}
+	
+	return CDialog::PreTranslateMessage(pMsg);
+}
+
+// **********************************
+// ダイアログのサイズが変更されたとき
+//
+// **********************************
+void CInfoBar00Dlg::OnSize(UINT nType, int cx, int cy) 
+{
+	CDialog::OnSize(nType, cx, cy);
+	
+	// TODO: この位置にメッセージ ハンドラ用のコードを追加してください
+	if(!bWndSizeChanged) bWndSizeChanged = TRUE;		// 次の描画で反映させるため
+}
+
+// **********************************
+// 仮想ビットマップ上の画像を、ＬＣＤ風にする（テスト関数）
+//
+// 実際には使用していない。
+// **********************************
+#define DOT_PITCH 3
 void CInfoBar00Dlg::MakeLCD()
 {
 	int i,j,k,m;
@@ -592,18 +777,4 @@ void CInfoBar00Dlg::MakeLCD()
 
 }
 
-// **********************************
-// コマンドのインターセプト
-//
-// ESCキーとRETURN キーの横取り
-// **********************************
-
-BOOL CInfoBar00Dlg::OnCommand(WPARAM wParam, LPARAM lParam) 
-{
-	// TODO: この位置に固有の処理を追加するか、または基本クラスを呼び出してください
-	if(wParam == WM_DESTROY && !bExitSeq) return 1;	// "ｴｽｹｰﾌﾟｷｰ"は処理しない。	
-	if(wParam == WM_CREATE) return 1;	// "ﾘﾀｰﾝｷｰ"は処理しない。	
-	
-	return CDialog::OnCommand(wParam, lParam);
-}
 

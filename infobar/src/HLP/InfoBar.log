@@ -2,6 +2,8 @@ Microsoft (R) Help Compiler
 HCRTF 4.03.0002
 Copyright (c) Microsoft Corp 1990 - 1995. All rights reserved.
 InfoBar.hpj
+    HC1012: Note: topic #8 of G:\mnt\data-1\DATA\SRC\VC\InfoBar00\HLP\InfoBar.rtf : 
+	Table cell borders are not supported.
     HC1010: Note: 
 	The following mapped Topic IDs were not used in any topic:
 	AFX_HIDP_UNREG_DONE
@@ -263,7 +265,7 @@ InfoBar.hpj
 7	Bitmaps
 
 
-Created G:\mnt\data-1\DATA\SRC\VC\InfoBar00\HLP\InfoBar.hlp, 76,427 bytes
-Bitmaps: 55,516 bytes
+Created G:\mnt\data-1\DATA\SRC\VC\InfoBar00\HLP\InfoBar.hlp, 83,460 bytes
+Bitmaps: 56,926 bytes
 Compile time: 0 minutes, 0 seconds
-1 note, 0 warnings
+2 notes, 0 warnings

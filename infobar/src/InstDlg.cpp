@@ -39,9 +39,15 @@ void CInstDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CInstDlg, CDialog)
 	//{{AFX_MSG_MAP(CInstDlg)
-		// メモ - ClassWizard はこの位置にマッピング用のマクロを追加または削除します。
+	ON_BN_CLICKED(IDC_BTN_HELP, OnBtnHelp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CInstDlg メッセージ ハンドラ
+
+void CInstDlg::OnBtnHelp() 
+{
+	// TODO: この位置にコントロール通知ハンドラ用のコードを追加してください
+	OnHelp();
+}

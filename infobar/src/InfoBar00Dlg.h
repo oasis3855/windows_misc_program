@@ -15,6 +15,11 @@ class CInfoBar00Dlg : public CDialog
 {
 // 構築
 public:
+	void DrawStringOnBmp(CString *sBuf);
+	CString sFontName;
+	int nFontPoint;
+	CFont m_Font;
+	BOOL bWndSizeChanged;
 	BOOL bExitSeq;
 	UINT nTimerID;
 	void EndDialogSeq(void);
@@ -25,9 +30,9 @@ public:
 	COLORREF cBackColor, cForeColor;
 	UINT nMoveSpeed;
 	UINT nTimer;
-	int nInfoWndWidth;
+	int nInfoWndWidth, nInfoWndHeight;
 	UINT MemStrLength;
-	void CalcMemStrLength(void);
+	void CalcMemStrLength(CString *sBuf);
 	int _nTimCurArticle;
 	BOOL IsMemDC_active;
 	BOOL IsInfoWndDC_active;
@@ -42,14 +47,14 @@ public:
 // ダイアログ データ
 	//{{AFX_DATA(CInfoBar00Dlg)
 	enum { IDD = IDD_INFOBAR00_DIALOG };
-	CStatic	m_ctrl_info_area;
 	//}}AFX_DATA
 
 	// ClassWizard は仮想関数のオーバーライドを生成します。
 	//{{AFX_VIRTUAL(CInfoBar00Dlg)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV のサポート
-	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
 // インプリメンテーション
@@ -68,6 +73,8 @@ protected:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnMenuConfig();
 	afx_msg void OnMenuExit();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnMenuHelp();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

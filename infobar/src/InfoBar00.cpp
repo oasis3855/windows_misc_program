@@ -16,6 +16,9 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+char  sMutexInstance[] = {"InfoBar00"};    //  多重起動防止のため利用
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CInfoBar00App
 
@@ -40,6 +43,8 @@ CInfoBar00App::CInfoBar00App()
 // 唯一の CInfoBar00App オブジェクト
 
 CInfoBar00App theApp;
+
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CInfoBar00App クラスの初期化
@@ -69,6 +74,7 @@ BOOL CInfoBar00App::InitInstance()
 
 	CInfoBar00Dlg dlg;
 
+
 	// **********************************
 	//  レジストリから全設定値を読み込む
 	// **********************************
@@ -92,6 +98,22 @@ BOOL CInfoBar00App::InitInstance()
 		return FALSE;
 	}
 
+	// **********************************
+	//  多重起動防止
+	// **********************************
+	m_hMutex = ::CreateMutex(NULL, TRUE, sMutexInstance);
+	if(::GetLastError() == ERROR_ALREADY_EXISTS)
+	{	// すでに起動している
+//		::CloseHandle(m_hMutex);
+		m_bMutexOwner = FALSE;
+		return FALSE;
+	}
+	m_bMutexOwner = TRUE;
+
+
+	// **********************************
+	//  メインダイアログの表示
+	// **********************************
 	if(this->bInstalled) dlg.tPrev = 1;	// 0でなければ、ネット接続する
 	else dlg.tPrev = 0;		// ネットに接続せず、ヘルプメッセージを流す
 
@@ -100,10 +122,29 @@ BOOL CInfoBar00App::InitInstance()
 
 	RegConfigWrite(&dlg);
 
+
 	// ダイアログが閉じられてからアプリケーションのメッセージ ポンプを開始するよりは、
 	// アプリケーションを終了するために FALSE を返してください。
 	return FALSE;
 }
+
+
+int CInfoBar00App::ExitInstance() 
+{
+	// TODO: この位置に固有の処理を追加するか、または基本クラスを呼び出してください
+
+	if(m_bMutexOwner)
+	{
+		// **********************************
+		//  多重起動防止の Mutex を閉じる
+		// **********************************
+		::ReleaseMutex(m_hMutex);
+		::CloseHandle(m_hMutex);
+	}
+
+	return CWinApp::ExitInstance();
+}
+
 
 // **********************************
 //  レジストリから設定値を読み出す
@@ -140,8 +181,17 @@ void CInfoBar00App::RegConfigRead(CInfoBar00Dlg *dlg)
 	dlg->nPosX = GetProfileInt("Settings","pos_x",100);
 	// ダイアログのＹ座標
 	dlg->nPosY = GetProfileInt("Settings","pos_y",100);
+	// ダイアログの幅
+	dlg->nInfoWndWidth = GetProfileInt("Settings","siz_x",0);
+	// ダイアログの高さ
+	dlg->nInfoWndHeight = GetProfileInt("Settings","siz_y",0);
 	// 最前面に表示する
 	dlg->bDispTopmost = GetProfileInt("Settings","topwin",1);
+
+	// フォントのポイント数 （０でシステムデフォルト）
+	dlg->nFontPoint = GetProfileInt("Settings","fnt_point",0);
+	// フォント名
+	dlg->sFontName = GetProfileString("Settings","fnt_name","");
 
 	// インストールフラグの取得
 	this->bInstalled = GetProfileInt("Settings","installed",0);
@@ -198,9 +248,22 @@ void CInfoBar00App::RegConfigWrite(CInfoBar00Dlg *dlg)
 	// ダイアログのＹ座標
 	if(dlg->nPosY != GetProfileInt("Settings","pos_y",100))
 		WriteProfileInt("Settings","pos_y",dlg->nPosY);
+	// ダイアログの幅
+	if(dlg->nInfoWndWidth != (int)GetProfileInt("Settings","siz_x",0))
+		WriteProfileInt("Settings","siz_x",dlg->nInfoWndWidth);
+	// ダイアログの高さ
+	if(dlg->nInfoWndHeight != (int)GetProfileInt("Settings","siz_y",0))
+		WriteProfileInt("Settings","siz_y",dlg->nInfoWndHeight);
 	// 最前面に表示する
 	if(dlg->bDispTopmost != (int)GetProfileInt("Settings","topwin",1))
 		WriteProfileInt("Settings","topwin",dlg->bDispTopmost);
+
+	// フォントのポイント数 （０でシステムデフォルト）
+	if(dlg->nFontPoint != (int)GetProfileInt("Settings","fnt_point",0))
+		WriteProfileInt("Settings","fnt_point",dlg->nFontPoint);
+	// フォント名
+	if(dlg->sFontName != GetProfileString("Settings","fnt_name",""))
+		WriteProfileString("Settings","fnt_name",dlg->sFontName);
 
 
 	// インストールフラグ
@@ -309,3 +372,4 @@ BOOL CInfoBar00App::UninstallSeq()
 
 	return TRUE;
 }
+

@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "infobar00.h"
 #include "DlgAbout.h"
-#include "InstFunc.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,22 +38,9 @@ void CDlgAbout::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CDlgAbout, CPropertyPage)
 	//{{AFX_MSG_MAP(CDlgAbout)
-	ON_BN_CLICKED(IDC_BTN_MAKEUNIN, OnBtnMakeunin)
+		// メモ: ClassWizard はこの位置に DDX および DDV の呼び出しコードを追加します。
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDlgAbout メッセージ ハンドラ
-
-// **********************************
-//  アンインストール・アイコンの作成
-//
-// **********************************
-void CDlgAbout::OnBtnMakeunin() 
-{
-	// TODO: この位置にコントロール通知ハンドラ用のコードを追加してください
-	::MkUninstMnu();
-
-	MessageBox("Uninstall shortcut is made on start menu .", "InfoBar", MB_OK|MB_ICONINFORMATION);
-	
-}
