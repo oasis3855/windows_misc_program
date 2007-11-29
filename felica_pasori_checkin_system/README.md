@@ -1,7 +1,7 @@
 ## ![icon](readme_pics/softdown-ico-FeliCaRawViewer.png)  FeliCaを用いたクライアント・サーバ型のタイムカードシステム<br/>FeliCa(PaSoRi) Check-in Server/Client System for Windows<!-- omit in toc -->
 
 ---
-[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [felica_pasori_checkin_system](../README.md) > ***image-divider*** (this page)
+[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [felica_pasori_checkin_system](../felica_pasori_checkin_system/README.md) > ***felica_pasori_checkin_system*** (this page)
 
 <br />
 <br />
