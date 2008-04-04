@@ -1,4 +1,4 @@
-## ![icon](readme_pics/softdown-ico-BacklightControl.png)  GPSによるシステム時間設定<br/>GPS TIme Set for Windows/Windows CE<!-- omit in toc -->
+## ![icon](readme_pics/softdown-ico-gpstimeset.png)  GPSによるシステム時間設定<br/>GPS TIme Set for Windows/Windows Mobile<!-- omit in toc -->
 
 ---
 [Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [gps_timeset](../gps_timeset/README.md) > ***gps_timeset*** (this page)
@@ -7,6 +7,15 @@
 <br />
 
 Last Updated : May. 2008
+
+
+- [ソフトウエアのダウンロード](#ソフトウエアのダウンロード)
+- [機能の概要](#機能の概要)
+- [動作環境](#動作環境)
+  - [Windows CE (Windows Mobile) 版](#windows-ce-windows-mobile-版)
+  - [Windows (Win32) 版](#windows-win32-版)
+- [バージョンアップ情報](#バージョンアップ情報)
+- [ライセンス](#ライセンス)
 
 <br />
 <br />
