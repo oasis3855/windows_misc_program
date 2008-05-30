@@ -121,8 +121,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,1
- PRODUCTVERSION 1,0,0,1
+ FILEVERSION 1,0,1,1
+ PRODUCTVERSION 1,0,1,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -140,14 +140,14 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", "(C) INOUE. Hirokazu\0"
             VALUE "FileDescription", "GpsTimeSet.exe (System Time Set by GPS) for Windows CE\0"
-            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "FileVersion", "1, 0, 1, 1\0"
             VALUE "InternalName", "GpsTimeSetCE.exe\0"
             VALUE "LegalCopyright", "(C) INOUE. Hirokazu\0"
             VALUE "LegalTrademarks", "(C) INOUE. Hirokazu\0"
             VALUE "OriginalFilename", "GpsTimeSetCE.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "GpsTimeSet.exe (System Time Set by GPS) for Windows CE\0"
-            VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "ProductVersion", "1, 0, 1, 1\0"
             VALUE "SpecialBuild", "\0"
         END
     END

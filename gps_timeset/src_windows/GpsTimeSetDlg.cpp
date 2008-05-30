@@ -456,7 +456,7 @@ int CGpsTimeSetDlg::GGA_Process(const char * sNmea, LPVOID pParam)
 		sTemp.Format("%02d:%02d:%02d", nHour, nMinutes, nSecond);
 		pDlg->SetDlgItemText(IDC_EDIT_TIME, sTemp);
 
-		PcTimeDisp(nHour, nMinutes, nSecond, pParam);
+		PcTimeDisp(nYear, nMonth, nDay, nHour, nMinutes, nSecond, pParam);
 	}
 
 	// 緯度フィールド
@@ -568,7 +568,7 @@ int CGpsTimeSetDlg::ZDA_Process(const char * sNmea, LPVOID pParam)
 	sTemp.Format("%04d/%02d/%02d %02d:%02d:%02d", nYear, nMonth, nDay, nHour, nMinutes, nSecond);
 	pDlg->SetDlgItemText(IDC_EDIT_TIME_ZDA, sTemp);
 
-	PcTimeDisp(nHour, nMinutes, nSecond, pParam);
+	PcTimeDisp(nYear, nMonth, nDay, nHour, nMinutes, nSecond, pParam);
 
 	return 0;
 }
@@ -684,10 +684,11 @@ char * CGpsTimeSetDlg::SplitString(char *sBuf, char *sSeparator)
 
 
 /********
-PcTimeDisp(int nHour, int nMinutes, int nSecond, LPVOID pParam)
+PcTimeDisp(int nYear, int nMonth, int nDay, int nHour, int nMinutes, int nSecond, LPVOID pParam)
 PCのシステム時刻の表示と、システム時刻の変更
 
 入力）
+  GPSで得た年月日：int nYear, int nMonth, int nDay, 
   GPSで得た時分秒：int nHour, int nMinutes, int nSecond
   メインダイアログクラスへのポインタ：pParam
 
@@ -698,14 +699,21 @@ PCのシステム時刻の表示と、システム時刻の変更
 　Win32SDK SetLocalTime は システム時刻変更権限が無い場合、何も処理しない
 
 ********/
+#define _TIME_FUNCTION_CE	// CE 互換にする場合は宣言する
 
-void CGpsTimeSetDlg::PcTimeDisp(int nHour, int nMinutes, int nSecond, LPVOID pParam)
+void CGpsTimeSetDlg::PcTimeDisp(int nYear, int nMonth, int nDay, int nHour, int nMinutes, int nSecond, LPVOID pParam)
 {
-	SYSTEMTIME tmSystem;
+	SYSTEMTIME tmSystem;	// システム時刻を得る、設定する時に使用
+#ifdef _TIME_FUNCTION_CE	// (1) CTime利用時
+	CTime tmGpsTime;			// 時差計算用（GPS時刻）
+	CTime tmLocalTime;			// 時差計算用（ローカル時刻）
+#else						// (2) C time関数利用時 (WinCE不可）
+	struct tm tmGpsTime;		// 時差計算用（GPS時刻）
+	struct tm *ptmLocalTime;	// 時差計算用（ローカル時刻）
+	time_t nTimeTemp;			// 時差計算用
+#endif //_TIME_FUNCTION_CE
 	TIME_ZONE_INFORMATION tzInfo;
 	DWORD nTzResult;
-	double nTz;
-	long int nTimeNow;
 	CString sTemp;
 
 	CGpsTimeSetDlg *pDlg = (CGpsTimeSetDlg*)pParam;
@@ -718,29 +726,88 @@ void CGpsTimeSetDlg::PcTimeDisp(int nHour, int nMinutes, int nSecond, LPVOID pPa
 	pDlg->SetDlgItemText(IDC_EDIT_TIME_PC, sTemp);
 
 	// システムのタイムゾーンをダイアログに表示する
-	nTz = (double)tzInfo.Bias / 60.0;
-	sTemp.Format("%+02.1f", nTz);
+	sTemp.Format("%+02.1f", (double)tzInfo.Bias / 60.0);
 	pDlg->SetDlgItemText(IDC_EDIT_TIME_TZ, sTemp);
 
 	// 時刻設定
 	if(pDlg->m_ThreadSetTime)
 	{
-		// GPS時刻にタイムゾーンを加算して、ローカルタイムにする
-		nTimeNow = nHour*60*60 + nMinutes*60 + nSecond - tzInfo.Bias*60;
+		// 
+		// 時差の組み入れ計算 （GPS時刻 ＋ TZ ＝ ローカル時刻）
+		//
 
-		// 0 ～ 24 時間内に収める処理（ムチャクチャ適当）
-		if(nTimeNow < 0) nTimeNow += 60*60*12;		// マイナスになったら、12時間進める
-		else if(nTimeNow > 24*60*60) nTimeNow -= 60*60*12;		// 24時間以上は、12時間戻す
+#ifdef _TIME_FUNCTION_CE
+		/*****(1) CTime利用時 */
+		if(nYear != 0)
+		{	// 年月日が与えられている時（ZDA解析からの情報）
+			tmGpsTime = CTime(nYear, nMonth, nDay, nHour, nMinutes, nSecond);
 
-		// GPS時刻から得たローカルタイムを、年月日・時分秒変数に代入
-		tmSystem.wHour = (WORD)(nTimeNow / 60 / 60);
-		tmSystem.wMinute = (WORD)((nTimeNow - tmSystem.wHour*60*60) / 60);
-		tmSystem.wSecond = (WORD)(nTimeNow - tmSystem.wHour*60*60 - tmSystem.wMinute*60);
+			tmLocalTime = tmGpsTime - (CTimeSpan)(tzInfo.Bias*60);
+
+			tmSystem.wYear = tmLocalTime.GetYear();
+			tmSystem.wMonth = tmLocalTime.GetMonth();
+			tmSystem.wDay = tmLocalTime.GetDay();
+
+			pDlg->m_ThreadSetTime = 0;		// 時刻設定命令フラグをクリア
+		}
+		else
+		{	// 年月日が与えられていない時（GGA解析からの情報）
+			tmGpsTime = CTime(tmSystem.wYear, tmSystem.wMonth, tmSystem.wDay, nHour, nMinutes, nSecond);
+
+			tmLocalTime = tmGpsTime - (CTimeSpan)(tzInfo.Bias*60);
+		}
+
+		tmSystem.wHour = tmLocalTime.GetHour();
+		tmSystem.wMinute = tmLocalTime.GetMinute();
+		tmSystem.wSecond = tmLocalTime.GetSecond();
+		
+#else
+		/**** (2) C time関数利用時 (WinCE不可）*/
+		tmGpsTime.tm_hour = nHour;
+		tmGpsTime.tm_min = nMinutes;
+		tmGpsTime.tm_sec = nSecond;
+		if(nYear != 0)
+		{	// 年月日が与えられている時（ZDA解析からの情報）
+			tmGpsTime.tm_year = nYear - 1900;
+			tmGpsTime.tm_mon = nMonth - 1;
+			tmGpsTime.tm_mday = nDay;
+
+			nTimeTemp = ::mktime(&tmGpsTime);	// 構造体からlong int秒に変換
+			nTimeTemp -= tzInfo.Bias * 60;		// 時差（秒）の調整
+			ptmLocalTime = ::localtime(&nTimeTemp);	// long int秒から構造体に変換
+
+			tmSystem.wYear = ptmLocalTime->tm_year + 1900;
+			tmSystem.wMonth = ptmLocalTime->tm_mon + 1;
+			tmSystem.wDay = ptmLocalTime->tm_mday;
+
+			pDlg->m_ThreadSetTime = 0;		// 時刻設定命令フラグをクリア
+		}
+		else
+		{	// 年月日が与えられていない時（GGA解析からの情報）
+			tmGpsTime.tm_year = tmSystem.wYear - 1900;	// システム時刻を流用
+			tmGpsTime.tm_mon = tmSystem.wMonth - 1;	// システム時刻を流用
+			tmGpsTime.tm_mday = tmSystem.wDay;	// システム時刻を流用
+
+			nTimeTemp = ::mktime(&tmGpsTime);	// 構造体からlong int秒に変換
+			nTimeTemp -= tzInfo.Bias * 60;		// 時差（秒）の調整
+			ptmLocalTime = ::localtime(&nTimeTemp);	// long int秒から構造体に変換
+		}
+
+		tmSystem.wHour = ptmLocalTime->tm_hour;
+		tmSystem.wMinute = ptmLocalTime->tm_min;
+		tmSystem.wSecond = ptmLocalTime->tm_sec;
+
+#endif	// _TIME_FUNCTION_CE
 
 		// システムのローカルタイムを変更する（要：時刻変更権限）
 		::SetLocalTime(&tmSystem);
 
-		pDlg->m_ThreadSetTime = 0;		// 時刻設定命令フラグをクリア
+		// ZDAテキストボックスに何も表示されていない時は、GGAで時間設定して終了
+		pDlg->GetDlgItemText(IDC_EDIT_TIME_ZDA, sTemp);
+		if(sTemp == "")
+		{
+			pDlg->m_ThreadSetTime = 0;		// 時刻設定命令フラグをクリア
+		}
 	}
 
 }

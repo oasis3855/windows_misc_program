@@ -74,5 +74,5 @@ public:
 	int ZDA_Process(const char * sNmea, LPVOID pParam);
 	void TimeSeparate(char * sTimeStr, int *nHour, int *nMinutes, int *nSecond);
 	char * SplitString(char *sBuf, char *sSeparator);
-	void PcTimeDisp(int nHour, int nMinutes, int nSecond, LPVOID pParam);
+	void PcTimeDisp(int nYear, int nMonth, int nDay, int nHour, int nMinutes, int nSecond, LPVOID pParam);
 };
