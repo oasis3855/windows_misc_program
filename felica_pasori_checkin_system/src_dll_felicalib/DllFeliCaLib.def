@@ -1,0 +1,11 @@
+; defファイル
+;
+; DLLのエントリポイントとなる関数名をエクスポートします
+
+LIBRARY      "DllFeliCaLib"
+
+EXPORTS
+    ; 明示的なエクスポートはここへ記述できます
+
+	ReadFelicaIdOnce	@0001
+	
