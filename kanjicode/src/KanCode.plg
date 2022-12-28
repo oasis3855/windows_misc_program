@@ -1,0 +1,30 @@
+<html>
+<body>
+<pre>
+<h1>ﾋﾞﾙﾄﾞのﾛｸﾞ</h1>
+<h3>
+--------------------構成: KanCode - Win32 Debug--------------------
+</h3>
+<h3>ｺﾏﾝﾄﾞ ﾗｲﾝ</h3>
+一時ﾌｧｲﾙ "d:\temp\RSP72.TMP" を作成し、次の内容を記録します
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /Fp".\Debug/KanCode.pch" /Yu"stdafx.h" /Fo".\Debug/" /Fd".\Debug/" /FD /c 
+"E:\DATA\SRC\VC\KanCode\KanCode.cpp"
+"E:\DATA\SRC\VC\KanCode\KanCodeDlg.cpp"
+]
+Creating command line "cl.exe @d:\temp\RSP72.TMP" 
+ｺﾏﾝﾄﾞ ﾗｲﾝ "link.exe /nologo /subsystem:windows /incremental:yes /pdb:".\Debug/KanCode.pdb" /debug /machine:I386 /out:".\Debug/KanCode.exe"  .\Debug\KanCode.obj .\Debug\KanCodeDlg.obj .\Debug\StdAfx.obj .\Debug\KanCode.res " の作成中
+<h3>ｱｳﾄﾌﾟｯﾄ ｳｨﾝﾄﾞｳ</h3>
+ｺﾝﾊﾟｲﾙ中...
+KanCode.cpp
+KanCodeDlg.cpp
+ｺｰﾄﾞを生成中...
+ﾘﾝｸ中...
+
+
+
+<h3>結果</h3>
+KanCode.exe - ｴﾗｰ 0、警告 0
+</pre>
+</body>
+</html>
