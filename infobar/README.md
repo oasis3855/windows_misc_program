@@ -1,7 +1,7 @@
 ## ![icon](readme_pics/softdown-ico-infobar.gif)  InfoBar ニュース電光掲示板 for Windows <!-- omit in toc -->
 
 ---
-[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [infobar](../infobar/README.md) > ***infobar*** (this page)
+[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [windows_misc_program](../README.md) > ***infobar*** (this page)
 
 <br />
 <br />

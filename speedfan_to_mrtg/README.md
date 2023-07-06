@@ -1,7 +1,7 @@
 ## sf2mrtg : SpeedFanのデータをMRTGで取り込む補助ツール for Windows<!-- omit in toc -->
 
 ---
-[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [speedfan_to_mrtg](../speedfan_to_mrtg/README.md) > ***speedfan_to_mrtg*** (this page)
+[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [windows_misc_program](../README.md) > ***speedfan_to_mrtg*** (this page)
 
 <br />
 <br />

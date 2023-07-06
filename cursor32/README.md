@@ -1,7 +1,7 @@
 ## ![icon](readme_pics/softdown-ico-cursor.gif)  Cursor32 マウス座標表示 for Windows<!-- omit in toc -->
 
 ---
-[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [cursor32](../cursor32/README.md) > ***cursor32*** (this page)
+[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [windows_misc_program](../README.md) > ***cursor32*** (this page)
 
 <br />
 <br />

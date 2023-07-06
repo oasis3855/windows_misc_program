@@ -78,7 +78,7 @@ IDD_COOKIECTRL_DIALOG DIALOGEX 0, 0, 319, 205
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "CookieCtrl - Internet Explorer Cookie コントローラ 機能設定"
-FONT 9, "ＭＳ Ｐゴシック"
+FONT 9, "ＭＳ Ｐゴシック", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_FOLDER,10,32,188,16,ES_AUTOHSCROLL
     PUSHBUTTON      "参照 (Browse)",IDC_BTN_FOLDER_BRW,206,32,48,16
@@ -122,7 +122,7 @@ CAPTION "バージョン情報  / Version Information"
 FONT 9, "ＭＳ Ｐゴシック"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,135,185,50,14
-    LTEXT           "CookieCtrl  for Windows 95/98/Me/NT/2000/XP\r\n   version 1.1\r\n  (designed for Internet Explorer)\n\n(C) 2001-2002  INOUE. Hirokazu\n\ninoue-h@oasis.email.ne.jp\r\nhttp://inoue-h.connect.to/\n\nこのプログラムはフリーウエアです\r\nThis Program is FreeWare .",
+    LTEXT           "CookieCtrl  for Windows 95/98/Me/NT/2000/XP\r\n   version 1.2\r\n  (designed for Internet Explorer)\n\n(C) 2001-2002  INOUE. Hirokazu\n\nhttp://www.ne.jp/asahi/oasis/inoue-h/\r\nhttp://inoue-h.connect.to/\n\nこのプログラムはフリーウエアです\r\nThis Program is FreeWare .",
                     IDC_STATIC,10,85,170,95
     CONTROL         131,IDC_STATIC,"Static",SS_BITMAP,10,5,250,50
 END
@@ -167,8 +167,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,1,0,0
- PRODUCTVERSION 1,1,0,0
+ FILEVERSION 1,2,0,0
+ PRODUCTVERSION 1,2,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -186,14 +186,14 @@ BEGIN
             VALUE "Comments", "Internet Explorer Cookie Controller\0"
             VALUE "CompanyName", "INOUE. Hirokazu\0"
             VALUE "FileDescription", "CookieCtrl\0"
-            VALUE "FileVersion", "1, 1, 0, 0\0"
+            VALUE "FileVersion", "1, 2, 0, 0\0"
             VALUE "InternalName", "CookieCtrl\0"
             VALUE "LegalCopyright", "Copyright (C) 2001-2002 INOUE. Hirokazu\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "CookieCtrl.exe\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "CookieCtrl\0"
-            VALUE "ProductVersion", "1, 1, 0, 0\0"
+            VALUE "ProductVersion", "1, 2, 0, 0\0"
             VALUE "SpecialBuild", "\0"
         END
     END
@@ -305,7 +305,7 @@ IDD_COOKIECTRL_DIALOG DIALOGEX 0, 0, 319, 205
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "CookieCtrl - Internet Explorer Cookie Controller  Configration"
-FONT 9, "Arial"
+FONT 9, "Arial", 0, 0, 0x1
 BEGIN
     EDITTEXT        IDC_EDIT_FOLDER,10,32,188,16,ES_AUTOHSCROLL
     PUSHBUTTON      "Browse",IDC_BTN_FOLDER_BRW,206,32,48,16
@@ -345,7 +345,7 @@ CAPTION "Version Information"
 FONT 9, "Arial"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,135,185,50,14
-    LTEXT           "CookieCtrl  for Windows 95/98/Me/NT/2000/XP\r\n   version 1.1 (Multi Language Version)\r\n  (designed for Internet Explorer)\n\n(C) 2001-2002  INOUE. Hirokazu\n\ninoue-h@oasis.email.ne.jp\r\nhttp://inoue-h.connect.to/\n\nThis Program is FreeWare .",
+    LTEXT           "CookieCtrl  for Windows 95/98/Me/NT/2000/XP\r\n   version 1.2 (Multi Language Version)\r\n  (designed for Internet Explorer)\n\n(C) 2001-2002  INOUE. Hirokazu\n\nhttp://www.ne.jp/asahi/oasis/inoue-h/\r\nhttp://inoue-h.connect.to/\n\nThis Program is FreeWare .",
                     IDC_STATIC,10,85,170,95
     CONTROL         131,IDC_STATIC,"Static",SS_BITMAP,10,5,250,50
 END

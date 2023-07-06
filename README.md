@@ -12,6 +12,7 @@ Last Updated : Oct. 2008
 - [FeliCaを用いたクライアント・サーバ型のタイムカードシステム for Windows](#felicaを用いたクライアントサーバ型のタイムカードシステム-for-windows)
 - [FeliCaのデータを読み出す FeliCa Raw Viewer for Windows](#felicaのデータを読み出す-felica-raw-viewer-for-windows)
 - [GPSによるシステム時間設定 for Windows/Windows Mobile](#gpsによるシステム時間設定-for-windowswindows-mobile)
+- [Internet Explorer Cookie コントローラ for Windows](#internet-explorer-cookie-コントローラ-for-windows)
 - [InfoBar ニュース電光掲示板 for Windows](#infobar-ニュース電光掲示板-for-windows)
 - [日本語文字コード表示ツール for Windows](#日本語文字コード表示ツール-for-windows)
 - [sf2mrtg : SpeedFanのデータをMRTGで取り込む補助ツール for Windows](#sf2mrtg--speedfanのデータをmrtgで取り込む補助ツール-for-windows)
@@ -62,6 +63,15 @@ FeliCa ICカードの情報 （非保護領域） を読み出して表示しま
 GPS受信で得られる時刻（UTC時刻）を用いて、システム時刻を修正（同期）します
 
 [ソフトウエアのダウンロードおよびドキュメントは gps_timeset](gps_timeset/README.md) (2008/05/31)
+
+<br />
+<br />
+
+## Internet Explorer Cookie コントローラ for Windows
+
+Microsoft Internet Explorer（インターネット エクスプローラ）のCookieを、一定の条件をつけて一括削除するソフトウエア
+
+[ソフトウエアのダウンロードおよびドキュメントは ie_cookie_ctrl](ie_cookie_ctrl/README.md) (2002/05/07)
 
 <br />
 <br />

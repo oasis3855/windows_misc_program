@@ -1,7 +1,7 @@
 ## ![icon](readme_pics/softdown-ico-gpstimeset.png)  GPSによるシステム時間設定<br/>GPS TIme Set for Windows/Windows Mobile<!-- omit in toc -->
 
 ---
-[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [gps_timeset](../gps_timeset/README.md) > ***gps_timeset*** (this page)
+[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [windows_misc_program ](../README.md) > ***gps_timeset*** (this page)
 
 <br />
 <br />

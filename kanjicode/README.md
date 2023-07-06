@@ -1,7 +1,7 @@
 ## ![icon](readme_pics/softdown-ico-kanji.gif)  日本語文字コード表示ツール for Windows<!-- omit in toc -->
 
 ---
-[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [kanjicode](../kanjicode/README.md) > ***kanjicode*** (this page)
+[Home](https://oasis3855.github.io/webpage/) > [Software](https://oasis3855.github.io/webpage/software/index.html) > [Software Download](https://oasis3855.github.io/webpage/software/software-download.html) > [windows_misc_program](../README.md) > ***kanjicode*** (this page)
 
 <br />
 <br />
