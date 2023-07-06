@@ -1,0 +1,478 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 17, 1\r\n"
+    "#pragma code_page(932)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\CookieCtrl.rc2""  // Microsoft Visual C++ 以外のツールで編集されたリソース\r\n"
+    "#include ""l.jpn\\afxres.rc""          // 標準のコンポーネント\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ico_main.ico"
+IDI_ICO_INST            ICON    DISCARDABLE     "res\\ico_inst.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COOKIECTRL_DIALOG DIALOGEX 0, 0, 319, 205
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "CookieCtrl - Internet Explorer Cookie コントローラ 機能設定"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    EDITTEXT        IDC_EDIT_FOLDER,10,32,188,16,ES_AUTOHSCROLL
+    PUSHBUTTON      "参照 (Browse)",IDC_BTN_FOLDER_BRW,206,32,48,16
+    PUSHBUTTON      "自動  (Auto)",IDC_BTN_FOLDER_AUTO,258,32,48,16
+    EDITTEXT        IDC_EDIT_EXT,9,69,188,16,ES_AUTOHSCROLL
+    PUSHBUTTON      "自動  (Auto)",IDC_BTN_EXT,205,69,48,16
+    CONTROL         "次の文字列を含むファイルは削除しない （ セミコロンで区切って複数記述 ）  (Exclude String)",
+                    IDC_CHECK_EXCLUDE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    9,93,296,16
+    EDITTEXT        IDC_EDIT_EXCLUDE,9,109,296,16,ES_AUTOHSCROLL
+    CONTROL         "一定期間以内のファイルは削除しない  (Not Delete Files within This Days)",
+                    IDC_CHECK_DAYS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,
+                    137,296,16
+    EDITTEXT        IDC_EDIT_DAYS,9,157,48,16,ES_AUTOHSCROLL
+    SCROLLBAR       IDC_SCR_DAYS,57,157,8,16,SBS_VERT
+    PUSHBUTTON      "再ｲﾝｽﾄｰﾙ(&I)",IDC_BTN_STARTUP,5,185,52,16
+    PUSHBUTTON      "今すぐ実行(&N)",IDC_BTN_RUN,61,185,52,16
+    PUSHBUTTON      "ヘルプ(&H)",IDC_BTN_HELP,149,185,52,16
+    DEFPUSHBUTTON   "設定・終了(&K)",IDOK,205,185,52,16
+    PUSHBUTTON      "キャンセル(&C)",IDCANCEL,261,185,52,16
+    LTEXT           "Cookie の保存されているフォルダ  (Cookie Folder)",
+                    IDC_STATIC,10,20,148,12,SS_CENTERIMAGE
+    LTEXT           "日以内に作成されたファイルは削除しない  (Days)",
+                    IDC_STR_DAYS,69,157,236,16,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,5,133,308,48
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,5,89,308,40
+    LTEXT           "Cookie のファイル名 （ ワイルドカード表記、セミコロンで区切って複数記述 ）  (Cookie File)",
+                    IDC_STATIC,9,57,301,12,SS_CENTERIMAGE
+    CONTROL         "Ver",IDC_BTN_VERSION,"Button",BS_OWNERDRAW,120,185,20,
+                    15
+    CTEXT           "?",IDC_STATIC,120,185,20,15,SS_CENTERIMAGE | SS_SUNKEN
+    CONTROL         "実行時に、自動的にCookieフォルダを決定する  (Use Default Folder)",
+                    IDC_CHECK_AUTO_FOLDER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,10,295,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,5,5,308,50
+END
+
+IDD_DLG_ABOUT DIALOG DISCARDABLE  0, 0, 190, 205
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "バージョン情報  / Version Information"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,135,185,50,14
+    LTEXT           "CookieCtrl  for Windows 95/98/Me/NT/2000/XP\r\n   version 1.1\r\n  (designed for Internet Explorer)\n\n(C) 2001-2002  INOUE. Hirokazu\n\ninoue-h@oasis.email.ne.jp\r\nhttp://inoue-h.connect.to/\n\nこのプログラムはフリーウエアです\r\nThis Program is FreeWare .",
+                    IDC_STATIC,10,85,170,95
+    CONTROL         131,IDC_STATIC,"Static",SS_BITMAP,10,5,250,50
+END
+
+IDD_DLG_INST DIALOG DISCARDABLE  0, 0, 259, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "CookieCtrl のインストール / CookieCtrl Install"
+FONT 9, "ＭＳ Ｐゴシック"
+BEGIN
+    ICON            IDI_ICO_INST,IDC_STATIC,10,5,20,20
+    LTEXT           "CookieCtrl をインストールします   (Install CookieCtrl)",
+                    IDC_STATIC,35,5,215,20,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,30,250,1
+    GROUPBOX        "自動実行オプション  (Auto Run Option)",IDC_STATIC,5,35,
+                    250,75
+    CONTROL         "自動起動しない  (No Auto Run)",IDC_R_AUTOEXEC,"Button",
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,10,45,240,15
+    CONTROL         "スタートメニューの「スタート」グループに登録  (Startup on Start Menu)",
+                    IDC_R_AUTOEXEC2,"Button",BS_AUTORADIOBUTTON,10,61,240,15
+    CONTROL         "レジストリに登録（ユーザーごと設定)  (Registry Run (Current User))",
+                    IDC_R_AUTOEXEC3,"Button",BS_AUTORADIOBUTTON,10,75,240,15
+    CONTROL         "レジストリに登録（全ユーザ共通設定)  (Registry Run (All User))",
+                    IDC_R_AUTOEXEC4,"Button",BS_AUTORADIOBUTTON,10,91,240,15
+    GROUPBOX        "アンインストール方法の設定  (Uninstall Shortcut on ... ?)",
+                    IDC_STATIC,5,115,250,45
+    CONTROL         "コントロールパネルの「アプリケーションの追加と削除」  (from &Control panel)",
+                    IDC_CHECK_UNINST_CPL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,125,240,15
+    CONTROL         "スタートメニューに登録する  (推奨) (from Start Men&u)",
+                    IDC_CHECK_UNINST_START,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,10,140,240,15
+    PUSHBUTTON      "OK(&K)",IDOK,80,165,55,15
+    PUSHBUTTON      "キャンセル(&C)",IDCANCEL,140,165,55,15
+    PUSHBUTTON      "ヘルプ(&H)",IDC_BTN_HELP,200,165,55,15
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,1,0,0
+ PRODUCTVERSION 1,1,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "041104b0"
+        BEGIN
+            VALUE "Comments", "Internet Explorer Cookie Controller\0"
+            VALUE "CompanyName", "INOUE. Hirokazu\0"
+            VALUE "FileDescription", "CookieCtrl\0"
+            VALUE "FileVersion", "1, 1, 0, 0\0"
+            VALUE "InternalName", "CookieCtrl\0"
+            VALUE "LegalCopyright", "Copyright (C) 2001-2002 INOUE. Hirokazu\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "CookieCtrl.exe\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "CookieCtrl\0"
+            VALUE "ProductVersion", "1, 1, 0, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x411, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_COOKIECTRL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 198
+    END
+
+    IDD_DLG_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 183
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 198
+    END
+
+    IDD_DLG_INST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP_CONCEPT      BITMAP  DISCARDABLE     "res\\image_concept.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFS_IDS_APP_TITLE       "CookieCtrl"
+    STR_REGKEY_STARTUP      "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"
+    STR_MES_F1MES           "ヘルプ ボタンを押してください\r\n\r\nPlease Use 'HELP' Button ."
+    STR_MES_F1CAP           "注意  Caution"
+    AFX_STR_UNINST_CPLNAME  "CookieCtrl"
+    AFX_STR_LINK_UNINST     "\\CookieCtrlアンインストール.LNK"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_STR_LINK_STARTUP    "\\CookieCtrl自動実行.LNK"
+    AFX_STR_LINK_PROG       "\\CookieCtrl機能設定.LNK"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "CookieCtrl"
+    STR_MES_UNIN_CUR        "CookieCtrl をアンインストールします\r\nUninstall CookieCtrl ?\r\n\r\n（カレント・ユーザ・モード）"
+    STR_MES_UNIN_ADM        "CookieCtrl をアンインストールします\r\nUninstall CookieCtrl ?\r\n\r\nこの操作で、全てのユーザの自動実行が解除されます\r\n\r\n（アドミニストレータ・モード）"
+    STR_MES_UNIN_NOT        "CookieCtrl をアンインストールする権限がありません\r\nYou Don't Have Permission to Uninstall"
+    AFX_STR_USERDAT_1       "Software\\hi soft\\CookieCtrl"
+    AFX_STR_USERDAT_2       "Software\\hi soft"
+    STR_MES_REIN_NOT        "CookieCtrl を再インストールする権限がありません\r\nYou Don't Have Permission to Re-Install"
+    STR_MES_SEL_COKFOL      "Cookie が保存さてているフォルダの選択\r\nSelect Cookie Folder"
+    STR_CTL_CHK_DAYS_0      "一定期間以内のファイルは削除しない  (Not Delete within This Days)"
+    STR_CTL_CHK_DAYS_1      "上記の文字列に一致するファイルは、一定期間以内削除しない  (Not Delete within This Day)"
+END
+
+#endif    // 日本語 resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// 英語 (ｱﾒﾘｶ) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_COOKIECTRL_DIALOG DIALOGEX 0, 0, 319, 205
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "CookieCtrl - Internet Explorer Cookie Controller  Configration"
+FONT 9, "Arial"
+BEGIN
+    EDITTEXT        IDC_EDIT_FOLDER,10,32,188,16,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse",IDC_BTN_FOLDER_BRW,206,32,48,16
+    PUSHBUTTON      "Auto",IDC_BTN_FOLDER_AUTO,258,32,48,16
+    EDITTEXT        IDC_EDIT_EXT,9,69,188,16,ES_AUTOHSCROLL
+    PUSHBUTTON      "Auto",IDC_BTN_EXT,205,69,48,16
+    CONTROL         "Exclude String (If Cookie file name matches this string, it is excluded of delete)",
+                    IDC_CHECK_EXCLUDE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    9,93,296,16
+    EDITTEXT        IDC_EDIT_EXCLUDE,9,109,296,16,ES_AUTOHSCROLL
+    CONTROL         "Not Delete Files within This Days",IDC_CHECK_DAYS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,9,137,296,16
+    EDITTEXT        IDC_EDIT_DAYS,9,157,48,16,ES_AUTOHSCROLL
+    SCROLLBAR       IDC_SCR_DAYS,57,157,8,16,SBS_VERT
+    PUSHBUTTON      "Re Install(&I)",IDC_BTN_STARTUP,5,185,52,16
+    PUSHBUTTON      "Exec Now(&N)",IDC_BTN_RUN,61,185,52,16
+    PUSHBUTTON      "Help(&H)",IDC_BTN_HELP,149,185,52,16
+    DEFPUSHBUTTON   "OK(&K)",IDOK,205,185,52,16
+    PUSHBUTTON      "Cancel(&C)",IDCANCEL,261,185,52,16
+    LTEXT           "Cookie Folder",IDC_STATIC,10,20,148,12,SS_CENTERIMAGE
+    LTEXT           "Days",IDC_STR_DAYS,69,157,236,16,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,5,133,308,48
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,5,89,308,40
+    LTEXT           "Cookie File (use semicolon ';' to designate several file type)",
+                    IDC_STATIC,9,57,301,12,SS_CENTERIMAGE
+    CONTROL         "Ver",IDC_BTN_VERSION,"Button",BS_OWNERDRAW,120,185,20,
+                    15
+    CTEXT           "?",IDC_STATIC,120,185,20,15,SS_CENTERIMAGE | SS_SUNKEN
+    CONTROL         "User default Cookie Folder",IDC_CHECK_AUTO_FOLDER,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,10,295,10
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,5,5,308,50
+END
+
+IDD_DLG_ABOUT DIALOG DISCARDABLE  0, 0, 190, 205
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Version Information"
+FONT 9, "Arial"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,135,185,50,14
+    LTEXT           "CookieCtrl  for Windows 95/98/Me/NT/2000/XP\r\n   version 1.1 (Multi Language Version)\r\n  (designed for Internet Explorer)\n\n(C) 2001-2002  INOUE. Hirokazu\n\ninoue-h@oasis.email.ne.jp\r\nhttp://inoue-h.connect.to/\n\nThis Program is FreeWare .",
+                    IDC_STATIC,10,85,170,95
+    CONTROL         131,IDC_STATIC,"Static",SS_BITMAP,10,5,250,50
+END
+
+IDD_DLG_INST DIALOG DISCARDABLE  0, 0, 259, 185
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "CookieCtrl Install"
+FONT 9, "Arial"
+BEGIN
+    ICON            IDI_ICO_INST,IDC_STATIC,10,5,20,20
+    LTEXT           "Install CookieCtrl",IDC_STATIC,35,5,215,20,
+                    SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,5,30,250,1
+    GROUPBOX        "Auto Run Option",IDC_STATIC,5,35,250,75
+    CONTROL         "No Auto Run",IDC_R_AUTOEXEC,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP | WS_TABSTOP,10,45,240,15
+    CONTROL         "Startup on Start Menu",IDC_R_AUTOEXEC2,"Button",
+                    BS_AUTORADIOBUTTON,10,61,240,15
+    CONTROL         "Registry Run (Current User)",IDC_R_AUTOEXEC3,"Button",
+                    BS_AUTORADIOBUTTON,10,75,240,15
+    CONTROL         "Registry Run (All User)",IDC_R_AUTOEXEC4,"Button",
+                    BS_AUTORADIOBUTTON,10,91,240,15
+    GROUPBOX        "Uninstall Shortcut on ... ?",IDC_STATIC,5,115,250,45
+    CONTROL         "Uninstall from &Control panel",IDC_CHECK_UNINST_CPL,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,125,240,15
+    CONTROL         "Uninstall from Start Men&u",IDC_CHECK_UNINST_START,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,140,240,15
+    PUSHBUTTON      "OK(&K)",IDOK,80,165,55,15
+    PUSHBUTTON      "Cancel(&C)",IDCANCEL,140,165,55,15
+    PUSHBUTTON      "Help(&H)",IDC_BTN_HELP,200,165,55,15
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_COOKIECTRL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 198
+    END
+
+    IDD_DLG_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 183
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 198
+    END
+
+    IDD_DLG_INST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 252
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFS_IDS_APP_TITLE       "CookieCtrl"
+    STR_REGKEY_STARTUP      "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"
+    STR_MES_F1MES           "Please Use 'HELP' Button ."
+    STR_MES_F1CAP           "Caution"
+    AFX_STR_UNINST_CPLNAME  "CookieCtrl"
+    AFX_STR_LINK_UNINST     "\\CookieCtrl Uninstall.LNK"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_STR_LINK_STARTUP    "\\CookieCtrl Startup.LNK"
+    AFX_STR_LINK_PROG       "\\CookieCtrl.LNK"
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "CookieCtrl"
+    STR_MES_UNIN_CUR        "Uninstall CookieCtrl ?\r\n\r\n(Current User Mode)"
+    STR_MES_UNIN_ADM        "Uninstall CookieCtrl ?\r\n\r\n(Administration Mode)"
+    STR_MES_UNIN_NOT        "You Don't Have Permission to Uninstall"
+    AFX_STR_USERDAT_1       "Software\\hi soft\\CookieCtrl"
+    AFX_STR_USERDAT_2       "Software\\hi soft"
+    STR_MES_REIN_NOT        "You Don't Have Permission to Re-Install"
+    STR_MES_SEL_COKFOL      "Select Cookie Folder"
+    STR_CTL_CHK_DAYS_0      "Not Delete within This Days"
+    STR_CTL_CHK_DAYS_1      "Not Delete within This Days"
+END
+
+#endif    // 英語 (ｱﾒﾘｶ) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+#ifdef _WIN32
+LANGUAGE 17, 1
+#pragma code_page(932)
+#endif //_WIN32
+#include "res\CookieCtrl.rc2"  // Microsoft Visual C++ 以外のツールで編集されたリソース
+#include "l.jpn\afxres.rc"          // 標準のコンポーネント
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

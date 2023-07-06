@@ -1,0 +1,15 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+[OPTIONS]
+DBCS=Yes
+LCID=0x409 0x0 0x0 ; âpåÍ (U.S.)
+REPORT=Yes
+CHARSET=128
+TITLE=CookieCtrl éÊàµê‡ñæèë (User's Manual)
+HLP=CookieCtrl.hlp
+
+[FILES]
+CookieCtrl.rtf
+
+[MAP]
+#include CookieCtrl.hm
